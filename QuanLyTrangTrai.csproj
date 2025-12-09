@@ -58,6 +58,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmChiTietGiaoDich.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChiTietGiaoDich.Designer.cs">
+      <DependentUpon>frmChiTietGiaoDich.cs</DependentUpon>
+    </Compile>
     <Compile Include="Frmchitietthuhoachcaytrong.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -70,11 +76,29 @@
     <Compile Include="frmChiTietThuHoachVatNuoi.Designer.cs">
       <DependentUpon>frmChiTietThuHoachVatNuoi.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmTaiChinh.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTaiChinh.Designer.cs">
+      <DependentUpon>frmTaiChinh.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmLichCongViec.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmLichCongViec.Designer.cs">
       <DependentUpon>frmLichCongViec.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNhaCungCap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNhaCungCap.Designer.cs">
+      <DependentUpon>frmNhaCungCap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmQuanLyKho.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmQuanLyKho.Designer.cs">
+      <DependentUpon>frmQuanLyKho.cs</DependentUpon>
     </Compile>
     <Compile Include="frmThuHoach.cs">
       <SubType>Form</SubType>
@@ -93,6 +117,12 @@
     </Compile>
     <Compile Include="GiaoDien.Designer.cs">
       <DependentUpon>GiaoDien.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainDashboard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainDashboard.Designer.cs">
+      <DependentUpon>MainDashboard.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -126,14 +156,26 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmChiTietGiaoDich.resx">
+      <DependentUpon>frmChiTietGiaoDich.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Frmchitietthuhoachcaytrong.resx">
       <DependentUpon>Frmchitietthuhoachcaytrong.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmChiTietThuHoachVatNuoi.resx">
       <DependentUpon>frmChiTietThuHoachVatNuoi.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmTaiChinh.resx">
+      <DependentUpon>frmTaiChinh.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmLichCongViec.resx">
       <DependentUpon>frmLichCongViec.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNhaCungCap.resx">
+      <DependentUpon>frmNhaCungCap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmQuanLyKho.resx">
+      <DependentUpon>frmQuanLyKho.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmThuHoach.resx">
       <DependentUpon>frmThuHoach.cs</DependentUpon>
@@ -141,8 +183,8 @@
     <EmbeddedResource Include="frm_QuanLyTaiKhoan.resx">
       <DependentUpon>frm_QuanLyTaiKhoan.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GiaoDien.resx">
-      <DependentUpon>GiaoDien.cs</DependentUpon>
+    <EmbeddedResource Include="MainDashboard.resx">
+      <DependentUpon>MainDashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

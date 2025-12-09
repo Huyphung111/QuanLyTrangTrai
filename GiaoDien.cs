@@ -16,10 +16,5 @@ namespace QuanLyTrangTrai
         {
             InitializeComponent();
         }
-
-        private void GiaoDien_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

@@ -28,46 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(307, 171);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(117, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "TrangGiaoDien";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(456, 171);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(51, 20);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "label2";
-            // 
-            // GiaoDien
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(968, 535);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Name = "GiaoDien";
+            this.ClientSize = new System.Drawing.Size(800, 450);
             this.Text = "GiaoDien";
-            this.Load += new System.EventHandler(this.GiaoDien_Load);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Đồ_án;
+using GiaoDienDangNhap;
 using QL_TrangTrai;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace QuanLyTrangTrai
             }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new QL_CayTrong());
+            Application.Run(new QL_SanPham());
         }
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool SetProcessDPIAware();

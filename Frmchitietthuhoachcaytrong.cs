@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace QL_TrangTrai
 {
@@ -11,12 +10,13 @@ namespace QL_TrangTrai
     {
         #region Fields
 
-        // Connection string
+        // Connection string - ĐỔI THEO MÁY CỦA BẠN
         private readonly string connectionString = @"Data Source=HUYNE;Initial Catalog=QL_TrangTraiv13;Integrated Security=True";
 
         // DataTable để lưu trữ dữ liệu
         private DataTable dtChiTiet;
         private DataTable dtCayTrong;
+        private DataTable dtNhanVien;
 
         // Biến lưu trạng thái đang thêm mới hay sửa
         private bool isAddNew = false;
@@ -42,6 +42,7 @@ namespace QL_TrangTrai
 
             // Load dữ liệu
             LoadCayTrong();
+            LoadNhanVien();  // THÊM MỚI
             LoadData();
 
             // Thiết lập ban đầu
@@ -110,6 +111,40 @@ namespace QL_TrangTrai
             catch (Exception ex)
             {
                 MessageBox.Show($"Lỗi khi tải danh sách cây trồng:\n{ex.Message}",
+                    "❌ Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Load danh sách nhân viên vào ComboBox - THÊM MỚI
+        /// </summary>
+        private void LoadNhanVien()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT MaNV, HoTen FROM NhanVien ORDER BY HoTen";
+                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                    dtNhanVien = new DataTable();
+                    da.Fill(dtNhanVien);
+
+                    // Thêm dòng trống đầu tiên
+                    DataRow emptyRow = dtNhanVien.NewRow();
+                    emptyRow["MaNV"] = DBNull.Value;
+                    emptyRow["HoTen"] = "-- Chọn nhân viên --";
+                    dtNhanVien.Rows.InsertAt(emptyRow, 0);
+
+                    cboNhanVien.DataSource = dtNhanVien;
+                    cboNhanVien.DisplayMember = "HoTen";
+                    cboNhanVien.ValueMember = "MaNV";
+                    cboNhanVien.SelectedIndex = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi tải danh sách nhân viên:\n{ex.Message}",
                     "❌ Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -197,11 +232,14 @@ namespace QL_TrangTrai
         #region Button Events
 
         /// <summary>
-        /// Xử lý sự kiện nút Thêm
+        /// ✅ SỬA LẠI - Xử lý sự kiện nút Thêm - GỌI PROCEDURE
+        /// Thêm thu hoạch + Tự động tạo sản phẩm
         /// </summary>
         private void BtnThem_Click(object sender, EventArgs e)
         {
+            // Validate dữ liệu đầu vào
             if (!ValidateInput()) return;
+            if (!ValidateInputSanPham()) return;  // Validate thêm phần sản phẩm
 
             try
             {
@@ -209,28 +247,41 @@ namespace QL_TrangTrai
                 {
                     conn.Open();
 
-                    // Lấy mã chi tiết mới
-                    int newId = GetNextId(conn);
-
-                    string query = @"
-                        INSERT INTO ChiTietThuHoachCayTrong (MaChiTietCT, MaCay, SoLuong, ChatLuong, GhiChu)
-                        VALUES (@MaChiTietCT, @MaCay, @SoLuong, @ChatLuong, @GhiChu)";
-
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    // ========================================
+                    // GỌI PROCEDURE sp_ThemThuHoachCayTrong
+                    // Thêm vào 3 bảng: ChiTietThuHoachCayTrong, ThuHoach, SanPham
+                    // ========================================
+                    using (SqlCommand cmd = new SqlCommand("sp_ThemThuHoachCayTrong", conn))
                     {
-                        cmd.Parameters.AddWithValue("@MaChiTietCT", newId);
-                        cmd.Parameters.AddWithValue("@MaCay", cboMaCay.SelectedValue);
-                        cmd.Parameters.AddWithValue("@SoLuong", numSoLuong.Value);
-                        cmd.Parameters.AddWithValue("@ChatLuong", cboChatLuong.Text);
-                        cmd.Parameters.AddWithValue("@GhiChu", string.IsNullOrEmpty(txtGhiChu.Text) ? (object)DBNull.Value : txtGhiChu.Text);
+                        cmd.CommandType = CommandType.StoredProcedure;
 
-                        cmd.ExecuteNonQuery();
+                        // Tham số cho Chi tiết thu hoạch
+                        cmd.Parameters.AddWithValue("@MaCay", cboMaCay.SelectedValue);
+                        cmd.Parameters.AddWithValue("@SoLuongTH", numSoLuong.Value);
+                        cmd.Parameters.AddWithValue("@ChatLuong", cboChatLuong.Text);
+                        cmd.Parameters.AddWithValue("@GhiChuCT", string.IsNullOrEmpty(txtGhiChu.Text) ? (object)DBNull.Value : txtGhiChu.Text);
+
+                        // Tham số cho Thu hoạch
+                        cmd.Parameters.AddWithValue("@MaNV", cboNhanVien.SelectedValue);
+
+                        // Tham số cho Sản phẩm
+                        cmd.Parameters.AddWithValue("@TenSP", txtTenSP.Text.Trim());
+                        cmd.Parameters.AddWithValue("@DonViSP", txtDonViSP.Text.Trim());
+                        cmd.Parameters.AddWithValue("@GiaBan", decimal.Parse(txtGiaBan.Text));
+
+                        // Thực thi và lấy kết quả
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        if (reader.Read())
+                        {
+                            string result = reader["Result"].ToString();
+                            MessageBox.Show($"✅ {result}",
+                                "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        reader.Close();
                     }
                 }
 
-                MessageBox.Show("✅ Thêm chi tiết thu hoạch thành công!",
-                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                // Reload dữ liệu
                 LoadData();
                 ClearForm();
             }
@@ -242,7 +293,7 @@ namespace QL_TrangTrai
         }
 
         /// <summary>
-        /// Xử lý sự kiện nút Sửa
+        /// Xử lý sự kiện nút Sửa (Chỉ sửa Chi tiết thu hoạch, không sửa sản phẩm)
         /// </summary>
         private void BtnSua_Click(object sender, EventArgs e)
         {
@@ -256,7 +307,8 @@ namespace QL_TrangTrai
             if (!ValidateInput()) return;
 
             DialogResult result = MessageBox.Show(
-                "Bạn có chắc chắn muốn cập nhật thông tin này?",
+                "Bạn có chắc chắn muốn cập nhật thông tin này?\n\n" +
+                "⚠️ Lưu ý: Chỉ cập nhật chi tiết thu hoạch, không ảnh hưởng sản phẩm đã tạo.",
                 "❓ Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result != DialogResult.Yes) return;
@@ -388,14 +440,7 @@ namespace QL_TrangTrai
         /// </summary>
         private void BtnDong_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show(
-                "Bạn có chắc chắn muốn đóng form này?",
-                "❓ Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes)
-            {
-                this.Close();
-            }
+            this.Close();
         }
 
         #endregion
@@ -403,7 +448,7 @@ namespace QL_TrangTrai
         #region Control Events
 
         /// <summary>
-        /// Xử lý sự kiện chọn cây trồng
+        /// Xử lý sự kiện chọn cây trồng - Tự động điền tên sản phẩm
         /// </summary>
         private void CboMaCay_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -417,6 +462,10 @@ namespace QL_TrangTrai
                     txtTenCay.Text = $"{tenCay} ({loaiCay})";
                     txtTenCay.ForeColor = Color.FromArgb(33, 33, 33);
                     txtTenCay.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+
+                    // ✅ TỰ ĐỘNG ĐIỀN TÊN SẢN PHẨM
+                    txtTenSP.Text = $"{tenCay} tươi";
+                    txtDonViSP.Text = "Kg";
                 }
             }
             else
@@ -424,6 +473,10 @@ namespace QL_TrangTrai
                 txtTenCay.Text = "(Tự động hiển thị khi chọn cây)";
                 txtTenCay.ForeColor = Color.FromArgb(100, 100, 100);
                 txtTenCay.Font = new Font("Segoe UI", 10F, FontStyle.Italic);
+
+                // Clear thông tin sản phẩm
+                txtTenSP.Text = "";
+                txtDonViSP.Text = "";
             }
         }
 
@@ -463,6 +516,9 @@ namespace QL_TrangTrai
                     r.DefaultCellStyle.BackColor = Color.White;
                 }
                 row.DefaultCellStyle.BackColor = Color.FromArgb(200, 230, 201);
+
+                // ⚠️ Khi chọn dòng cũ, disable phần sản phẩm (vì đã tạo rồi)
+                SetSanPhamControlsEnabled(false);
             }
         }
 
@@ -490,6 +546,7 @@ namespace QL_TrangTrai
             cboTimTheo.SelectedIndex = 0;
             cboChatLuong.SelectedIndex = 0;
             numSoLuong.Value = 1;
+            txtGiaBan.Text = "0";
         }
 
         /// <summary>
@@ -506,6 +563,15 @@ namespace QL_TrangTrai
             txtTenCay.ForeColor = Color.FromArgb(100, 100, 100);
             txtTenCay.Font = new Font("Segoe UI", 10F, FontStyle.Italic);
 
+            // Clear phần sản phẩm
+            cboNhanVien.SelectedIndex = 0;
+            txtTenSP.Text = "";
+            txtDonViSP.Text = "";
+            txtGiaBan.Text = "0";
+
+            // Enable lại phần sản phẩm
+            SetSanPhamControlsEnabled(true);
+
             // Reset màu DataGridView
             foreach (DataGridViewRow row in dgvChiTiet.Rows)
             {
@@ -516,7 +582,18 @@ namespace QL_TrangTrai
         }
 
         /// <summary>
-        /// Kiểm tra dữ liệu nhập vào
+        /// Bật/Tắt các control nhập sản phẩm
+        /// </summary>
+        private void SetSanPhamControlsEnabled(bool enabled)
+        {
+            cboNhanVien.Enabled = enabled;
+            txtTenSP.Enabled = enabled;
+            txtDonViSP.Enabled = enabled;
+            txtGiaBan.Enabled = enabled;
+        }
+
+        /// <summary>
+        /// Kiểm tra dữ liệu nhập vào (Chi tiết thu hoạch)
         /// </summary>
         private bool ValidateInput()
         {
@@ -544,6 +621,50 @@ namespace QL_TrangTrai
                 MessageBox.Show("⚠️ Vui lòng chọn chất lượng!",
                     "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cboChatLuong.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Kiểm tra dữ liệu sản phẩm - THÊM MỚI
+        /// </summary>
+        private bool ValidateInputSanPham()
+        {
+            // Kiểm tra nhân viên
+            if (cboNhanVien.SelectedIndex <= 0 || cboNhanVien.SelectedValue == null || cboNhanVien.SelectedValue == DBNull.Value)
+            {
+                MessageBox.Show("⚠️ Vui lòng chọn nhân viên thu hoạch!",
+                    "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cboNhanVien.Focus();
+                return false;
+            }
+
+            // Kiểm tra tên sản phẩm
+            if (string.IsNullOrWhiteSpace(txtTenSP.Text))
+            {
+                MessageBox.Show("⚠️ Vui lòng nhập tên sản phẩm!",
+                    "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTenSP.Focus();
+                return false;
+            }
+
+            // Kiểm tra đơn vị
+            if (string.IsNullOrWhiteSpace(txtDonViSP.Text))
+            {
+                MessageBox.Show("⚠️ Vui lòng nhập đơn vị sản phẩm!",
+                    "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtDonViSP.Focus();
+                return false;
+            }
+
+            // Kiểm tra giá bán
+            if (!decimal.TryParse(txtGiaBan.Text, out decimal giaBan) || giaBan < 0)
+            {
+                MessageBox.Show("⚠️ Giá bán phải là số >= 0!",
+                    "Dữ liệu không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtGiaBan.Focus();
                 return false;
             }
 
@@ -680,7 +801,7 @@ namespace QL_TrangTrai
                 lblTongSoLuong.Text = $"📦 Tổng số lượng thu hoạch: {tongSoLuong:N2} kg";
                 lblThongKeLoai.Text = $"📈 Loại A: {loaiA}  |  Loại B: {loaiB}  |  Loại C: {loaiC}";
             }
-            catch (Exception ex)
+            catch
             {
                 lblTongSoLuong.Text = "📦 Tổng số lượng thu hoạch: -- kg";
                 lblThongKeLoai.Text = "📈 Loại A: --  |  Loại B: --  |  Loại C: --";
@@ -697,19 +818,48 @@ namespace QL_TrangTrai
             toolTip1.SetToolTip(numSoLuong, "Nhập số lượng thu hoạch (kg)");
             toolTip1.SetToolTip(cboChatLuong, "Chọn loại chất lượng: A, B hoặc C");
             toolTip1.SetToolTip(txtGhiChu, "Nhập ghi chú nếu có (tối đa 255 ký tự)");
-            toolTip1.SetToolTip(btnThem, "Thêm mới chi tiết thu hoạch");
+            toolTip1.SetToolTip(btnThem, "Thêm thu hoạch + Tự động tạo sản phẩm");
             toolTip1.SetToolTip(btnSua, "Cập nhật thông tin đã chọn");
             toolTip1.SetToolTip(btnXoa, "Xóa bản ghi đã chọn");
             toolTip1.SetToolTip(btnLamMoi, "Làm mới form và tải lại dữ liệu");
             toolTip1.SetToolTip(btnTimKiem, "Tìm kiếm theo tiêu chí đã chọn");
             toolTip1.SetToolTip(txtTimKiem, "Nhập từ khóa tìm kiếm, nhấn Enter để tìm");
+
+            // Tooltip cho phần sản phẩm
+            toolTip1.SetToolTip(cboNhanVien, "Chọn nhân viên thực hiện thu hoạch");
+            toolTip1.SetToolTip(txtTenSP, "Tên sản phẩm sẽ được tạo");
+            toolTip1.SetToolTip(txtDonViSP, "Đơn vị tính của sản phẩm (Kg, Quả...)");
+            toolTip1.SetToolTip(txtGiaBan, "Giá bán sản phẩm (VNĐ)");
         }
 
         #endregion
 
+        #region Event Handlers (Generated by Designer)
+
         private void toolTip1_Popup(object sender, PopupEventArgs e)
         {
-
         }
+
+        private void pnlMain_Paint(object sender, PaintEventArgs e)
+        {
+        }
+
+        private void cboNhanVien_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void txtTenSP_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void txtDonViSP_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void txtGiaBan_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        #endregion
     }
 }

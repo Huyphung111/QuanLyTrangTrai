@@ -224,5 +224,8 @@
   <ItemGroup>
     <None Include="Resources\47123a770ddc430b2dd288744712_tham-quan-trang-trai-bo-sua-vinamilk-organic-nong-trai-dam-chat-chau-au-2.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="DataBaseQLTrangTrai.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

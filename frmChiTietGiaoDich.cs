@@ -17,36 +17,48 @@ namespace QL_TrangTrai
 
         private void frmChiTietGiaoDich_Load(object sender, EventArgs e)
         {
-            LoadChiTiet();
-            LoadComboMaGiaoDich();
+            LoadComboLoaiGD();
             LoadComboSanPham();
+            LoadChiTiet(); // Load tất cả dữ liệu khi mở form
+            TinhTong(); // Tính tổng luôn
         }
 
         // ========== LOAD DỮ LIỆU ==========
-        private void LoadChiTiet(int? maGD = null, int? maSP = null)
+        private void LoadChiTiet(string loaiGD = "Tất cả", int? maSP = null)
         {
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    string query = @"SELECT CTGD.MaChiTiet, CTGD.MaGiaoDich, SP.TenSP, 
+                    // Query lấy tất cả chi tiết giao dịch + loại giao dịch
+                    // Sử dụng CASE để lấy TenSP hoặc TenHangMua tùy theo MaSP có NULL hay không
+                    string query = @"SELECT CTGD.MaChiTiet, CTGD.MaGiaoDich, 
+                                            CASE 
+                                                WHEN CTGD.MaSP IS NOT NULL THEN SP.TenSP 
+                                                ELSE CTGD.TenHangMua 
+                                            END AS TenHang,
+                                            TC.LoaiGiaoDich AS Loai,
+                                            ISNULL(CTGD.DonVi, SP.DonVi) AS DonVi,
                                             CTGD.SoLuong, CTGD.DonGia, CTGD.ThanhTien
                                      FROM ChiTietGiaoDich CTGD
-                                     JOIN SanPham SP ON CTGD.MaSP = SP.MaSP
+                                     LEFT JOIN SanPham SP ON CTGD.MaSP = SP.MaSP
+                                     JOIN TaiChinh TC ON CTGD.MaGiaoDich = TC.MaGiaoDich
                                      WHERE 1=1";
 
-                    if (maGD.HasValue)
-                        query += " AND CTGD.MaGiaoDich = @MaGD";
+                    // Lọc theo loại giao dịch
+                    if (loaiGD == "Thu")
+                        query += " AND TC.LoaiGiaoDich = N'Thu'";
+                    else if (loaiGD == "Chi")
+                        query += " AND TC.LoaiGiaoDich = N'Chi'";
 
+                    // Lọc theo sản phẩm (chỉ áp dụng khi có MaSP)
                     if (maSP.HasValue)
                         query += " AND CTGD.MaSP = @MaSP";
 
-                    query += " ORDER BY CTGD.MaGiaoDich, CTGD.MaChiTiet";
+                    query += " ORDER BY TC.LoaiGiaoDich DESC, CTGD.MaGiaoDich, CTGD.MaChiTiet";
 
                     SqlDataAdapter da = new SqlDataAdapter(query, conn);
 
-                    if (maGD.HasValue)
-                        da.SelectCommand.Parameters.AddWithValue("@MaGD", maGD.Value);
                     if (maSP.HasValue)
                         da.SelectCommand.Parameters.AddWithValue("@MaSP", maSP.Value);
 
@@ -60,7 +72,9 @@ namespace QL_TrangTrai
                     {
                         dgvChiTiet.Columns["MaChiTiet"].HeaderText = "Mã CT";
                         dgvChiTiet.Columns["MaGiaoDich"].HeaderText = "Mã GD";
-                        dgvChiTiet.Columns["TenSP"].HeaderText = "Tên sản phẩm";
+                        dgvChiTiet.Columns["TenHang"].HeaderText = "Tên hàng/SP";
+                        dgvChiTiet.Columns["Loai"].HeaderText = "Loại";
+                        dgvChiTiet.Columns["DonVi"].HeaderText = "ĐVT";
                         dgvChiTiet.Columns["SoLuong"].HeaderText = "Số lượng";
                         dgvChiTiet.Columns["DonGia"].HeaderText = "Đơn giá";
                         dgvChiTiet.Columns["ThanhTien"].HeaderText = "Thành tiền";
@@ -75,9 +89,6 @@ namespace QL_TrangTrai
 
                     // Cập nhật số dòng
                     lblSoDong.Text = dt.Rows.Count.ToString();
-
-                    // Reset label tổng tiền
-                    lblTongTien.Text = "";
                 }
             }
             catch (Exception ex)
@@ -86,37 +97,14 @@ namespace QL_TrangTrai
             }
         }
 
-        private void LoadComboMaGiaoDich()
+        private void LoadComboLoaiGD()
         {
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    string query = @"SELECT DISTINCT CTGD.MaGiaoDich, 
-                                            CONCAT('GD ', CTGD.MaGiaoDich, ' - ', TC.LoaiGiaoDich, ' - ', FORMAT(TC.NgayGiaoDich, 'dd/MM/yyyy')) AS HienThi
-                                     FROM ChiTietGiaoDich CTGD
-                                     JOIN TaiChinh TC ON CTGD.MaGiaoDich = TC.MaGiaoDich
-                                     ORDER BY CTGD.MaGiaoDich";
-
-                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-
-                    // Thêm dòng "Tất cả"
-                    DataRow dr = dt.NewRow();
-                    dr["MaGiaoDich"] = DBNull.Value;
-                    dr["HienThi"] = "(Tất cả)";
-                    dt.Rows.InsertAt(dr, 0);
-
-                    cboMaGiaoDich.DataSource = dt;
-                    cboMaGiaoDich.DisplayMember = "HienThi";
-                    cboMaGiaoDich.ValueMember = "MaGiaoDich";
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi load mã giao dịch: " + ex.Message);
-            }
+            // Thêm các lựa chọn lọc theo loại giao dịch
+            cboMaGiaoDich.Items.Clear();
+            cboMaGiaoDich.Items.Add("Tất cả");
+            cboMaGiaoDich.Items.Add("Thu (Bán hàng)");
+            cboMaGiaoDich.Items.Add("Chi (Mua hàng)");
+            cboMaGiaoDich.SelectedIndex = 0;
         }
 
         private void LoadComboSanPham()
@@ -151,30 +139,8 @@ namespace QL_TrangTrai
             }
         }
 
-        // ========== SỰ KIỆN ==========
-        private void btnLoc_Click(object sender, EventArgs e)
-        {
-            int? maGD = null;
-            int? maSP = null;
-
-            if (cboMaGiaoDich.SelectedValue != null && cboMaGiaoDich.SelectedValue != DBNull.Value)
-                maGD = Convert.ToInt32(cboMaGiaoDich.SelectedValue);
-
-            if (cboSanPham.SelectedValue != null && cboSanPham.SelectedValue != DBNull.Value)
-                maSP = Convert.ToInt32(cboSanPham.SelectedValue);
-
-            LoadChiTiet(maGD, maSP);
-        }
-
-        private void btnLamMoi_Click(object sender, EventArgs e)
-        {
-            cboMaGiaoDich.SelectedIndex = 0;
-            cboSanPham.SelectedIndex = 0;
-            LoadChiTiet();
-            lblTongTien.Text = "";
-        }
-
-        private void btnTinhTong_Click(object sender, EventArgs e)
+        // ========== TÍNH TỔNG ==========
+        private void TinhTong()
         {
             try
             {
@@ -192,8 +158,45 @@ namespace QL_TrangTrai
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi tính tổng: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                lblTongTien.Text = "0 đ";
             }
+        }
+
+        // ========== SỰ KIỆN ==========
+        private void btnLoc_Click(object sender, EventArgs e)
+        {
+            // Lấy loại giao dịch được chọn
+            string loaiGD = "Tất cả";
+            string selected = cboMaGiaoDich.SelectedItem.ToString();
+
+            if (selected.Contains("Thu"))
+                loaiGD = "Thu";
+            else if (selected.Contains("Chi"))
+                loaiGD = "Chi";
+
+            // Lấy sản phẩm được chọn
+            int? maSP = null;
+            if (cboSanPham.SelectedValue != null && cboSanPham.SelectedValue != DBNull.Value)
+                maSP = Convert.ToInt32(cboSanPham.SelectedValue);
+
+            // Load dữ liệu theo bộ lọc
+            LoadChiTiet(loaiGD, maSP);
+
+            // Tính tổng sau khi lọc
+            TinhTong();
+        }
+
+        private void btnLamMoi_Click(object sender, EventArgs e)
+        {
+            cboMaGiaoDich.SelectedIndex = 0;
+            cboSanPham.SelectedIndex = 0;
+            LoadChiTiet();
+            TinhTong();
+        }
+
+        private void btnTinhTong_Click(object sender, EventArgs e)
+        {
+            TinhTong();
         }
 
         private void btnDong_Click(object sender, EventArgs e)

@@ -1,4 +1,5 @@
 ﻿
+using QL_TrangTrai;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -880,6 +881,44 @@ namespace Đồ_án
             {
                 if (conn.State == ConnectionState.Open)
                     conn.Close();
+            }
+        }
+
+        private void toolStrip_ban_Click(object sender, EventArgs e)
+        {
+            // Kiểm tra đã chọn dòng trong DataGridView chưa
+            if (dgv_QLSanPham.CurrentRow == null || dgv_QLSanPham.CurrentRow.Index < 0)
+            {
+                MessageBox.Show("⚠️ Vui lòng chọn sản phẩm cần bán!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DataGridViewRow row = dgv_QLSanPham.CurrentRow;
+
+            // Lấy dữ liệu an toàn từ DataGridView
+            int maSP = row.Cells["MaSP"].Value != DBNull.Value ? Convert.ToInt32(row.Cells["MaSP"].Value) : 0;
+            string tenSP = row.Cells["TenSP"].Value != DBNull.Value ? row.Cells["TenSP"].Value.ToString() : "";
+            string donVi = row.Cells["DonVi"].Value != DBNull.Value ? row.Cells["DonVi"].Value.ToString() : "";
+            int tonKho = row.Cells["SoLuongTon"].Value != DBNull.Value ? Convert.ToInt32(row.Cells["SoLuongTon"].Value) : 0;
+            decimal giaBan = row.Cells["GiaBan"].Value != DBNull.Value ? Convert.ToDecimal(row.Cells["GiaBan"].Value) : 0;
+
+            // Kiểm tra tồn kho
+            if (tonKho <= 0)
+            {
+                MessageBox.Show("⚠️ Sản phẩm này đã hết hàng!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Mở form bán hàng
+            frmBanHang frmBan = new frmBanHang(maSP, tenSP, giaBan, tonKho, donVi);
+            DialogResult result = frmBan.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                LoadSanPham();
+                ClearForm();
             }
         }
     }

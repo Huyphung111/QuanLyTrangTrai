@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace QL_TrangTrai
 {
@@ -11,12 +10,13 @@ namespace QL_TrangTrai
     {
         #region Fields
 
-        // Connection string
+        // Connection string - điều chỉnh theo cấu hình của bạn
         private readonly string connectionString = @"Data Source=HUYNE;Initial Catalog=QL_TrangTraiv13;Integrated Security=True";
 
         // DataTable để lưu trữ dữ liệu
         private DataTable dtChiTiet;
         private DataTable dtVatNuoi;
+        private DataTable dtNhanVien;
 
         // Biến lưu trạng thái đang thêm mới hay sửa
         private bool isAddNew = false;
@@ -42,6 +42,7 @@ namespace QL_TrangTrai
 
             // Load dữ liệu
             LoadVatNuoi();
+            LoadNhanVien();
             LoadData();
 
             // Thiết lập ban đầu
@@ -68,6 +69,7 @@ namespace QL_TrangTrai
 
             // ComboBox events
             cboMaVat.SelectedIndexChanged += CboMaVat_SelectedIndexChanged;
+            cboLoaiThuHoach.SelectedIndexChanged += CboLoaiThuHoach_SelectedIndexChanged;
 
             // DataGridView events
             dgvChiTiet.CellClick += DgvChiTiet_CellClick;
@@ -90,7 +92,7 @@ namespace QL_TrangTrai
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT MaVat, TenVat, LoaiVat, TinhTrangSucKhoe FROM VatNuoi ORDER BY TenVat";
+                    string query = "SELECT MaVat, TenVat, LoaiVat, SoLuong, TinhTrangSucKhoe FROM VatNuoi ORDER BY TenVat";
                     SqlDataAdapter da = new SqlDataAdapter(query, conn);
                     dtVatNuoi = new DataTable();
                     da.Fill(dtVatNuoi);
@@ -115,6 +117,45 @@ namespace QL_TrangTrai
         }
 
         /// <summary>
+        /// Load danh sách nhân viên vào ComboBox
+        /// </summary>
+        private void LoadNhanVien()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT MaNV, HoTen FROM NhanVien ORDER BY HoTen";
+                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                    dtNhanVien = new DataTable();
+                    da.Fill(dtNhanVien);
+
+                    // Thêm dòng trống đầu tiên
+                    DataRow emptyRow = dtNhanVien.NewRow();
+                    emptyRow["MaNV"] = DBNull.Value;
+                    emptyRow["HoTen"] = "-- Chọn nhân viên --";
+                    dtNhanVien.Rows.InsertAt(emptyRow, 0);
+
+                    // Kiểm tra xem có ComboBox nhân viên không (nếu có trong form)
+                    if (this.Controls.Find("cboNhanVien", true).Length > 0)
+                    {
+                        ComboBox cboNV = (ComboBox)this.Controls.Find("cboNhanVien", true)[0];
+                        cboNV.DataSource = dtNhanVien;
+                        cboNV.DisplayMember = "HoTen";
+                        cboNV.ValueMember = "MaNV";
+                        cboNV.SelectedIndex = 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Không hiển thị lỗi nếu không có ComboBox nhân viên
+                System.Diagnostics.Debug.WriteLine($"LoadNhanVien: {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// Load dữ liệu chi tiết thu hoạch vật nuôi
         /// </summary>
         private void LoadData()
@@ -130,6 +171,7 @@ namespace QL_TrangTrai
                             ct.MaVat,
                             v.TenVat,
                             v.LoaiVat,
+                            v.SoLuong AS SoLuongConLai,
                             ct.LoaiThuHoach,
                             ct.SoLuong,
                             ct.CanNang,
@@ -167,33 +209,57 @@ namespace QL_TrangTrai
             if (dgvChiTiet.Columns.Count > 0)
             {
                 // Đặt tiêu đề cột
-                dgvChiTiet.Columns["MaChiTietVN"].HeaderText = "Mã Chi Tiết";
-                dgvChiTiet.Columns["MaVat"].HeaderText = "Mã Vật";
-                dgvChiTiet.Columns["TenVat"].HeaderText = "Tên Vật Nuôi";
-                dgvChiTiet.Columns["LoaiVat"].HeaderText = "Loại Vật";
-                dgvChiTiet.Columns["LoaiThuHoach"].HeaderText = "Loại Thu Hoạch";
-                dgvChiTiet.Columns["SoLuong"].HeaderText = "Số Lượng";
-                dgvChiTiet.Columns["CanNang"].HeaderText = "Cân Nặng (kg)";
-                dgvChiTiet.Columns["GhiChu"].HeaderText = "Ghi Chú";
+                if (dgvChiTiet.Columns["MaChiTietVN"] != null)
+                    dgvChiTiet.Columns["MaChiTietVN"].HeaderText = "Mã Chi Tiết";
+                if (dgvChiTiet.Columns["MaVat"] != null)
+                    dgvChiTiet.Columns["MaVat"].HeaderText = "Mã Vật";
+                if (dgvChiTiet.Columns["TenVat"] != null)
+                    dgvChiTiet.Columns["TenVat"].HeaderText = "Tên Vật Nuôi";
+                if (dgvChiTiet.Columns["LoaiVat"] != null)
+                    dgvChiTiet.Columns["LoaiVat"].HeaderText = "Loại Vật";
+                if (dgvChiTiet.Columns["SoLuongConLai"] != null)
+                    dgvChiTiet.Columns["SoLuongConLai"].HeaderText = "SL Còn Lại";
+                if (dgvChiTiet.Columns["LoaiThuHoach"] != null)
+                    dgvChiTiet.Columns["LoaiThuHoach"].HeaderText = "Loại Thu Hoạch";
+                if (dgvChiTiet.Columns["SoLuong"] != null)
+                    dgvChiTiet.Columns["SoLuong"].HeaderText = "Số Lượng TH";
+                if (dgvChiTiet.Columns["CanNang"] != null)
+                    dgvChiTiet.Columns["CanNang"].HeaderText = "Cân Nặng (kg)";
+                if (dgvChiTiet.Columns["GhiChu"] != null)
+                    dgvChiTiet.Columns["GhiChu"].HeaderText = "Ghi Chú";
 
-                // Căn chỉnh
-                dgvChiTiet.Columns["MaChiTietVN"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dgvChiTiet.Columns["MaVat"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dgvChiTiet.Columns["SoLuong"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgvChiTiet.Columns["SoLuong"].DefaultCellStyle.Format = "N2";
-                dgvChiTiet.Columns["CanNang"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgvChiTiet.Columns["CanNang"].DefaultCellStyle.Format = "N2";
-                dgvChiTiet.Columns["LoaiThuHoach"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-                // Độ rộng cột
-                dgvChiTiet.Columns["MaChiTietVN"].Width = 85;
-                dgvChiTiet.Columns["MaVat"].Width = 65;
-                dgvChiTiet.Columns["TenVat"].Width = 110;
-                dgvChiTiet.Columns["LoaiVat"].Width = 90;
-                dgvChiTiet.Columns["LoaiThuHoach"].Width = 100;
-                dgvChiTiet.Columns["SoLuong"].Width = 85;
-                dgvChiTiet.Columns["CanNang"].Width = 100;
-                dgvChiTiet.Columns["GhiChu"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                // Căn chỉnh và format
+                if (dgvChiTiet.Columns["MaChiTietVN"] != null)
+                {
+                    dgvChiTiet.Columns["MaChiTietVN"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    dgvChiTiet.Columns["MaChiTietVN"].Width = 85;
+                }
+                if (dgvChiTiet.Columns["MaVat"] != null)
+                {
+                    dgvChiTiet.Columns["MaVat"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    dgvChiTiet.Columns["MaVat"].Width = 65;
+                }
+                if (dgvChiTiet.Columns["SoLuong"] != null)
+                {
+                    dgvChiTiet.Columns["SoLuong"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    dgvChiTiet.Columns["SoLuong"].DefaultCellStyle.Format = "N2";
+                    dgvChiTiet.Columns["SoLuong"].Width = 85;
+                }
+                if (dgvChiTiet.Columns["CanNang"] != null)
+                {
+                    dgvChiTiet.Columns["CanNang"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    dgvChiTiet.Columns["CanNang"].DefaultCellStyle.Format = "N2";
+                    dgvChiTiet.Columns["CanNang"].Width = 100;
+                }
+                if (dgvChiTiet.Columns["LoaiThuHoach"] != null)
+                {
+                    dgvChiTiet.Columns["LoaiThuHoach"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    dgvChiTiet.Columns["LoaiThuHoach"].Width = 100;
+                }
+                if (dgvChiTiet.Columns["GhiChu"] != null)
+                {
+                    dgvChiTiet.Columns["GhiChu"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
             }
         }
 
@@ -202,11 +268,41 @@ namespace QL_TrangTrai
         #region Button Events
 
         /// <summary>
-        /// Xử lý sự kiện nút Thêm
+        /// Xử lý sự kiện nút Thêm - SỬ DỤNG STORED PROCEDURE sp_ThemThuHoachVatNuoi
         /// </summary>
         private void BtnThem_Click(object sender, EventArgs e)
         {
             if (!ValidateInput()) return;
+
+            // Kiểm tra nếu là "Giết mổ" thì cảnh báo sẽ trừ số lượng
+            string loaiThuHoach = cboLoaiThuHoach.Text;
+            if (loaiThuHoach == "Giết mổ")
+            {
+                // Lấy số lượng hiện tại của vật nuôi
+                int soLuongHienTai = GetSoLuongVatNuoi((int)cboMaVat.SelectedValue);
+                decimal soLuongThuHoach = numSoLuong.Value;
+
+                if (soLuongThuHoach > soLuongHienTai)
+                {
+                    MessageBox.Show(
+                        $"⚠️ Số lượng giết mổ ({soLuongThuHoach:N0}) vượt quá số lượng hiện có ({soLuongHienTai})!\n\n" +
+                        "Vui lòng nhập số lượng hợp lệ.",
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    numSoLuong.Focus();
+                    return;
+                }
+
+                DialogResult confirm = MessageBox.Show(
+                    $"🔪 Loại thu hoạch: GIẾT MỔ\n\n" +
+                    $"Số lượng hiện có: {soLuongHienTai}\n" +
+                    $"Số lượng giết mổ: {soLuongThuHoach:N0}\n" +
+                    $"Số lượng còn lại: {soLuongHienTai - soLuongThuHoach:N0}\n\n" +
+                    "⚠️ Số lượng vật nuôi sẽ bị TRỪ sau khi thêm!\n\n" +
+                    "Bạn có chắc chắn muốn tiếp tục?",
+                    "❓ Xác nhận giết mổ", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (confirm != DialogResult.Yes) return;
+            }
 
             try
             {
@@ -214,36 +310,80 @@ namespace QL_TrangTrai
                 {
                     conn.Open();
 
-                    // Lấy mã chi tiết mới
-                    int newId = GetNextId(conn);
-
-                    string query = @"
-                        INSERT INTO ChiTietThuHoachVatNuoi (MaChiTietVN, MaVat, LoaiThuHoach, SoLuong, CanNang, GhiChu)
-                        VALUES (@MaChiTietVN, @MaVat, @LoaiThuHoach, @SoLuong, @CanNang, @GhiChu)";
-
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    // Lấy MaNV (mặc định là 3 nếu không có ComboBox nhân viên)
+                    int maNV = 3; // Mặc định
+                    if (this.Controls.Find("cboNhanVien", true).Length > 0)
                     {
-                        cmd.Parameters.AddWithValue("@MaChiTietVN", newId);
+                        ComboBox cboNV = (ComboBox)this.Controls.Find("cboNhanVien", true)[0];
+                        if (cboNV.SelectedValue != null && cboNV.SelectedValue != DBNull.Value)
+                        {
+                            maNV = (int)cboNV.SelectedValue;
+                        }
+                    }
+
+                    // GỌI STORED PROCEDURE sp_ThemThuHoachVatNuoi
+                    using (SqlCommand cmd = new SqlCommand("sp_ThemThuHoachVatNuoi", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
                         cmd.Parameters.AddWithValue("@MaVat", cboMaVat.SelectedValue);
-                        cmd.Parameters.AddWithValue("@LoaiThuHoach", cboLoaiThuHoach.Text);
+                        cmd.Parameters.AddWithValue("@LoaiThuHoach", loaiThuHoach);
                         cmd.Parameters.AddWithValue("@SoLuong", numSoLuong.Value);
                         cmd.Parameters.AddWithValue("@CanNang", numCanNang.Value);
-                        cmd.Parameters.AddWithValue("@GhiChu", string.IsNullOrEmpty(txtGhiChu.Text) ? (object)DBNull.Value : txtGhiChu.Text);
+                        cmd.Parameters.AddWithValue("@MaNV", maNV);
+                        cmd.Parameters.AddWithValue("@GhiChu",
+                            string.IsNullOrEmpty(txtGhiChu.Text) ? (object)DBNull.Value : txtGhiChu.Text);
 
                         cmd.ExecuteNonQuery();
                     }
                 }
 
-                MessageBox.Show("✅ Thêm chi tiết thu hoạch vật nuôi thành công!",
-                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string thongBao = "✅ Thêm thu hoạch vật nuôi thành công!\n\n";
+                thongBao += $"• Đã thêm vào bảng ChiTietThuHoachVatNuoi\n";
+                thongBao += $"• Đã thêm vào bảng ThuHoach\n";
+                thongBao += $"• Đã thêm vào bảng SanPham\n";
 
+                if (loaiThuHoach == "Giết mổ")
+                {
+                    thongBao += $"• Đã TRỪ {numSoLuong.Value:N0} trong bảng VatNuoi";
+                }
+
+                MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Reload dữ liệu
                 LoadData();
+                LoadVatNuoi(); // Reload để cập nhật số lượng mới
                 ClearForm();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"❌ Lỗi khi thêm dữ liệu:\n{ex.Message}",
                     "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Lấy số lượng hiện tại của vật nuôi
+        /// </summary>
+        private int GetSoLuongVatNuoi(int maVat)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT SoLuong FROM VatNuoi WHERE MaVat = @MaVat";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@MaVat", maVat);
+                        object result = cmd.ExecuteScalar();
+                        return result != null ? Convert.ToInt32(result) : 0;
+                    }
+                }
+            }
+            catch
+            {
+                return 0;
             }
         }
 
@@ -262,7 +402,9 @@ namespace QL_TrangTrai
             if (!ValidateInput()) return;
 
             DialogResult result = MessageBox.Show(
-                "Bạn có chắc chắn muốn cập nhật thông tin này?",
+                "⚠️ Lưu ý: Chỉ cập nhật thông tin trong bảng ChiTietThuHoachVatNuoi.\n" +
+                "Số lượng vật nuôi sẽ KHÔNG được điều chỉnh lại.\n\n" +
+                "Bạn có chắc chắn muốn cập nhật?",
                 "❓ Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result != DialogResult.Yes) return;
@@ -289,7 +431,8 @@ namespace QL_TrangTrai
                         cmd.Parameters.AddWithValue("@LoaiThuHoach", cboLoaiThuHoach.Text);
                         cmd.Parameters.AddWithValue("@SoLuong", numSoLuong.Value);
                         cmd.Parameters.AddWithValue("@CanNang", numCanNang.Value);
-                        cmd.Parameters.AddWithValue("@GhiChu", string.IsNullOrEmpty(txtGhiChu.Text) ? (object)DBNull.Value : txtGhiChu.Text);
+                        cmd.Parameters.AddWithValue("@GhiChu",
+                            string.IsNullOrEmpty(txtGhiChu.Text) ? (object)DBNull.Value : txtGhiChu.Text);
 
                         cmd.ExecuteNonQuery();
                     }
@@ -322,7 +465,9 @@ namespace QL_TrangTrai
 
             DialogResult result = MessageBox.Show(
                 $"Bạn có chắc chắn muốn xóa chi tiết thu hoạch có mã '{txtMaChiTiet.Text}'?\n\n" +
-                "⚠️ Lưu ý: Hành động này không thể hoàn tác!",
+                "⚠️ Lưu ý: \n" +
+                "• Hành động này không thể hoàn tác!\n" +
+                "• Số lượng vật nuôi sẽ KHÔNG được hoàn lại!",
                 "❓ Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (result != DialogResult.Yes) return;
@@ -379,6 +524,7 @@ namespace QL_TrangTrai
         {
             ClearForm();
             LoadData();
+            LoadVatNuoi(); // Reload số lượng vật nuôi mới nhất
             txtTimKiem.Clear();
             cboTimTheo.SelectedIndex = 0;
         }
@@ -415,7 +561,7 @@ namespace QL_TrangTrai
         /// </summary>
         private void CboMaVat_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cboMaVat.SelectedIndex > 0 && cboMaVat.SelectedValue != null)
+            if (cboMaVat.SelectedIndex > 0 && cboMaVat.SelectedValue != null && cboMaVat.SelectedValue != DBNull.Value)
             {
                 DataRowView row = cboMaVat.SelectedItem as DataRowView;
                 if (row != null)
@@ -423,7 +569,9 @@ namespace QL_TrangTrai
                     string tenVat = row["TenVat"]?.ToString() ?? "";
                     string loaiVat = row["LoaiVat"]?.ToString() ?? "";
                     string tinhTrang = row["TinhTrangSucKhoe"]?.ToString() ?? "";
-                    txtTenVat.Text = $"{tenVat} - {loaiVat} ({tinhTrang})";
+                    int soLuong = row["SoLuong"] != DBNull.Value ? Convert.ToInt32(row["SoLuong"]) : 0;
+
+                    txtTenVat.Text = $"{tenVat} - {loaiVat} | SL: {soLuong} ({tinhTrang})";
                     txtTenVat.ForeColor = Color.FromArgb(33, 33, 33);
                     txtTenVat.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
                 }
@@ -433,6 +581,23 @@ namespace QL_TrangTrai
                 txtTenVat.Text = "(Tự động hiển thị khi chọn vật nuôi)";
                 txtTenVat.ForeColor = Color.FromArgb(100, 100, 100);
                 txtTenVat.Font = new Font("Segoe UI", 10F, FontStyle.Italic);
+            }
+        }
+
+        /// <summary>
+        /// Xử lý sự kiện thay đổi loại thu hoạch
+        /// </summary>
+        private void CboLoaiThuHoach_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Hiển thị cảnh báo nếu chọn "Giết mổ"
+            if (cboLoaiThuHoach.Text == "Giết mổ")
+            {
+                // Có thể thay đổi màu hoặc hiển thị warning
+                cboLoaiThuHoach.BackColor = Color.FromArgb(255, 235, 235);
+            }
+            else
+            {
+                cboLoaiThuHoach.BackColor = Color.White;
             }
         }
 
@@ -455,7 +620,8 @@ namespace QL_TrangTrai
 
                 // Loại thu hoạch
                 string loaiThuHoach = row.Cells["LoaiThuHoach"].Value?.ToString() ?? "";
-                cboLoaiThuHoach.SelectedIndex = cboLoaiThuHoach.Items.IndexOf(loaiThuHoach);
+                int idx = cboLoaiThuHoach.Items.IndexOf(loaiThuHoach);
+                if (idx >= 0) cboLoaiThuHoach.SelectedIndex = idx;
 
                 // Số lượng
                 if (decimal.TryParse(row.Cells["SoLuong"].Value?.ToString(), out decimal soLuong))
@@ -502,8 +668,10 @@ namespace QL_TrangTrai
         /// </summary>
         private void SetDefaultValues()
         {
-            cboTimTheo.SelectedIndex = 0;
-            cboLoaiThuHoach.SelectedIndex = 0;
+            if (cboTimTheo.Items.Count > 0)
+                cboTimTheo.SelectedIndex = 0;
+            if (cboLoaiThuHoach.Items.Count > 0)
+                cboLoaiThuHoach.SelectedIndex = 0;
             numSoLuong.Value = 1;
             numCanNang.Value = 0;
         }
@@ -515,7 +683,9 @@ namespace QL_TrangTrai
         {
             txtMaChiTiet.Clear();
             cboMaVat.SelectedIndex = 0;
-            cboLoaiThuHoach.SelectedIndex = 0;
+            if (cboLoaiThuHoach.Items.Count > 0)
+                cboLoaiThuHoach.SelectedIndex = 0;
+            cboLoaiThuHoach.BackColor = Color.White;
             numSoLuong.Value = 1;
             numCanNang.Value = 0;
             txtGhiChu.Clear();
@@ -564,7 +734,7 @@ namespace QL_TrangTrai
                 return false;
             }
 
-            // Kiểm tra cân nặng (cho phép = 0 theo database)
+            // Kiểm tra cân nặng
             if (numCanNang.Value < 0)
             {
                 MessageBox.Show("⚠️ Cân nặng không được âm!",
@@ -574,18 +744,6 @@ namespace QL_TrangTrai
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Lấy mã chi tiết tiếp theo
-        /// </summary>
-        private int GetNextId(SqlConnection conn)
-        {
-            string query = "SELECT ISNULL(MAX(MaChiTietVN), 0) + 1 FROM ChiTietThuHoachVatNuoi";
-            using (SqlCommand cmd = new SqlCommand(query, conn))
-            {
-                return (int)cmd.ExecuteScalar();
-            }
         }
 
         /// <summary>
@@ -628,6 +786,7 @@ namespace QL_TrangTrai
                             ct.MaVat,
                             v.TenVat,
                             v.LoaiVat,
+                            v.SoLuong AS SoLuongConLai,
                             ct.LoaiThuHoach,
                             ct.SoLuong,
                             ct.CanNang,
@@ -678,7 +837,6 @@ namespace QL_TrangTrai
 
             try
             {
-                // Tính tổng
                 decimal tongSoLuong = 0;
                 decimal tongCanNang = 0;
                 int gietMo = 0, trung = 0, sua = 0, khac = 0;
@@ -686,37 +844,25 @@ namespace QL_TrangTrai
                 foreach (DataRow row in dtChiTiet.Rows)
                 {
                     if (row["SoLuong"] != DBNull.Value)
-                    {
                         tongSoLuong += Convert.ToDecimal(row["SoLuong"]);
-                    }
 
                     if (row["CanNang"] != DBNull.Value)
-                    {
                         tongCanNang += Convert.ToDecimal(row["CanNang"]);
-                    }
 
                     string loaiThuHoach = row["LoaiThuHoach"]?.ToString() ?? "";
                     switch (loaiThuHoach)
                     {
-                        case "Giết mổ":
-                            gietMo++;
-                            break;
-                        case "Trứng":
-                            trung++;
-                            break;
-                        case "Sữa":
-                            sua++;
-                            break;
-                        case "Khác":
-                            khac++;
-                            break;
+                        case "Giết mổ": gietMo++; break;
+                        case "Trứng": trung++; break;
+                        case "Sữa": sua++; break;
+                        case "Khác": khac++; break;
                     }
                 }
 
                 lblTongSoLuong.Text = $"📦 Tổng số lượng: {tongSoLuong:N2}  |  Cân nặng: {tongCanNang:N2} kg";
                 lblThongKeLoai.Text = $"📈 Giết mổ: {gietMo}  |  Trứng: {trung}  |  Sữa: {sua}  |  Khác: {khac}";
             }
-            catch (Exception ex)
+            catch
             {
                 lblTongSoLuong.Text = "📦 Tổng số lượng: --  |  Cân nặng: -- kg";
                 lblThongKeLoai.Text = "📈 Giết mổ: --  |  Trứng: --  |  Sữa: --  |  Khác: --";
@@ -728,25 +874,26 @@ namespace QL_TrangTrai
         /// </summary>
         private void SetupToolTips()
         {
-            toolTip1.SetToolTip(txtMaChiTiet, "Mã chi tiết được tự động tạo");
-            toolTip1.SetToolTip(cboMaVat, "Chọn vật nuôi cần thu hoạch");
-            toolTip1.SetToolTip(cboLoaiThuHoach, "Chọn loại thu hoạch: Giết mổ, Trứng, Sữa, Khác");
-            toolTip1.SetToolTip(numSoLuong, "Nhập số lượng thu hoạch");
-            toolTip1.SetToolTip(numCanNang, "Nhập cân nặng (kg)");
-            toolTip1.SetToolTip(txtGhiChu, "Nhập ghi chú nếu có (tối đa 255 ký tự)");
-            toolTip1.SetToolTip(btnThem, "Thêm mới chi tiết thu hoạch");
-            toolTip1.SetToolTip(btnSua, "Cập nhật thông tin đã chọn");
-            toolTip1.SetToolTip(btnXoa, "Xóa bản ghi đã chọn");
-            toolTip1.SetToolTip(btnLamMoi, "Làm mới form và tải lại dữ liệu");
-            toolTip1.SetToolTip(btnTimKiem, "Tìm kiếm theo tiêu chí đã chọn");
-            toolTip1.SetToolTip(txtTimKiem, "Nhập từ khóa tìm kiếm, nhấn Enter để tìm");
+            ToolTip toolTip = new ToolTip();
+            toolTip.SetToolTip(txtMaChiTiet, "Mã chi tiết được tự động tạo");
+            toolTip.SetToolTip(cboMaVat, "Chọn vật nuôi cần thu hoạch");
+            toolTip.SetToolTip(cboLoaiThuHoach, "Chọn loại thu hoạch: Giết mổ (sẽ trừ SL), Trứng, Sữa, Khác");
+            toolTip.SetToolTip(numSoLuong, "Nhập số lượng thu hoạch");
+            toolTip.SetToolTip(numCanNang, "Nhập cân nặng (kg)");
+            toolTip.SetToolTip(txtGhiChu, "Nhập ghi chú nếu có (tối đa 255 ký tự)");
+            toolTip.SetToolTip(btnThem, "Thêm mới - Sử dụng Stored Procedure sp_ThemThuHoachVatNuoi");
+            toolTip.SetToolTip(btnSua, "Cập nhật thông tin đã chọn");
+            toolTip.SetToolTip(btnXoa, "Xóa bản ghi đã chọn");
+            toolTip.SetToolTip(btnLamMoi, "Làm mới form và tải lại dữ liệu");
+            toolTip.SetToolTip(btnTimKiem, "Tìm kiếm theo tiêu chí đã chọn");
+            toolTip.SetToolTip(txtTimKiem, "Nhập từ khóa tìm kiếm, nhấn Enter để tìm");
         }
 
         #endregion
 
         private void lblSoLuong_Click(object sender, EventArgs e)
         {
-
+            // Empty event handler
         }
     }
 }

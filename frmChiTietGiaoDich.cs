@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Windows.Forms;
 
-namespace GiaoDienDangNhap
+namespace QL_TrangTrai
 {
     public partial class frmChiTietGiaoDich : Form
     {
-        string connectionString = @"Data Source=HUYNE;Initial Catalog=QL_TrangTraiv13;Integrated Security=True;TrustServerCertificate=True";
-
-        SqlConnection conn;
-        DataTable dtTaiChinh;
-        DataTable dtChiTiet;
-        bool isAdding = false;
+        private string connectionString = "Data Source=HUYNE;Initial Catalog=QL_TrangTraiv13;Integrated Security=True";
 
         public frmChiTietGiaoDich()
         {
@@ -21,207 +17,186 @@ namespace GiaoDienDangNhap
 
         private void frmChiTietGiaoDich_Load(object sender, EventArgs e)
         {
-            conn = new SqlConnection(connectionString);
-            LoadSanPham();
-            LoadTaiChinh();
+            LoadChiTiet();
+            LoadComboMaGiaoDich();
+            LoadComboSanPham();
         }
 
-        private void LoadTaiChinh()
+        // ========== LOAD DỮ LIỆU ==========
+        private void LoadChiTiet(int? maGD = null, int? maSP = null)
         {
-            string sql = "SELECT * FROM TaiChinh ORDER BY MaGiaoDich";
-            SqlDataAdapter da = new SqlDataAdapter(sql, conn);
-            dtTaiChinh = new DataTable();
-            da.Fill(dtTaiChinh);
-            dgv_TaiChinh.DataSource = dtTaiChinh;
-        }
-
-        private void LoadSanPham()
-        {
-            string sql = "SELECT MaSP, TenSP FROM SanPham";
-            SqlDataAdapter da = new SqlDataAdapter(sql, conn);
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-
-            cbo_SanPham.DataSource = dt;
-            cbo_SanPham.DisplayMember = "TenSP";
-            cbo_SanPham.ValueMember = "MaSP";
-        }
-
-        private void LoadChiTietByMaGD(int maGD)
-        {
-            string sql = "SELECT * FROM ChiTietGiaoDich WHERE MaGiaoDich = @MaGD";
-            SqlDataAdapter da = new SqlDataAdapter(sql, conn);
-            da.SelectCommand.Parameters.AddWithValue("@MaGD", maGD);
-            dtChiTiet = new DataTable();
-            da.Fill(dtChiTiet);
-            dgv_ChiTiet.DataSource = dtChiTiet;
-        }
-
-        // ================== GRID TÀI CHÍNH ==================
-        private void dgv_TaiChinh_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0 && dgv_TaiChinh.Rows.Count > 0)
-            {
-                DataGridViewRow row = dgv_TaiChinh.Rows[e.RowIndex];
-                int maGD = Convert.ToInt32(row.Cells["MaGiaoDich"].Value);
-                txt_MaGiaoDich.Text = maGD.ToString();
-
-                // load chi tiết cho mã giao dịch này
-                LoadChiTietByMaGD(maGD);
-                ClearChiTietInput();
-            }
-        }
-
-        // ================== GRID CHI TIẾT ==================
-        private void dgv_ChiTiet_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0 && dgv_ChiTiet.Rows.Count > 0)
-            {
-                isAdding = false;
-                DataGridViewRow row = dgv_ChiTiet.Rows[e.RowIndex];
-
-                txt_MaChiTiet.Text = row.Cells["MaChiTiet"].Value.ToString();
-                txt_MaGiaoDich.Text = row.Cells["MaGiaoDich"].Value.ToString();
-                cbo_SanPham.SelectedValue = Convert.ToInt32(row.Cells["MaSP"].Value);
-                txt_SoLuong.Text = row.Cells["SoLuong"].Value.ToString();
-                txt_DonGia.Text = row.Cells["DonGia"].Value.ToString();
-                txt_ThanhTien.Text = row.Cells["ThanhTien"].Value.ToString();
-            }
-        }
-
-        private void ClearChiTietInput()
-        {
-            txt_MaChiTiet.Text = "";
-            txt_SoLuong.Text = "";
-            txt_DonGia.Text = "";
-            txt_ThanhTien.Text = "";
-        }
-
-        private void TinhThanhTien()
-        {
-            if (decimal.TryParse(txt_DonGia.Text, out decimal dg) &&
-                decimal.TryParse(txt_SoLuong.Text, out decimal sl))
-            {
-                txt_ThanhTien.Text = (dg * sl).ToString();
-            }
-        }
-
-        // ================== THÊM ==================
-        private void btn_Them_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(txt_MaGiaoDich.Text))
-            {
-                MessageBox.Show("Hãy chọn một giao dịch ở phía trên trước.");
-                return;
-            }
-            isAdding = true;
-            ClearChiTietInput();
-            txt_SoLuong.Focus();
-        }
-
-        // ================== LƯU (INSERT / UPDATE) ==================
-        private void btn_Luu_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(txt_MaGiaoDich.Text))
-            {
-                MessageBox.Show("Chưa có mã giao dịch.");
-                return;
-            }
-
-            if (!int.TryParse(txt_SoLuong.Text, out int soLuong) ||
-                !decimal.TryParse(txt_DonGia.Text, out decimal donGia))
-            {
-                MessageBox.Show("Số lượng / Đơn giá không hợp lệ.");
-                return;
-            }
-
-            TinhThanhTien();
-            int maGD = int.Parse(txt_MaGiaoDich.Text);
-            int maSP = Convert.ToInt32(cbo_SanPham.SelectedValue);
-
             try
             {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = conn;
-
-                if (isAdding || string.IsNullOrEmpty(txt_MaChiTiet.Text))
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    cmd.CommandText = @"INSERT INTO ChiTietGiaoDich(MaGiaoDich, MaSP, SoLuong, DonGia)
-                                        VALUES(@MaGD, @MaSP, @SoLuong, @DonGia)";
-                }
-                else
-                {
-                    cmd.CommandText = @"UPDATE ChiTietGiaoDich
-                                        SET MaSP=@MaSP, SoLuong=@SoLuong, DonGia=@DonGia
-                                        WHERE MaChiTiet=@MaCT";
-                    cmd.Parameters.AddWithValue("@MaCT", int.Parse(txt_MaChiTiet.Text));
-                }
+                    string query = @"SELECT CTGD.MaChiTiet, CTGD.MaGiaoDich, SP.TenSP, 
+                                            CTGD.SoLuong, CTGD.DonGia, CTGD.ThanhTien
+                                     FROM ChiTietGiaoDich CTGD
+                                     JOIN SanPham SP ON CTGD.MaSP = SP.MaSP
+                                     WHERE 1=1";
 
-                cmd.Parameters.AddWithValue("@MaGD", maGD);
-                cmd.Parameters.AddWithValue("@MaSP", maSP);
-                cmd.Parameters.AddWithValue("@SoLuong", soLuong);
-                cmd.Parameters.AddWithValue("@DonGia", donGia);
+                    if (maGD.HasValue)
+                        query += " AND CTGD.MaGiaoDich = @MaGD";
 
-                int kq = cmd.ExecuteNonQuery();
-                if (kq > 0)
-                {
-                    MessageBox.Show("Lưu chi tiết thành công!");
-                    LoadChiTietByMaGD(maGD);
-                    isAdding = false;
+                    if (maSP.HasValue)
+                        query += " AND CTGD.MaSP = @MaSP";
+
+                    query += " ORDER BY CTGD.MaGiaoDich, CTGD.MaChiTiet";
+
+                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
+
+                    if (maGD.HasValue)
+                        da.SelectCommand.Parameters.AddWithValue("@MaGD", maGD.Value);
+                    if (maSP.HasValue)
+                        da.SelectCommand.Parameters.AddWithValue("@MaSP", maSP.Value);
+
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    dgvChiTiet.DataSource = dt;
+
+                    // Đổi tên cột
+                    if (dgvChiTiet.Columns.Count > 0)
+                    {
+                        dgvChiTiet.Columns["MaChiTiet"].HeaderText = "Mã CT";
+                        dgvChiTiet.Columns["MaGiaoDich"].HeaderText = "Mã GD";
+                        dgvChiTiet.Columns["TenSP"].HeaderText = "Tên sản phẩm";
+                        dgvChiTiet.Columns["SoLuong"].HeaderText = "Số lượng";
+                        dgvChiTiet.Columns["DonGia"].HeaderText = "Đơn giá";
+                        dgvChiTiet.Columns["ThanhTien"].HeaderText = "Thành tiền";
+
+                        // Format số tiền
+                        dgvChiTiet.Columns["DonGia"].DefaultCellStyle.Format = "N0";
+                        dgvChiTiet.Columns["DonGia"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        dgvChiTiet.Columns["ThanhTien"].DefaultCellStyle.Format = "N0";
+                        dgvChiTiet.Columns["ThanhTien"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        dgvChiTiet.Columns["SoLuong"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    }
+
+                    // Cập nhật số dòng
+                    lblSoDong.Text = dt.Rows.Count.ToString();
+
+                    // Reset label tổng tiền
+                    lblTongTien.Text = "";
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi: " + ex.Message);
-            }
-            finally
-            {
-                conn.Close();
+                MessageBox.Show("Lỗi load dữ liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // ================== XÓA ==================
-        private void btn_Xoa_Click(object sender, EventArgs e)
+        private void LoadComboMaGiaoDich()
         {
-            if (string.IsNullOrEmpty(txt_MaChiTiet.Text))
-            {
-                MessageBox.Show("Chưa chọn chi tiết để xóa.");
-                return;
-            }
-
-            int maCT = int.Parse(txt_MaChiTiet.Text);
-            int maGD = int.Parse(txt_MaGiaoDich.Text);
-
-            if (MessageBox.Show("Xóa chi tiết này?", "Xác nhận",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                return;
-
             try
             {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand("DELETE FROM ChiTietGiaoDich WHERE MaChiTiet=@MaCT", conn);
-                cmd.Parameters.AddWithValue("@MaCT", maCT);
-                int kq = cmd.ExecuteNonQuery();
-                if (kq > 0)
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    MessageBox.Show("Đã xóa.");
-                    LoadChiTietByMaGD(maGD);
-                    ClearChiTietInput();
+                    string query = @"SELECT DISTINCT CTGD.MaGiaoDich, 
+                                            CONCAT('GD ', CTGD.MaGiaoDich, ' - ', TC.LoaiGiaoDich, ' - ', FORMAT(TC.NgayGiaoDich, 'dd/MM/yyyy')) AS HienThi
+                                     FROM ChiTietGiaoDich CTGD
+                                     JOIN TaiChinh TC ON CTGD.MaGiaoDich = TC.MaGiaoDich
+                                     ORDER BY CTGD.MaGiaoDich";
+
+                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    // Thêm dòng "Tất cả"
+                    DataRow dr = dt.NewRow();
+                    dr["MaGiaoDich"] = DBNull.Value;
+                    dr["HienThi"] = "(Tất cả)";
+                    dt.Rows.InsertAt(dr, 0);
+
+                    cboMaGiaoDich.DataSource = dt;
+                    cboMaGiaoDich.DisplayMember = "HienThi";
+                    cboMaGiaoDich.ValueMember = "MaGiaoDich";
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi: " + ex.Message);
-            }
-            finally
-            {
-                conn.Close();
+                MessageBox.Show("Lỗi load mã giao dịch: " + ex.Message);
             }
         }
 
-        // ================== THOÁT ==================
-        private void btn_Thoat_Click(object sender, EventArgs e)
+        private void LoadComboSanPham()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = @"SELECT DISTINCT SP.MaSP, SP.TenSP
+                                     FROM ChiTietGiaoDich CTGD
+                                     JOIN SanPham SP ON CTGD.MaSP = SP.MaSP
+                                     ORDER BY SP.TenSP";
+
+                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    // Thêm dòng "Tất cả"
+                    DataRow dr = dt.NewRow();
+                    dr["MaSP"] = DBNull.Value;
+                    dr["TenSP"] = "(Tất cả)";
+                    dt.Rows.InsertAt(dr, 0);
+
+                    cboSanPham.DataSource = dt;
+                    cboSanPham.DisplayMember = "TenSP";
+                    cboSanPham.ValueMember = "MaSP";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi load sản phẩm: " + ex.Message);
+            }
+        }
+
+        // ========== SỰ KIỆN ==========
+        private void btnLoc_Click(object sender, EventArgs e)
+        {
+            int? maGD = null;
+            int? maSP = null;
+
+            if (cboMaGiaoDich.SelectedValue != null && cboMaGiaoDich.SelectedValue != DBNull.Value)
+                maGD = Convert.ToInt32(cboMaGiaoDich.SelectedValue);
+
+            if (cboSanPham.SelectedValue != null && cboSanPham.SelectedValue != DBNull.Value)
+                maSP = Convert.ToInt32(cboSanPham.SelectedValue);
+
+            LoadChiTiet(maGD, maSP);
+        }
+
+        private void btnLamMoi_Click(object sender, EventArgs e)
+        {
+            cboMaGiaoDich.SelectedIndex = 0;
+            cboSanPham.SelectedIndex = 0;
+            LoadChiTiet();
+            lblTongTien.Text = "";
+        }
+
+        private void btnTinhTong_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                decimal tongTien = 0;
+
+                foreach (DataGridViewRow row in dgvChiTiet.Rows)
+                {
+                    if (row.Cells["ThanhTien"].Value != null && row.Cells["ThanhTien"].Value != DBNull.Value)
+                    {
+                        tongTien += Convert.ToDecimal(row.Cells["ThanhTien"].Value);
+                    }
+                }
+
+                lblTongTien.Text = tongTien.ToString("N0") + " đ";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tính tổng: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnDong_Click(object sender, EventArgs e)
         {
             this.Close();
         }

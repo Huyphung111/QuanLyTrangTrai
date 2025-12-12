@@ -41,6 +41,7 @@
             this.btn_Luu = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btn_Huy = new System.Windows.Forms.ToolStripButton();
+            this.toolBaoCaoSapHet = new System.Windows.Forms.ToolStripLabel();
             this.txt_TenSP = new System.Windows.Forms.TextBox();
             this.cbo_TimKiem = new System.Windows.Forms.ComboBox();
             this.txt_MaSP = new System.Windows.Forms.TextBox();
@@ -64,7 +65,8 @@
             this.cbo_LoaiSP = new System.Windows.Forms.ComboBox();
             this.txt_DonVi = new System.Windows.Forms.TextBox();
             this.dateTimePicker_NgayCapNhat = new System.Windows.Forms.DateTimePicker();
-            this.toolBaoCaoSapHet = new System.Windows.Forms.ToolStripLabel();
+            this.toolStrip_ban = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip_banhang = new System.Windows.Forms.ToolStripLabel();
             this.toolStrip1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_QLSanPham)).BeginInit();
@@ -116,7 +118,9 @@
             this.btn_Luu,
             this.toolStripSeparator2,
             this.btn_Huy,
-            this.toolBaoCaoSapHet});
+            this.toolBaoCaoSapHet,
+            this.toolStrip_ban,
+            this.toolStrip_banhang});
             this.toolStrip2.Location = new System.Drawing.Point(0, 307);
             this.toolStrip2.Name = "toolStrip2";
             this.toolStrip2.Size = new System.Drawing.Size(768, 51);
@@ -172,6 +176,13 @@
             this.btn_Huy.Name = "btn_Huy";
             this.btn_Huy.Size = new System.Drawing.Size(68, 46);
             this.btn_Huy.Text = "Hủy";
+            // 
+            // toolBaoCaoSapHet
+            // 
+            this.toolBaoCaoSapHet.Name = "toolBaoCaoSapHet";
+            this.toolBaoCaoSapHet.Size = new System.Drawing.Size(120, 46);
+            this.toolBaoCaoSapHet.Text = "📊SP sắp hết";
+            this.toolBaoCaoSapHet.Click += new System.EventHandler(this.toolBaoCaoSapHet_Click);
             // 
             // txt_TenSP
             // 
@@ -443,12 +454,21 @@
             this.dateTimePicker_NgayCapNhat.Size = new System.Drawing.Size(250, 26);
             this.dateTimePicker_NgayCapNhat.TabIndex = 25;
             // 
-            // toolBaoCaoSapHet
+            // toolStrip_ban
             // 
-            this.toolBaoCaoSapHet.Name = "toolBaoCaoSapHet";
-            this.toolBaoCaoSapHet.Size = new System.Drawing.Size(120, 46);
-            this.toolBaoCaoSapHet.Text = "📊SP sắp hết";
-            this.toolBaoCaoSapHet.Click += new System.EventHandler(this.toolBaoCaoSapHet_Click);
+            this.toolStrip_ban.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStrip_ban.Image = ((System.Drawing.Image)(resources.GetObject("toolStrip_ban.Image")));
+            this.toolStrip_ban.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStrip_ban.Name = "toolStrip_ban";
+            this.toolStrip_ban.Size = new System.Drawing.Size(34, 46);
+            this.toolStrip_ban.Text = "toolStripButton1";
+            this.toolStrip_ban.Click += new System.EventHandler(this.toolStrip_ban_Click);
+            // 
+            // toolStrip_banhang
+            // 
+            this.toolStrip_banhang.Name = "toolStrip_banhang";
+            this.toolStrip_banhang.Size = new System.Drawing.Size(41, 46);
+            this.toolStrip_banhang.Text = "Bán";
             // 
             // QL_SanPham
             // 
@@ -519,5 +539,7 @@
         private System.Windows.Forms.TextBox txt_DonVi;
         private System.Windows.Forms.DateTimePicker dateTimePicker_NgayCapNhat;
         private System.Windows.Forms.ToolStripLabel toolBaoCaoSapHet;
+        private System.Windows.Forms.ToolStripButton toolStrip_ban;
+        private System.Windows.Forms.ToolStripLabel toolStrip_banhang;
     }
 }

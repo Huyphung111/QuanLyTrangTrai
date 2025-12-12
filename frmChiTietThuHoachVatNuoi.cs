@@ -39,7 +39,9 @@ namespace QL_TrangTrai
         {
             // Đăng ký sự kiện
             RegisterEvents();
-
+            // Đặt font hỗ trợ tiếng Việt cho DataGridView
+            dgvChiTiet.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+            dgvChiTiet.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             // Load dữ liệu
             LoadVatNuoi();
             LoadNhanVien();
@@ -894,6 +896,11 @@ namespace QL_TrangTrai
         private void lblSoLuong_Click(object sender, EventArgs e)
         {
             // Empty event handler
+        }
+
+        private void dgvChiTiet_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

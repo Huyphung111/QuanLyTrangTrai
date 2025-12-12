@@ -1,4 +1,6 @@
-﻿using System;
+﻿using QL_TrangTrai;
+using QuanLyTrangTrai;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
@@ -88,7 +90,7 @@ namespace Đồ_án
             txt_KhuVuc.Enabled = isEditing;
             txt_SanLuongDuKien.Enabled = isEditing;
 
-            btn_Luu.Enabled = isEditing;
+           // btn_thuhoachcaytrong.Enabled = isEditing;
             btn_Huy.Enabled = isEditing;
 
             btn_Them.Enabled = !isEditing;
@@ -501,5 +503,24 @@ namespace Đồ_án
         {
 
         }
+
+        private void toolStrip_thuhoach_Click(object sender, EventArgs e)
+        {
+            // Lấy form cha (GiaoDien)
+            GiaoDien mainForm = this.ParentForm as GiaoDien;
+
+            if (mainForm != null)
+            {
+                // Mở form Chi tiết thu hoạch cây trồng trong panel
+                mainForm.OpenFormInPanel(new frmChiTietThuHoachCayTrong());
+            }
+            else
+            {
+                // Nếu không tìm thấy form cha, mở form mới độc lập
+                frmChiTietThuHoachCayTrong frmThuHoach = new frmChiTietThuHoachCayTrong();
+                frmThuHoach.Show();
+            }
+        }
+
     }
 }

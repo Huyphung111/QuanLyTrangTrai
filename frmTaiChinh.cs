@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuanLyTrangTrai;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -297,8 +298,26 @@ namespace QL_TrangTrai
                 return;
             }
 
+            // Lấy mã giao dịch đã chọn
             int maGD = Convert.ToInt32(dgvTaiChinh.SelectedRows[0].Cells["MaGiaoDich"].Value);
-            HienThiChiTiet(maGD);
+
+            // Lấy form cha (GiaoDien)
+            GiaoDien mainForm = this.ParentForm as GiaoDien;
+
+            if (mainForm != null)
+            {
+                // Tạo form chi tiết giao dịch và truyền mã GD
+                frmChiTietGiaoDich frmChiTiet = new frmChiTietGiaoDich();
+
+                // Mở form trong panel
+                mainForm.OpenFormInPanel(frmChiTiet);
+            }
+            else
+            {
+                // Nếu không tìm thấy form cha, mở form mới độc lập
+                frmChiTietGiaoDich frmChiTiet = new frmChiTietGiaoDich();
+                frmChiTiet.Show();
+            }
         }
 
         private void dgvTaiChinh_CellDoubleClick(object sender, DataGridViewCellEventArgs e)

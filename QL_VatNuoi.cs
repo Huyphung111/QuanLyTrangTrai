@@ -1,4 +1,6 @@
-﻿using System;
+﻿using QL_TrangTrai;
+using QuanLyTrangTrai;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -695,5 +697,23 @@ namespace Đồ_án
         }
 
         #endregion
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            // Lấy form cha (GiaoDien)
+            GiaoDien mainForm = this.ParentForm as GiaoDien;
+
+            if (mainForm != null)
+            {
+                // Mở form Chi tiết thu hoạch vật nuôi trong panel
+                mainForm.OpenFormInPanel(new frmChiTietThuHoachVatNuoi());
+            }
+            else
+            {
+                // Nếu không tìm thấy form cha, mở form mới độc lập
+                frmChiTietThuHoachVatNuoi frmThuHoach = new frmChiTietThuHoachVatNuoi();
+                frmThuHoach.Show();
+            }
+        }
     }
 }

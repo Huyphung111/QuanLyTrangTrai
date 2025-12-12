@@ -12,68 +12,105 @@ namespace QuanLyTrangTrai
             InitializeComponent();
         }
 
+        // ==========================
+        // HÀM MỞ FORM TRONG PANEL1
+        // ==========================
+        public void OpenFormInPanel(Form childForm)
+        {
+            panel1.Controls.Clear();                  // Xóa form cũ
+            childForm.TopLevel = false;               // BẮT BUỘC
+            childForm.FormBorderStyle = FormBorderStyle.None;
+            childForm.Dock = DockStyle.Fill;          // Full panel
+            panel1.Controls.Add(childForm);
+            childForm.Show();
+        }
+
+        // ==========================
+        // MENU BÊN TRÁI
+        // ==========================
+
+        // 🌱 CÂY TRỒNG
         private void btnQLCayTrong_Click(object sender, EventArgs e)
         {
-            OpenForm(new QL_CayTrong());
+            OpenFormInPanel(new QL_CayTrong());
         }
 
+        // 🐄 VẬT NUÔI
         private void btnQLVatNuoi_Click(object sender, EventArgs e)
         {
-            OpenForm(new QL_VatNuoi());
+            OpenFormInPanel(new QL_VatNuoi());
         }
 
+        // 📦 SẢN PHẨM
         private void btnQLSanPham_Click(object sender, EventArgs e)
         {
-            OpenForm(new QL_SanPham());
+            OpenFormInPanel(new QL_SanPham());
         }
 
-        private void btnThuHoach_Click(object sender, EventArgs e)
-        {
-            OpenForm(new frmThuHoach());
-        }
-
-        private void btnCTCayTrong_Click(object sender, EventArgs e)
-        {
-            OpenForm(new frmChiTietThuHoachCayTrong());
-        }
-
-        private void btnCTVatNuoi_Click(object sender, EventArgs e)
-        {
-            OpenForm(new frmChiTietThuHoachVatNuoi());
-        }
-
+        // 📅 LỊCH CÔNG VIỆC
         private void btnLichCongViec_Click(object sender, EventArgs e)
         {
-            OpenForm(new frmLichCongViec());
+            OpenFormInPanel(new frmLichCongViec());
         }
 
+        // 🏬 KHO THIẾT BỊ  (button1)
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OpenFormInPanel(new frmQuanLyKho());
+        }
+
+        // 🌾 THU HOẠCH
+        private void btnThuHoach_Click(object sender, EventArgs e)
+        {
+            OpenFormInPanel(new frmThuHoach());
+        }
+
+        // 🌱 CHI TIẾT THU HOẠCH CÂY TRỒNG
+        private void btnCTCayTrong_Click(object sender, EventArgs e)
+        {
+            OpenFormInPanel(new frmChiTietThuHoachCayTrong());
+        }
+
+        // 🐄 CHI TIẾT THU HOẠCH VẬT NUÔI
+        private void btnCTVatNuoi_Click(object sender, EventArgs e)
+        {
+            OpenFormInPanel(new frmChiTietThuHoachVatNuoi());
+        }
+
+        // 👤 QUẢN LÝ TÀI KHOẢN
         private void btnQuanLyTaiKhoan_Click(object sender, EventArgs e)
         {
-            OpenForm(new frm_QuanLyTaiKhoan());
+            OpenFormInPanel(new frm_QuanLyTaiKhoan());
         }
 
+        // ➕ TẠO TÀI KHOẢN
         private void btnTaoTaiKhoan_Click(object sender, EventArgs e)
         {
-            OpenForm(new TaoTaiKhoang());
+            OpenFormInPanel(new TaoTaiKhoang());
         }
 
+        // 🔑 ĐỔI MẬT KHẨU
         private void btnDoiMatKhau_Click(object sender, EventArgs e)
         {
-            OpenForm(new DoiMatKhau());
+            OpenFormInPanel(new DoiMatKhau());
         }
 
+        // ❌ THOÁT
         private void btnExit_Click(object sender, EventArgs e)
         {
-            Close();
+            Application.Exit();
         }
 
-        private void OpenForm(Form form)
+        // ==========================
+        // SỰ KIỆN KHÔNG DÙNG
+        // ==========================
+        private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            using (form)
-            {
-                form.StartPosition = FormStartPosition.CenterParent;
-                form.ShowDialog(this);
-            }
+        }
+
+        private void btn_taichinh_Click(object sender, EventArgs e)
+        {
+            OpenFormInPanel(new frmTaiChinh());
         }
     }
 }

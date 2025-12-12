@@ -42,6 +42,8 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btn_Huy = new System.Windows.Forms.ToolStripButton();
             this.toolBaoCaoSapHet = new System.Windows.Forms.ToolStripLabel();
+            this.toolStrip_ban = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip_banhang = new System.Windows.Forms.ToolStripLabel();
             this.txt_TenSP = new System.Windows.Forms.TextBox();
             this.cbo_TimKiem = new System.Windows.Forms.ComboBox();
             this.txt_MaSP = new System.Windows.Forms.TextBox();
@@ -65,8 +67,6 @@
             this.cbo_LoaiSP = new System.Windows.Forms.ComboBox();
             this.txt_DonVi = new System.Windows.Forms.TextBox();
             this.dateTimePicker_NgayCapNhat = new System.Windows.Forms.DateTimePicker();
-            this.toolStrip_ban = new System.Windows.Forms.ToolStripButton();
-            this.toolStrip_banhang = new System.Windows.Forms.ToolStripLabel();
             this.toolStrip1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_QLSanPham)).BeginInit();
@@ -183,6 +183,22 @@
             this.toolBaoCaoSapHet.Size = new System.Drawing.Size(120, 46);
             this.toolBaoCaoSapHet.Text = "📊SP sắp hết";
             this.toolBaoCaoSapHet.Click += new System.EventHandler(this.toolBaoCaoSapHet_Click);
+            // 
+            // toolStrip_ban
+            // 
+            this.toolStrip_ban.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStrip_ban.Image = ((System.Drawing.Image)(resources.GetObject("toolStrip_ban.Image")));
+            this.toolStrip_ban.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStrip_ban.Name = "toolStrip_ban";
+            this.toolStrip_ban.Size = new System.Drawing.Size(34, 46);
+            this.toolStrip_ban.Text = "toolStripButton1";
+            this.toolStrip_ban.Click += new System.EventHandler(this.toolStrip_ban_Click);
+            // 
+            // toolStrip_banhang
+            // 
+            this.toolStrip_banhang.Name = "toolStrip_banhang";
+            this.toolStrip_banhang.Size = new System.Drawing.Size(41, 46);
+            this.toolStrip_banhang.Text = "Bán";
             // 
             // txt_TenSP
             // 
@@ -453,22 +469,6 @@
             this.dateTimePicker_NgayCapNhat.Name = "dateTimePicker_NgayCapNhat";
             this.dateTimePicker_NgayCapNhat.Size = new System.Drawing.Size(250, 26);
             this.dateTimePicker_NgayCapNhat.TabIndex = 25;
-            // 
-            // toolStrip_ban
-            // 
-            this.toolStrip_ban.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStrip_ban.Image = ((System.Drawing.Image)(resources.GetObject("toolStrip_ban.Image")));
-            this.toolStrip_ban.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStrip_ban.Name = "toolStrip_ban";
-            this.toolStrip_ban.Size = new System.Drawing.Size(34, 46);
-            this.toolStrip_ban.Text = "toolStripButton1";
-            this.toolStrip_ban.Click += new System.EventHandler(this.toolStrip_ban_Click);
-            // 
-            // toolStrip_banhang
-            // 
-            this.toolStrip_banhang.Name = "toolStrip_banhang";
-            this.toolStrip_banhang.Size = new System.Drawing.Size(41, 46);
-            this.toolStrip_banhang.Text = "Bán";
             // 
             // QL_SanPham
             // 

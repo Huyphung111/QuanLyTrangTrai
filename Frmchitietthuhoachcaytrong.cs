@@ -39,8 +39,9 @@ namespace QL_TrangTrai
         {
             // Đăng ký sự kiện
             RegisterEvents();
+            dgvChiTiet.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+            dgvChiTiet.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 
-            // Load dữ liệu
             LoadCayTrong();
             LoadNhanVien();  // THÊM MỚI
             LoadData();
@@ -861,5 +862,10 @@ namespace QL_TrangTrai
         }
 
         #endregion
+
+        private void pnlThongKe_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

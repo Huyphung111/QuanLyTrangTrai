@@ -30,21 +30,22 @@ namespace QuanLyTrangTrai
         private void InitializeComponent()
         {
             this.leftPanel = new System.Windows.Forms.Panel();
-            this.btnExit = new System.Windows.Forms.Button();
-            this.btnAccounts = new System.Windows.Forms.Button();
-            this.btnReports = new System.Windows.Forms.Button();
-            this.btnInvoices = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.btnAccessories = new System.Windows.Forms.Button();
             this.btnServices = new System.Windows.Forms.Button();
             this.btnPets = new System.Windows.Forms.Button();
             this.logoPanel = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.btnInvoices = new System.Windows.Forms.Button();
+            this.btnReports = new System.Windows.Forms.Button();
+            this.btnAccounts = new System.Windows.Forms.Button();
+            this.btnExit = new System.Windows.Forms.Button();
             this.topPanel = new System.Windows.Forms.Panel();
             this.lblHeader = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.btn_taichinh = new System.Windows.Forms.Button();
             this.leftPanel.SuspendLayout();
             this.logoPanel.SuspendLayout();
             this.topPanel.SuspendLayout();
@@ -54,6 +55,7 @@ namespace QuanLyTrangTrai
             // leftPanel
             // 
             this.leftPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(76)))), ((int)(((byte)(67)))));
+            this.leftPanel.Controls.Add(this.btn_taichinh);
             this.leftPanel.Controls.Add(this.button1);
             this.leftPanel.Controls.Add(this.btnAccessories);
             this.leftPanel.Controls.Add(this.btnServices);
@@ -70,69 +72,21 @@ namespace QuanLyTrangTrai
             this.leftPanel.Size = new System.Drawing.Size(248, 948);
             this.leftPanel.TabIndex = 0;
             // 
-            // btnExit
+            // button1
             // 
-            this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(76)))), ((int)(((byte)(67)))));
-            this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnExit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnExit.ForeColor = System.Drawing.Color.Khaki;
-            this.btnExit.Location = new System.Drawing.Point(-3, 678);
-            this.btnExit.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(248, 88);
-            this.btnExit.TabIndex = 7;
-            this.btnExit.Text = "   Thoát";
-            this.btnExit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExit.UseVisualStyleBackColor = false;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
-            // 
-            // btnAccounts
-            // 
-            this.btnAccounts.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(76)))), ((int)(((byte)(67)))));
-            this.btnAccounts.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnAccounts.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnAccounts.ForeColor = System.Drawing.Color.Khaki;
-            this.btnAccounts.Location = new System.Drawing.Point(-3, 592);
-            this.btnAccounts.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnAccounts.Name = "btnAccounts";
-            this.btnAccounts.Size = new System.Drawing.Size(248, 88);
-            this.btnAccounts.TabIndex = 6;
-            this.btnAccounts.Text = "   Tài khoản";
-            this.btnAccounts.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAccounts.UseVisualStyleBackColor = false;
-            this.btnAccounts.Click += new System.EventHandler(this.btnQuanLyTaiKhoan_Click);
-            // 
-            // btnReports
-            // 
-            this.btnReports.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(76)))), ((int)(((byte)(67)))));
-            this.btnReports.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnReports.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnReports.ForeColor = System.Drawing.Color.Khaki;
-            this.btnReports.Location = new System.Drawing.Point(0, 351);
-            this.btnReports.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnReports.Name = "btnReports";
-            this.btnReports.Size = new System.Drawing.Size(248, 80);
-            this.btnReports.TabIndex = 5;
-            this.btnReports.Text = "   Lịch công việc";
-            this.btnReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnReports.UseVisualStyleBackColor = false;
-            this.btnReports.Click += new System.EventHandler(this.btnLichCongViec_Click);
-            // 
-            // btnInvoices
-            // 
-            this.btnInvoices.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(76)))), ((int)(((byte)(67)))));
-            this.btnInvoices.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnInvoices.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnInvoices.ForeColor = System.Drawing.Color.Khaki;
-            this.btnInvoices.Location = new System.Drawing.Point(-3, 506);
-            this.btnInvoices.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnInvoices.Name = "btnInvoices";
-            this.btnInvoices.Size = new System.Drawing.Size(248, 88);
-            this.btnInvoices.TabIndex = 4;
-            this.btnInvoices.Text = "   Thu hoạch";
-            this.btnInvoices.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnInvoices.UseVisualStyleBackColor = false;
-            this.btnInvoices.Click += new System.EventHandler(this.btnThuHoach_Click);
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(76)))), ((int)(((byte)(67)))));
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.button1.ForeColor = System.Drawing.Color.Khaki;
+            this.button1.Location = new System.Drawing.Point(-3, 427);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(248, 88);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "   Kho Thiết Bị";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // btnAccessories
             // 
@@ -195,6 +149,77 @@ namespace QuanLyTrangTrai
             this.logoPanel.Size = new System.Drawing.Size(248, 88);
             this.logoPanel.TabIndex = 0;
             // 
+            // panel2
+            // 
+            this.panel2.Location = new System.Drawing.Point(12, 88);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(200, 100);
+            this.panel2.TabIndex = 0;
+            // 
+            // btnInvoices
+            // 
+            this.btnInvoices.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(76)))), ((int)(((byte)(67)))));
+            this.btnInvoices.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnInvoices.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnInvoices.ForeColor = System.Drawing.Color.Khaki;
+            this.btnInvoices.Location = new System.Drawing.Point(-3, 506);
+            this.btnInvoices.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnInvoices.Name = "btnInvoices";
+            this.btnInvoices.Size = new System.Drawing.Size(248, 88);
+            this.btnInvoices.TabIndex = 4;
+            this.btnInvoices.Text = "   Thu hoạch";
+            this.btnInvoices.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnInvoices.UseVisualStyleBackColor = false;
+            this.btnInvoices.Click += new System.EventHandler(this.btnThuHoach_Click);
+            // 
+            // btnReports
+            // 
+            this.btnReports.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(76)))), ((int)(((byte)(67)))));
+            this.btnReports.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnReports.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnReports.ForeColor = System.Drawing.Color.Khaki;
+            this.btnReports.Location = new System.Drawing.Point(0, 351);
+            this.btnReports.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnReports.Name = "btnReports";
+            this.btnReports.Size = new System.Drawing.Size(248, 80);
+            this.btnReports.TabIndex = 5;
+            this.btnReports.Text = "   Lịch công việc";
+            this.btnReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnReports.UseVisualStyleBackColor = false;
+            this.btnReports.Click += new System.EventHandler(this.btnLichCongViec_Click);
+            // 
+            // btnAccounts
+            // 
+            this.btnAccounts.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(76)))), ((int)(((byte)(67)))));
+            this.btnAccounts.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnAccounts.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnAccounts.ForeColor = System.Drawing.Color.Khaki;
+            this.btnAccounts.Location = new System.Drawing.Point(-3, 592);
+            this.btnAccounts.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnAccounts.Name = "btnAccounts";
+            this.btnAccounts.Size = new System.Drawing.Size(248, 88);
+            this.btnAccounts.TabIndex = 6;
+            this.btnAccounts.Text = "   Tài khoản";
+            this.btnAccounts.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAccounts.UseVisualStyleBackColor = false;
+            this.btnAccounts.Click += new System.EventHandler(this.btnQuanLyTaiKhoan_Click);
+            // 
+            // btnExit
+            // 
+            this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(76)))), ((int)(((byte)(67)))));
+            this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnExit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnExit.ForeColor = System.Drawing.Color.Khaki;
+            this.btnExit.Location = new System.Drawing.Point(3, 755);
+            this.btnExit.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(248, 88);
+            this.btnExit.TabIndex = 7;
+            this.btnExit.Text = "   Thoát";
+            this.btnExit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnExit.UseVisualStyleBackColor = false;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
             // topPanel
             // 
             this.topPanel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
@@ -220,6 +245,14 @@ namespace QuanLyTrangTrai
             this.lblHeader.Text = "QUẢN LÝ TRANG TRẠI";
             this.lblHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // panel3
+            // 
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1103, 88);
+            this.panel3.TabIndex = 1;
+            // 
             // mainPanel
             // 
             this.mainPanel.BackColor = System.Drawing.SystemColors.Control;
@@ -238,38 +271,25 @@ namespace QuanLyTrangTrai
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1103, 860);
             this.panel1.TabIndex = 0;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
-            // button1
+            // btn_taichinh
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(76)))), ((int)(((byte)(67)))));
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.button1.ForeColor = System.Drawing.Color.Khaki;
-            this.button1.Location = new System.Drawing.Point(-3, 427);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(248, 88);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "   Kho Thiết Bị";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.UseVisualStyleBackColor = false;
+            this.btn_taichinh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(76)))), ((int)(((byte)(67)))));
+            this.btn_taichinh.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_taichinh.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btn_taichinh.ForeColor = System.Drawing.Color.Khaki;
+            this.btn_taichinh.Location = new System.Drawing.Point(3, 672);
+            this.btn_taichinh.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btn_taichinh.Name = "btn_taichinh";
+            this.btn_taichinh.Size = new System.Drawing.Size(248, 88);
+            this.btn_taichinh.TabIndex = 8;
+            this.btn_taichinh.Text = "   Tài Chính";
+            this.btn_taichinh.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_taichinh.UseVisualStyleBackColor = false;
+            this.btn_taichinh.Click += new System.EventHandler(this.btn_taichinh_Click);
             // 
-            // panel2
-            // 
-            this.panel2.Location = new System.Drawing.Point(12, 88);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(200, 100);
-            this.panel2.TabIndex = 0;
-            // 
-            // panel3
-            // 
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1103, 88);
-            this.panel3.TabIndex = 1;
-            // 
-            // MainDashboard
+            // GiaoDien
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -279,7 +299,7 @@ namespace QuanLyTrangTrai
             this.Controls.Add(this.leftPanel);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MinimumSize = new System.Drawing.Size(897, 611);
-            this.Name = "MainDashboard";
+            this.Name = "GiaoDien";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Bảng điều khiển chức năng";
             this.leftPanel.ResumeLayout(false);
@@ -308,5 +328,6 @@ namespace QuanLyTrangTrai
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Button btn_taichinh;
     }
 }

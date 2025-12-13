@@ -58,6 +58,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmBackupDatabase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBackupDatabase.Designer.cs">
+      <DependentUpon>frmBackupDatabase.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmBanHang.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,6 +87,12 @@
     </Compile>
     <Compile Include="frmChiTietThuHoachVatNuoi.Designer.cs">
       <DependentUpon>frmChiTietThuHoachVatNuoi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmRestoreDatabase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRestoreDatabase.Designer.cs">
+      <DependentUpon>frmRestoreDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="frmTaiChinh.cs">
       <SubType>Form</SubType>
@@ -156,6 +168,9 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmBackupDatabase.resx">
+      <DependentUpon>frmBackupDatabase.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmChiTietGiaoDich.resx">
       <DependentUpon>frmChiTietGiaoDich.cs</DependentUpon>
     </EmbeddedResource>
@@ -164,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmChiTietThuHoachVatNuoi.resx">
       <DependentUpon>frmChiTietThuHoachVatNuoi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRestoreDatabase.resx">
+      <DependentUpon>frmRestoreDatabase.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTaiChinh.resx">
       <DependentUpon>frmTaiChinh.cs</DependentUpon>

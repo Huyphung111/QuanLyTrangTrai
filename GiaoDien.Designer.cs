@@ -30,6 +30,7 @@ namespace QuanLyTrangTrai
         private void InitializeComponent()
         {
             this.leftPanel = new System.Windows.Forms.Panel();
+            this.btn_taichinh = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.btnAccessories = new System.Windows.Forms.Button();
             this.btnServices = new System.Windows.Forms.Button();
@@ -45,7 +46,7 @@ namespace QuanLyTrangTrai
             this.panel3 = new System.Windows.Forms.Panel();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btn_taichinh = new System.Windows.Forms.Button();
+            this.btn_khoiphucdulieu = new System.Windows.Forms.Button();
             this.leftPanel.SuspendLayout();
             this.logoPanel.SuspendLayout();
             this.topPanel.SuspendLayout();
@@ -55,6 +56,7 @@ namespace QuanLyTrangTrai
             // leftPanel
             // 
             this.leftPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(76)))), ((int)(((byte)(67)))));
+            this.leftPanel.Controls.Add(this.btn_khoiphucdulieu);
             this.leftPanel.Controls.Add(this.btn_taichinh);
             this.leftPanel.Controls.Add(this.button1);
             this.leftPanel.Controls.Add(this.btnAccessories);
@@ -71,6 +73,22 @@ namespace QuanLyTrangTrai
             this.leftPanel.Name = "leftPanel";
             this.leftPanel.Size = new System.Drawing.Size(248, 948);
             this.leftPanel.TabIndex = 0;
+            // 
+            // btn_taichinh
+            // 
+            this.btn_taichinh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(76)))), ((int)(((byte)(67)))));
+            this.btn_taichinh.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_taichinh.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btn_taichinh.ForeColor = System.Drawing.Color.Khaki;
+            this.btn_taichinh.Location = new System.Drawing.Point(3, 672);
+            this.btn_taichinh.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btn_taichinh.Name = "btn_taichinh";
+            this.btn_taichinh.Size = new System.Drawing.Size(248, 88);
+            this.btn_taichinh.TabIndex = 8;
+            this.btn_taichinh.Text = "   Tài Chính";
+            this.btn_taichinh.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_taichinh.UseVisualStyleBackColor = false;
+            this.btn_taichinh.Click += new System.EventHandler(this.btn_taichinh_Click);
             // 
             // button1
             // 
@@ -210,7 +228,7 @@ namespace QuanLyTrangTrai
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnExit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnExit.ForeColor = System.Drawing.Color.Khaki;
-            this.btnExit.Location = new System.Drawing.Point(3, 755);
+            this.btnExit.Location = new System.Drawing.Point(0, 837);
             this.btnExit.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(248, 88);
@@ -229,7 +247,7 @@ namespace QuanLyTrangTrai
             this.topPanel.Location = new System.Drawing.Point(248, 0);
             this.topPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.topPanel.Name = "topPanel";
-            this.topPanel.Size = new System.Drawing.Size(1103, 88);
+            this.topPanel.Size = new System.Drawing.Size(1339, 88);
             this.topPanel.TabIndex = 1;
             // 
             // lblHeader
@@ -240,7 +258,7 @@ namespace QuanLyTrangTrai
             this.lblHeader.ForeColor = System.Drawing.Color.Khaki;
             this.lblHeader.Location = new System.Drawing.Point(0, 0);
             this.lblHeader.Name = "lblHeader";
-            this.lblHeader.Size = new System.Drawing.Size(1103, 88);
+            this.lblHeader.Size = new System.Drawing.Size(1339, 88);
             this.lblHeader.TabIndex = 0;
             this.lblHeader.Text = "QUẢN LÝ TRANG TRẠI";
             this.lblHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -250,7 +268,7 @@ namespace QuanLyTrangTrai
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1103, 88);
+            this.panel3.Size = new System.Drawing.Size(1339, 88);
             this.panel3.TabIndex = 1;
             // 
             // mainPanel
@@ -261,7 +279,7 @@ namespace QuanLyTrangTrai
             this.mainPanel.Location = new System.Drawing.Point(248, 88);
             this.mainPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.mainPanel.Name = "mainPanel";
-            this.mainPanel.Size = new System.Drawing.Size(1103, 860);
+            this.mainPanel.Size = new System.Drawing.Size(1339, 860);
             this.mainPanel.TabIndex = 2;
             // 
             // panel1
@@ -269,31 +287,31 @@ namespace QuanLyTrangTrai
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1103, 860);
+            this.panel1.Size = new System.Drawing.Size(1339, 860);
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
-            // btn_taichinh
+            // btn_khoiphucdulieu
             // 
-            this.btn_taichinh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(76)))), ((int)(((byte)(67)))));
-            this.btn_taichinh.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btn_taichinh.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btn_taichinh.ForeColor = System.Drawing.Color.Khaki;
-            this.btn_taichinh.Location = new System.Drawing.Point(3, 672);
-            this.btn_taichinh.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btn_taichinh.Name = "btn_taichinh";
-            this.btn_taichinh.Size = new System.Drawing.Size(248, 88);
-            this.btn_taichinh.TabIndex = 8;
-            this.btn_taichinh.Text = "   Tài Chính";
-            this.btn_taichinh.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_taichinh.UseVisualStyleBackColor = false;
-            this.btn_taichinh.Click += new System.EventHandler(this.btn_taichinh_Click);
+            this.btn_khoiphucdulieu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(76)))), ((int)(((byte)(67)))));
+            this.btn_khoiphucdulieu.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_khoiphucdulieu.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btn_khoiphucdulieu.ForeColor = System.Drawing.Color.Khaki;
+            this.btn_khoiphucdulieu.Location = new System.Drawing.Point(0, 751);
+            this.btn_khoiphucdulieu.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btn_khoiphucdulieu.Name = "btn_khoiphucdulieu";
+            this.btn_khoiphucdulieu.Size = new System.Drawing.Size(248, 88);
+            this.btn_khoiphucdulieu.TabIndex = 9;
+            this.btn_khoiphucdulieu.Text = "   Dữ liệu";
+            this.btn_khoiphucdulieu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_khoiphucdulieu.UseVisualStyleBackColor = false;
+            this.btn_khoiphucdulieu.Click += new System.EventHandler(this.btn_khoiphucdulieu_Click);
             // 
             // GiaoDien
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1351, 948);
+            this.ClientSize = new System.Drawing.Size(1587, 948);
             this.Controls.Add(this.mainPanel);
             this.Controls.Add(this.topPanel);
             this.Controls.Add(this.leftPanel);
@@ -329,5 +347,6 @@ namespace QuanLyTrangTrai
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button btn_taichinh;
+        private System.Windows.Forms.Button btn_khoiphucdulieu;
     }
 }

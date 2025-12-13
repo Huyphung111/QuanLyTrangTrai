@@ -112,5 +112,11 @@ namespace QuanLyTrangTrai
         {
             OpenFormInPanel(new frmTaiChinh());
         }
+
+        private void btn_khoiphucdulieu_Click(object sender, EventArgs e)
+        {
+            OpenFormInPanel(new frmBackupDatabase());
+        }
+
     }
 }

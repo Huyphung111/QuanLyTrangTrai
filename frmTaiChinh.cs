@@ -11,11 +11,21 @@ namespace QL_TrangTrai
     {
         private string connectionString = "Data Source=HUYNE;Initial Catalog=QL_TrangTraiv13;Integrated Security=True";
 
+        private int _maNguoiDung = 0;
+        private int _maVaiTro = 1;
         public frmTaiChinh()
         {
             InitializeComponent();
+            _maNguoiDung = 0;
+            _maVaiTro = 1;
         }
 
+        public frmTaiChinh(int maNguoiDung, int maVaiTro)
+        {
+            InitializeComponent();
+            _maNguoiDung = maNguoiDung;
+            _maVaiTro = maVaiTro;
+        }
         private void frmTaiChinh_Load(object sender, EventArgs e)
         {
             // Set giá trị mặc định cho ComboBox và DateTimePicker
@@ -43,6 +53,7 @@ namespace QL_TrangTrai
                                      LEFT JOIN NhanVien NV ON TC.MaNV = NV.MaNV
                                      LEFT JOIN NhaCungCap NCC ON TC.MaNCC = NCC.MaNCC
                                      WHERE 1=1";
+                    
 
                     if (loaiGD != "Tất cả")
                         query += " AND TC.LoaiGiaoDich = @LoaiGD";
@@ -127,6 +138,8 @@ namespace QL_TrangTrai
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
+                    conn.Open();
+
                     string query = "SELECT MaNV, HoTen FROM NhanVien";
                     SqlDataAdapter da = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
@@ -141,6 +154,23 @@ namespace QL_TrangTrai
                     cboNhanVien.DataSource = dt;
                     cboNhanVien.DisplayMember = "HoTen";
                     cboNhanVien.ValueMember = "MaNV";
+
+                    // ✅ NẾU LÀ NHÂN VIÊN -> Tự động chọn và khóa
+                    if (_maVaiTro == 2 && _maNguoiDung > 0)
+                    {
+                        string queryNV = "SELECT MaNV FROM NhanVien WHERE MaNguoiDung = @MaNguoiDung";
+                        using (SqlCommand cmd = new SqlCommand(queryNV, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@MaNguoiDung", _maNguoiDung);
+                            object result = cmd.ExecuteScalar();
+                            if (result != null && result != DBNull.Value)
+                            {
+                                int maNV = Convert.ToInt32(result);
+                                cboNhanVien.SelectedValue = maNV;
+                                cboNhanVien.Enabled = false; // Khóa không cho đổi
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)

@@ -9,6 +9,7 @@ namespace QL_TrangTrai
     public partial class frmChiTietThuHoachCayTrong : Form
     {
         #region Fields
+        //dấd
 
         // Connection string - ĐỔI THEO MÁY CỦA BẠN
         private readonly string connectionString = @"Data Source=HUYNE;Initial Catalog=QL_TrangTraiv13;Integrated Security=True";
@@ -17,6 +18,8 @@ namespace QL_TrangTrai
         private DataTable dtChiTiet;
         private DataTable dtCayTrong;
         private DataTable dtNhanVien;
+        private int _maNguoiDung = 0;
+        private int _maVaiTro = 1;
 
         // Biến lưu trạng thái đang thêm mới hay sửa
         private bool isAddNew = false;
@@ -30,6 +33,14 @@ namespace QL_TrangTrai
             InitializeComponent();
             this.Load += FrmChiTietThuHoachCayTrong_Load;
         }
+        public frmChiTietThuHoachCayTrong(int maNguoiDung, int maVaiTro)
+        {
+            InitializeComponent();
+            _maNguoiDung = maNguoiDung;
+            _maVaiTro = maVaiTro;
+            this.Load += FrmChiTietThuHoachCayTrong_Load;
+        }
+
 
         #endregion
 
@@ -121,6 +132,7 @@ namespace QL_TrangTrai
         /// </summary>
         private void LoadNhanVien()
         {
+            MessageBox.Show($"MaVaiTro: {_maVaiTro}, MaNguoiDung: {_maNguoiDung}");
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -141,6 +153,24 @@ namespace QL_TrangTrai
                     cboNhanVien.DisplayMember = "HoTen";
                     cboNhanVien.ValueMember = "MaNV";
                     cboNhanVien.SelectedIndex = 0;
+
+                    // ✅ NẾU LÀ NHÂN VIÊN -> Tự động chọn và khóa
+                    if (_maVaiTro == 2 && _maNguoiDung > 0)
+                    {
+                        // Tìm MaNV từ MaNguoiDung
+                        string queryNV = "SELECT MaNV FROM NhanVien WHERE MaNguoiDung = @MaNguoiDung";
+                        using (SqlCommand cmd = new SqlCommand(queryNV, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@MaNguoiDung", _maNguoiDung);
+                            object result = cmd.ExecuteScalar();
+                            if (result != null && result != DBNull.Value)
+                            {
+                                int maNV = Convert.ToInt32(result);
+                                cboNhanVien.SelectedValue = maNV;
+                                cboNhanVien.Enabled = false; // Khóa không cho đổi
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -565,7 +595,11 @@ namespace QL_TrangTrai
             txtTenCay.Font = new Font("Segoe UI", 10F, FontStyle.Italic);
 
             // Clear phần sản phẩm
-            cboNhanVien.SelectedIndex = 0;
+            // Clear phần sản phẩm - CHỈ RESET NẾU LÀ ADMIN
+            if (_maVaiTro == 1)
+            {
+                cboNhanVien.SelectedIndex = 0;
+            }
             txtTenSP.Text = "";
             txtDonViSP.Text = "";
             txtGiaBan.Text = "0";
@@ -587,7 +621,13 @@ namespace QL_TrangTrai
         /// </summary>
         private void SetSanPhamControlsEnabled(bool enabled)
         {
-            cboNhanVien.Enabled = enabled;
+            // Chỉ cho phép thay đổi nhân viên nếu là Admin
+            if (_maVaiTro == 1)
+            {
+                cboNhanVien.Enabled = enabled;
+            }
+            // Nhân viên luôn bị khóa ComboBox nhân viên
+
             txtTenSP.Enabled = enabled;
             txtDonViSP.Enabled = enabled;
             txtGiaBan.Enabled = enabled;

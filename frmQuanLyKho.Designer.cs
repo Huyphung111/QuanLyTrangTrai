@@ -42,10 +42,10 @@
             this.txtMaKho = new System.Windows.Forms.TextBox();
             this.lblMaKho = new System.Windows.Forms.Label();
             this.grpThemThietBi = new System.Windows.Forms.GroupBox();
-            this.lblDonGia = new System.Windows.Forms.Label();
             this.lblPhuongThucTT = new System.Windows.Forms.Label();
-            this.nudDonGia = new System.Windows.Forms.NumericUpDown();
+            this.lblDonGia = new System.Windows.Forms.Label();
             this.cboPhuongThucTT = new System.Windows.Forms.ComboBox();
+            this.nudDonGia = new System.Windows.Forms.NumericUpDown();
             this.btnXoa = new System.Windows.Forms.Button();
             this.btnLamMoi = new System.Windows.Forms.Button();
             this.btnThemMoi = new System.Windows.Forms.Button();
@@ -65,10 +65,12 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblTitle = new System.Windows.Forms.Label();
+            this.label_tennhanvien = new System.Windows.Forms.Label();
+            this.cboNhanVien_QLKho = new System.Windows.Forms.ComboBox();
             this.grpThongTinKho.SuspendLayout();
             this.grpThemThietBi.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudSoLuong)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDonGia)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSoLuong)).BeginInit();
             this.grpDanhSach.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvThietBi)).BeginInit();
             this.grpTimKiem.SuspendLayout();
@@ -164,7 +166,7 @@
             this.lblNgayNhap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lblNgayNhap.Location = new System.Drawing.Point(20, 63);
             this.lblNgayNhap.Name = "lblNgayNhap";
-            this.lblNgayNhap.Size = new System.Drawing.Size(74, 25);
+            this.lblNgayNhap.Size = new System.Drawing.Size(103, 25);
             this.lblNgayNhap.TabIndex = 6;
             this.lblNgayNhap.Text = "Ngày nhập:";
             // 
@@ -228,9 +230,11 @@
             this.lblMaKho.TabIndex = 0;
             this.lblMaKho.Text = "Mã kho:";
             // 
-            // grpThemThietBi - ĐÃ SỬA: Thêm nudDonGia và cboPhuongThucTT vào đây
+            // grpThemThietBi
             // 
             this.grpThemThietBi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(248)))), ((int)(((byte)(225)))));
+            this.grpThemThietBi.Controls.Add(this.label_tennhanvien);
+            this.grpThemThietBi.Controls.Add(this.cboNhanVien_QLKho);
             this.grpThemThietBi.Controls.Add(this.lblPhuongThucTT);
             this.grpThemThietBi.Controls.Add(this.lblDonGia);
             this.grpThemThietBi.Controls.Add(this.cboPhuongThucTT);
@@ -253,17 +257,6 @@
             this.grpThemThietBi.TabStop = false;
             this.grpThemThietBi.Text = "🔧 THÊM THIẾT BỊ MỚI";
             // 
-            // lblDonGia
-            // 
-            this.lblDonGia.AutoSize = true;
-            this.lblDonGia.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblDonGia.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblDonGia.Location = new System.Drawing.Point(440, 68);
-            this.lblDonGia.Name = "lblDonGia";
-            this.lblDonGia.Size = new System.Drawing.Size(73, 25);
-            this.lblDonGia.TabIndex = 14;
-            this.lblDonGia.Text = "Đơn giá:";
-            // 
             // lblPhuongThucTT
             // 
             this.lblPhuongThucTT.AutoSize = true;
@@ -271,26 +264,22 @@
             this.lblPhuongThucTT.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lblPhuongThucTT.Location = new System.Drawing.Point(440, 105);
             this.lblPhuongThucTT.Name = "lblPhuongThucTT";
-            this.lblPhuongThucTT.Size = new System.Drawing.Size(108, 25);
+            this.lblPhuongThucTT.Size = new System.Drawing.Size(105, 25);
             this.lblPhuongThucTT.TabIndex = 15;
             this.lblPhuongThucTT.Text = "Thanh toán:";
             // 
-            // nudDonGia - ĐÃ SỬA: Di chuyển vào grpThemThietBi
+            // lblDonGia
             // 
-            this.nudDonGia.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.nudDonGia.Location = new System.Drawing.Point(554, 63);
-            this.nudDonGia.Maximum = new decimal(new int[] {
-            999999999,
-            0,
-            0,
-            0});
-            this.nudDonGia.Name = "nudDonGia";
-            this.nudDonGia.Size = new System.Drawing.Size(150, 33);
-            this.nudDonGia.TabIndex = 12;
-            this.nudDonGia.ThousandsSeparator = true;
-            this.nudDonGia.ValueChanged += new System.EventHandler(this.nudDonGia_ValueChanged);
+            this.lblDonGia.AutoSize = true;
+            this.lblDonGia.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblDonGia.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblDonGia.Location = new System.Drawing.Point(440, 68);
+            this.lblDonGia.Name = "lblDonGia";
+            this.lblDonGia.Size = new System.Drawing.Size(79, 25);
+            this.lblDonGia.TabIndex = 14;
+            this.lblDonGia.Text = "Đơn giá:";
             // 
-            // cboPhuongThucTT - ĐÃ SỬA: Di chuyển vào grpThemThietBi và thêm Items
+            // cboPhuongThucTT
             // 
             this.cboPhuongThucTT.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboPhuongThucTT.Font = new System.Drawing.Font("Segoe UI", 9.75F);
@@ -305,6 +294,21 @@
             this.cboPhuongThucTT.Size = new System.Drawing.Size(150, 36);
             this.cboPhuongThucTT.TabIndex = 13;
             this.cboPhuongThucTT.SelectedIndexChanged += new System.EventHandler(this.cboPhuongThucTT_SelectedIndexChanged);
+            // 
+            // nudDonGia
+            // 
+            this.nudDonGia.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.nudDonGia.Location = new System.Drawing.Point(554, 63);
+            this.nudDonGia.Maximum = new decimal(new int[] {
+            999999999,
+            0,
+            0,
+            0});
+            this.nudDonGia.Name = "nudDonGia";
+            this.nudDonGia.Size = new System.Drawing.Size(150, 33);
+            this.nudDonGia.TabIndex = 12;
+            this.nudDonGia.ThousandsSeparator = true;
+            this.nudDonGia.ValueChanged += new System.EventHandler(this.nudDonGia_ValueChanged);
             // 
             // btnXoa
             // 
@@ -360,9 +364,9 @@
             this.cboNhaCungCap.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.cboNhaCungCap.ForeColor = System.Drawing.Color.Black;
             this.cboNhaCungCap.FormattingEnabled = true;
-            this.cboNhaCungCap.Location = new System.Drawing.Point(130, 63);
+            this.cboNhaCungCap.Location = new System.Drawing.Point(151, 63);
             this.cboNhaCungCap.Name = "cboNhaCungCap";
-            this.cboNhaCungCap.Size = new System.Drawing.Size(290, 36);
+            this.cboNhaCungCap.Size = new System.Drawing.Size(258, 36);
             this.cboNhaCungCap.TabIndex = 5;
             // 
             // lblNhaCungCap
@@ -372,7 +376,7 @@
             this.lblNhaCungCap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lblNhaCungCap.Location = new System.Drawing.Point(20, 68);
             this.lblNhaCungCap.Name = "lblNhaCungCap";
-            this.lblNhaCungCap.Size = new System.Drawing.Size(104, 25);
+            this.lblNhaCungCap.Size = new System.Drawing.Size(125, 25);
             this.lblNhaCungCap.TabIndex = 4;
             this.lblNhaCungCap.Text = "Nhà cung cấp:";
             // 
@@ -564,6 +568,24 @@
             this.lblTitle.Text = "📦 QUẢN LÝ KHO & THIẾT BỊ";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label_tennhanvien
+            // 
+            this.label_tennhanvien.AutoSize = true;
+            this.label_tennhanvien.Location = new System.Drawing.Point(20, 108);
+            this.label_tennhanvien.Name = "label_tennhanvien";
+            this.label_tennhanvien.Size = new System.Drawing.Size(114, 28);
+            this.label_tennhanvien.TabIndex = 17;
+            this.label_tennhanvien.Text = "Nhân viên:";
+            // 
+            // cboNhanVien_QLKho
+            // 
+            this.cboNhanVien_QLKho.FormattingEnabled = true;
+            this.cboNhanVien_QLKho.Location = new System.Drawing.Point(156, 105);
+            this.cboNhanVien_QLKho.Name = "cboNhanVien_QLKho";
+            this.cboNhanVien_QLKho.Size = new System.Drawing.Size(178, 36);
+            this.cboNhanVien_QLKho.TabIndex = 16;
+            this.cboNhanVien_QLKho.SelectedIndexChanged += new System.EventHandler(this.cboNhanVien_QLKho_SelectedIndexChanged);
+            // 
             // frmQuanLyKho
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
@@ -587,8 +609,8 @@
             this.grpThongTinKho.PerformLayout();
             this.grpThemThietBi.ResumeLayout(false);
             this.grpThemThietBi.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudSoLuong)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDonGia)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSoLuong)).EndInit();
             this.grpDanhSach.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvThietBi)).EndInit();
             this.grpTimKiem.ResumeLayout(false);
@@ -639,5 +661,7 @@
         private System.Windows.Forms.ComboBox cboPhuongThucTT;
         private System.Windows.Forms.Label lblDonGia;
         private System.Windows.Forms.Label lblPhuongThucTT;
+        private System.Windows.Forms.Label label_tennhanvien;
+        private System.Windows.Forms.ComboBox cboNhanVien_QLKho;
     }
 }

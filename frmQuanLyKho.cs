@@ -17,11 +17,17 @@ namespace QL_TrangTrai
         // ========== THÊM: Biến lưu MaNV người đang đăng nhập ==========
         private int currentMaNV = 1; // Mặc định là 1, hoặc truyền từ form đăng nhập
 
-        public frmQuanLyKho()
+        private int _maNguoiDung = 0;
+        private int _maVaiTro = 1;
+
+        public frmQuanLyKho(int maNguoiDung, int maVaiTro)
         {
             InitializeComponent();
             CustomizeDataGridView();
+            _maNguoiDung = maNguoiDung;
+            _maVaiTro = maVaiTro;
         }
+
 
         // Constructor có tham số MaNV (nếu cần truyền từ form khác)
         public frmQuanLyKho(int maNV)
@@ -33,11 +39,96 @@ namespace QL_TrangTrai
 
         #region Form Load & Initialize
 
+        // ✅ ĐÃ SỬA: Fix lỗi cast và tự động chọn nhân viên
+        private void LoadNhanVienQLKho()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    // Load danh sách nhân viên
+                    string sql = "SELECT MaNV, HoTen FROM NhanVien ORDER BY HoTen";
+                    SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    // ✅ QUAN TRỌNG: Phải set DataSource = null trước để tránh lỗi
+                    cboNhanVien_QLKho.DataSource = null;
+                    cboNhanVien_QLKho.DisplayMember = "HoTen";
+                    cboNhanVien_QLKho.ValueMember = "MaNV";
+                    cboNhanVien_QLKho.DataSource = dt;
+                    cboNhanVien_QLKho.SelectedIndex = -1;
+
+                    // ===============================
+                    // 🔐 NẾU LÀ NHÂN VIÊN ĐĂNG NHẬP
+                    // ===============================
+                    if (_maVaiTro == 2 && _maNguoiDung > 0)
+                    {
+                        // Truy vấn MaNV từ MaNguoiDung
+                        string sqlNV = @"
+                            SELECT MaNV 
+                            FROM NhanVien 
+                            WHERE MaNguoiDung = @MaNguoiDung";
+
+                        using (SqlCommand cmd = new SqlCommand(sqlNV, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@MaNguoiDung", _maNguoiDung);
+                            object result = cmd.ExecuteScalar();
+
+                            if (result != null && result != DBNull.Value)
+                            {
+                                int maNV = Convert.ToInt32(result);
+
+                                // ✅ CÁCH 1: Dùng vòng lặp (an toàn nhất)
+                                bool found = false;
+                                foreach (DataRowView item in cboNhanVien_QLKho.Items)
+                                {
+                                    if (Convert.ToInt32(item["MaNV"]) == maNV)
+                                    {
+                                        cboNhanVien_QLKho.SelectedItem = item;
+                                        found = true;
+                                        break;
+                                    }
+                                }
+
+                                // ✅ CÁCH 2: Nếu cách 1 không work, dùng SelectedValue
+                                if (!found)
+                                {
+                                    cboNhanVien_QLKho.SelectedValue = maNV;
+                                }
+
+                                cboNhanVien_QLKho.Enabled = false; // 🔒 KHÓA không cho đổi
+                                currentMaNV = maNV; // Gán để ghi giao dịch
+                            }
+                            else
+                            {
+                                MessageBox.Show("Không tìm thấy nhân viên tương ứng với tài khoản này!",
+                                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // ADMIN - Được phép chọn bất kỳ nhân viên nào
+                        cboNhanVien_QLKho.Enabled = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi load nhân viên:\n" + ex.Message, "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void frmQuanLyKho_Load(object sender, EventArgs e)
         {
             LoadThongTinKho();
             LoadNhaCungCap();
             LoadThietBi();
+            LoadNhanVienQLKho();
             UpdateTongThietBi();
         }
 
@@ -494,5 +585,14 @@ namespace QL_TrangTrai
         {
 
         }
+
+        private void cboNhanVien_QLKho_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboNhanVien_QLKho.SelectedValue != null)
+            {
+                currentMaNV = Convert.ToInt32(cboNhanVien_QLKho.SelectedValue);
+            }
+        }
+
     }
 }

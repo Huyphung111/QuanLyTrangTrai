@@ -7,18 +7,37 @@ namespace QL_TrangTrai
 {
     public partial class frmBanHang : Form
     {
-        // Connection string - THAY ĐỔI THEO DATABASE CỦA BẠN
+        // =========================
+        // CONNECTION STRING
+        // =========================
         private string connectionString = @"Data Source=HUYNE;Initial Catalog=QL_TrangTraiv13;Integrated Security=True";
 
-        // Biến lưu thông tin sản phẩm
+        // =========================
+        // THÔNG TIN SẢN PHẨM
+        // =========================
         private int maSP;
         private string tenSP;
         private decimal giaBan;
         private int tonKho;
         private string donVi;
 
-        // Constructor nhận thông tin sản phẩm từ form Quản lý Sản phẩm
-        public frmBanHang(int maSP, string tenSP, decimal giaBan, int tonKho, string donVi)
+        // =========================
+        // THÔNG TIN ĐĂNG NHẬP
+        // =========================
+        private int _maNguoiDung;
+        private int _maVaiTro;
+
+        // =========================
+        // CONSTRUCTOR
+        // =========================
+        public frmBanHang(
+            int maSP,
+            string tenSP,
+            decimal giaBan,
+            int tonKho,
+            string donVi,
+            int maNguoiDung,
+            int maVaiTro)
         {
             InitializeComponent();
 
@@ -27,34 +46,34 @@ namespace QL_TrangTrai
             this.giaBan = giaBan;
             this.tonKho = tonKho;
             this.donVi = donVi;
+
+            _maNguoiDung = maNguoiDung;
+            _maVaiTro = maVaiTro;
         }
 
+        // =========================
+        // FORM LOAD
+        // =========================
         private void frmBanHang_Load(object sender, EventArgs e)
         {
-            // Load nhân viên
             LoadNhanVien();
+            LoadPhuongThuc();
 
-            // Load phương thức thanh toán
-            cboPhuongThuc.Items.AddRange(new string[] { "Tiền mặt", "Chuyển khoản", "Khác" });
-            cboPhuongThuc.SelectedIndex = 0;
-
-            // Set ngày mặc định = hôm nay
             dtpNgayGiaoDich.Value = DateTime.Now;
 
-            // Điền thông tin sản phẩm vào form
             txtMaSP.Text = maSP.ToString();
             txtTenSP.Text = tenSP;
             txtDonVi.Text = donVi;
-            txtTonKho.Text = tonKho.ToString() + " " + donVi;
-            txtGiaBan.Text = giaBan.ToString("N0") + " VNĐ";
-
-            // Mô tả mặc định
+            txtTonKho.Text = $"{tonKho} {donVi}";
+            txtGiaBan.Text = $"{giaBan:N0} VNĐ";
             txtMoTa.Text = "Bán " + tenSP;
 
-            // Focus vào ô số lượng bán
             txtSoLuongBan.Focus();
         }
 
+        // =========================
+        // LOAD NHÂN VIÊN + PHÂN QUYỀN
+        // =========================
         private void LoadNhanVien()
         {
             try
@@ -62,6 +81,8 @@ namespace QL_TrangTrai
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
+
+                    // Load danh sách nhân viên
                     string sql = "SELECT MaNV, HoTen FROM NhanVien";
                     SqlDataAdapter da = new SqlDataAdapter(sql, conn);
                     DataTable dt = new DataTable();
@@ -70,219 +91,161 @@ namespace QL_TrangTrai
                     cboNhanVien.DataSource = dt;
                     cboNhanVien.DisplayMember = "HoTen";
                     cboNhanVien.ValueMember = "MaNV";
+
+                    // Nếu là NHÂN VIÊN → auto chọn & khóa
+                    if (_maVaiTro == 2 && _maNguoiDung > 0)
+                    {
+                        string sqlNV = "SELECT MaNV FROM NhanVien WHERE MaNguoiDung = @MaNguoiDung";
+                        using (SqlCommand cmd = new SqlCommand(sqlNV, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@MaNguoiDung", _maNguoiDung);
+                            object result = cmd.ExecuteScalar();
+
+                            if (result != null && result != DBNull.Value)
+                            {
+                                cboNhanVien.SelectedValue = Convert.ToInt32(result);
+                                cboNhanVien.Enabled = false; // 🔒 khóa
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi load nhân viên: " + ex.Message, "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Lỗi load nhân viên:\n" + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        // =========================
+        // LOAD PHƯƠNG THỨC
+        // =========================
+        private void LoadPhuongThuc()
+        {
+            cboPhuongThuc.Items.Clear();
+            cboPhuongThuc.Items.AddRange(new string[] { "Tiền mặt", "Chuyển khoản", "Khác" });
+            cboPhuongThuc.SelectedIndex = 0;
+        }
+
+        // =========================
+        // TÍNH THÀNH TIỀN
+        // =========================
         private void txtSoLuongBan_TextChanged(object sender, EventArgs e)
         {
-            // Tự động tính thành tiền khi thay đổi số lượng
-            TinhThanhTien();
-        }
-
-        private void TinhThanhTien()
-        {
-            try
-            {
-                // Lấy số lượng bán
-                if (int.TryParse(txtSoLuongBan.Text, out int soLuongBan) && soLuongBan > 0)
-                {
-                    decimal thanhTien = soLuongBan * giaBan;
-                    lblThanhTien.Text = thanhTien.ToString("N0") + " VNĐ";
-                }
-                else
-                {
-                    lblThanhTien.Text = "0 VNĐ";
-                }
-            }
-            catch
-            {
+            if (int.TryParse(txtSoLuongBan.Text, out int sl) && sl > 0)
+                lblThanhTien.Text = $"{sl * giaBan:N0} VNĐ";
+            else
                 lblThanhTien.Text = "0 VNĐ";
-            }
         }
 
+        // =========================
+        // NÚT HOÀN THÀNH
+        // =========================
         private void btnHoanThanh_Click(object sender, EventArgs e)
         {
-            // Validation
-            if (cboNhanVien.SelectedIndex == -1)
-            {
-                MessageBox.Show("Vui lòng chọn nhân viên!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cboNhanVien.Focus();
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtSoLuongBan.Text))
-            {
-                MessageBox.Show("Vui lòng nhập số lượng bán!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtSoLuongBan.Focus();
-                return;
-            }
-
             if (!int.TryParse(txtSoLuongBan.Text, out int soLuongBan) || soLuongBan <= 0)
             {
-                MessageBox.Show("Số lượng bán phải là số nguyên dương!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtSoLuongBan.Focus();
+                MessageBox.Show("Số lượng bán không hợp lệ!", "Cảnh báo");
                 return;
             }
 
             if (soLuongBan > tonKho)
             {
-                MessageBox.Show($"Số lượng bán ({soLuongBan}) vượt quá tồn kho ({tonKho})!",
-                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtSoLuongBan.Focus();
+                MessageBox.Show("Số lượng bán vượt tồn kho!", "Cảnh báo");
                 return;
             }
 
-            // Xác nhận
             decimal thanhTien = soLuongBan * giaBan;
-            DialogResult confirm = MessageBox.Show(
-                $"Xác nhận bán hàng?\n\n" +
-                $"📦 Sản phẩm: {tenSP}\n" +
-                $"📊 Số lượng: {soLuongBan} {donVi}\n" +
-                $"💰 Thành tiền: {thanhTien:N0} VNĐ",
-                "Xác nhận",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
 
-            if (confirm == DialogResult.Yes)
+            if (MessageBox.Show(
+                $"Xác nhận bán?\n\nSản phẩm: {tenSP}\nSố lượng: {soLuongBan} {donVi}\nThành tiền: {thanhTien:N0} VNĐ",
+                "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                // Thực hiện bán hàng
                 BanHang(soLuongBan, thanhTien);
             }
         }
 
+        // =========================
+        // HÀM BÁN HÀNG (TRANSACTION)
+        // =========================
         private void BanHang(int soLuongBan, decimal thanhTien)
         {
-            SqlConnection conn = new SqlConnection(connectionString);
-            SqlTransaction trans = null;
-
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                trans = conn.BeginTransaction();
+                SqlTransaction trans = conn.BeginTransaction();
 
-                // =========================
-                // LẤY THÔNG TIN CHUNG
-                // =========================
-                int maNV = Convert.ToInt32(cboNhanVien.SelectedValue);
-                string phuongThuc = cboPhuongThuc.SelectedItem.ToString();
-                DateTime ngayGD = dtpNgayGiaoDich.Value;
-                string moTa = txtMoTa.Text;
+                try
+                {
+                    int maNV = Convert.ToInt32(cboNhanVien.SelectedValue);
 
-                // =========================
-                // BƯỚC 1: LẤY MÃ GIAO DỊCH
-                // =========================
-                string sqlGetMaGD = "SELECT ISNULL(MAX(MaGiaoDich), 0) + 1 FROM TaiChinh";
-                SqlCommand cmdGetMaGD = new SqlCommand(sqlGetMaGD, conn, trans);
-                int maGiaoDich = Convert.ToInt32(cmdGetMaGD.ExecuteScalar());
+                    // 1. Mã giao dịch
+                    SqlCommand cmdMaGD = new SqlCommand(
+                        "SELECT ISNULL(MAX(MaGiaoDich),0)+1 FROM TaiChinh",
+                        conn, trans);
+                    int maGD = Convert.ToInt32(cmdMaGD.ExecuteScalar());
 
-                // =========================
-                // BƯỚC 2: INSERT TAI CHÍNH
-                // =========================
-                string sqlTaiChinh = @"
-            INSERT INTO TaiChinh
-            (MaGiaoDich, LoaiGiaoDich, SoTien, NgayGiaoDich, MoTa, PhuongThucTT, MaNV)
-            VALUES
-            (@MaGiaoDich, N'Thu', @SoTien, @NgayGD, @MoTa, @PhuongThuc, @MaNV)";
+                    // 2. TaiChinh
+                    SqlCommand cmdTC = new SqlCommand(@"
+                        INSERT INTO TaiChinh
+                        (MaGiaoDich, LoaiGiaoDich, SoTien, NgayGiaoDich, MoTa, PhuongThucTT, MaNV)
+                        VALUES (@MaGD, N'Thu', @Tien, @Ngay, @MoTa, @PT, @MaNV)",
+                        conn, trans);
 
-                SqlCommand cmdTaiChinh = new SqlCommand(sqlTaiChinh, conn, trans);
-                cmdTaiChinh.Parameters.AddWithValue("@MaGiaoDich", maGiaoDich);
-                cmdTaiChinh.Parameters.AddWithValue("@SoTien", thanhTien);
-                cmdTaiChinh.Parameters.AddWithValue("@NgayGD", ngayGD);
-                cmdTaiChinh.Parameters.AddWithValue("@MoTa", moTa);
-                cmdTaiChinh.Parameters.AddWithValue("@PhuongThuc", phuongThuc);
-                cmdTaiChinh.Parameters.AddWithValue("@MaNV", maNV);
-                cmdTaiChinh.ExecuteNonQuery();
+                    cmdTC.Parameters.AddWithValue("@MaGD", maGD);
+                    cmdTC.Parameters.AddWithValue("@Tien", thanhTien);
+                    cmdTC.Parameters.AddWithValue("@Ngay", dtpNgayGiaoDich.Value);
+                    cmdTC.Parameters.AddWithValue("@MoTa", txtMoTa.Text);
+                    cmdTC.Parameters.AddWithValue("@PT", cboPhuongThuc.Text);
+                    cmdTC.Parameters.AddWithValue("@MaNV", maNV);
+                    cmdTC.ExecuteNonQuery();
 
-                // =========================
-                // BƯỚC 3: LẤY MÃ CHI TIẾT
-                // =========================
-                string sqlGetMaCT = "SELECT ISNULL(MAX(MaChiTiet), 0) + 1 FROM ChiTietGiaoDich";
-                SqlCommand cmdGetMaCT = new SqlCommand(sqlGetMaCT, conn, trans);
-                int maChiTiet = Convert.ToInt32(cmdGetMaCT.ExecuteScalar());
+                    // 3. Chi tiết giao dịch
+                    SqlCommand cmdCT = new SqlCommand(
+                        "SELECT ISNULL(MAX(MaChiTiet),0)+1 FROM ChiTietGiaoDich",
+                        conn, trans);
+                    int maCT = Convert.ToInt32(cmdCT.ExecuteScalar());
 
-                // =========================
-                // BƯỚC 4: INSERT CHI TIẾT GIAO DỊCH
-                // =========================
-                string sqlChiTiet = @"
-            INSERT INTO ChiTietGiaoDich
-            (MaChiTiet, MaGiaoDich, MaSP, SoLuong, DonGia)
-            VALUES
-            (@MaChiTiet, @MaGiaoDich, @MaSP, @SoLuong, @DonGia)";
+                    SqlCommand cmdInsertCT = new SqlCommand(@"
+                        INSERT INTO ChiTietGiaoDich
+                        (MaChiTiet, MaGiaoDich, MaSP, SoLuong, DonGia)
+                        VALUES (@CT, @GD, @SP, @SL, @Gia)",
+                        conn, trans);
 
-                SqlCommand cmdChiTiet = new SqlCommand(sqlChiTiet, conn, trans);
-                cmdChiTiet.Parameters.AddWithValue("@MaChiTiet", maChiTiet);
-                cmdChiTiet.Parameters.AddWithValue("@MaGiaoDich", maGiaoDich);
-                cmdChiTiet.Parameters.AddWithValue("@MaSP", maSP);
-                cmdChiTiet.Parameters.AddWithValue("@SoLuong", soLuongBan);
-                cmdChiTiet.Parameters.AddWithValue("@DonGia", giaBan);
-                cmdChiTiet.ExecuteNonQuery();
+                    cmdInsertCT.Parameters.AddWithValue("@CT", maCT);
+                    cmdInsertCT.Parameters.AddWithValue("@GD", maGD);
+                    cmdInsertCT.Parameters.AddWithValue("@SP", maSP);
+                    cmdInsertCT.Parameters.AddWithValue("@SL", soLuongBan);
+                    cmdInsertCT.Parameters.AddWithValue("@Gia", giaBan);
+                    cmdInsertCT.ExecuteNonQuery();
 
-                // =====================================================
-                // BƯỚC 5: 🔒 GỌI STORED PROCEDURE KHÓA + TRỪ TỒN KHO
-                // (THỂ HIỆN CLO 2.3)
-                // =====================================================
-                SqlCommand cmdKhoa = new SqlCommand("sp_KhoaBanSanPham", conn, trans);
-                cmdKhoa.CommandType = CommandType.StoredProcedure;
-                cmdKhoa.Parameters.AddWithValue("@MaSP", maSP);
-                cmdKhoa.Parameters.AddWithValue("@SoLuong", soLuongBan);
-                cmdKhoa.ExecuteNonQuery();
+                    // 4. Trừ tồn kho (SP)
+                    SqlCommand cmdKhoa = new SqlCommand(
+                        "sp_KhoaBanSanPham", conn, trans);
+                    cmdKhoa.CommandType = CommandType.StoredProcedure;
+                    cmdKhoa.Parameters.AddWithValue("@MaSP", maSP);
+                    cmdKhoa.Parameters.AddWithValue("@SoLuong", soLuongBan);
+                    cmdKhoa.ExecuteNonQuery();
 
-                // =========================
-                // BƯỚC 6: COMMIT TRANSACTION
-                // =========================
-                trans.Commit();
+                    trans.Commit();
 
-                // =========================
-                // THÔNG BÁO THÀNH CÔNG
-                // =========================
-                MessageBox.Show(
-                    $"✅ THÀNH CÔNG!\n\n" +
-                    $"• Sản phẩm: {tenSP}\n" +
-                    $"• Số lượng: {soLuongBan} {donVi}\n" +
-                    $"• Thành tiền: {thanhTien:N0} VNĐ\n\n" +
-                    $"📝 Mã giao dịch: #{maGiaoDich}",
-                    "Thành công",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
-
-                this.DialogResult = DialogResult.OK;
-                this.Close();
-            }
-            catch (Exception ex)
-            {
-                if (trans != null)
+                    MessageBox.Show($"✅ Bán thành công!\n\nMã GD: {maGD}", "Thành công");
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
                     trans.Rollback();
-
-                MessageBox.Show(
-                    $"❌ LỖI!\n\n{ex.Message}",
-                    "Lỗi",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
-            finally
-            {
-                if (conn.State == ConnectionState.Open)
-                    conn.Close();
+                    MessageBox.Show("❌ Lỗi:\n" + ex.Message);
+                }
             }
         }
 
-
+        // =========================
+        // HỦY
+        // =========================
         private void btnHuy_Click(object sender, EventArgs e)
         {
-            // Đóng form
-            this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
     }

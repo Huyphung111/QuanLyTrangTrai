@@ -46,7 +46,11 @@
             this.btn_Them = new System.Windows.Forms.ToolStripButton();
             this.btn_Xoa = new System.Windows.Forms.ToolStripButton();
             this.btn_Sua = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.btn_Huy = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip_thuhoach = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.toolStrip4 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
@@ -57,10 +61,6 @@
             this.txt_NgayGieoTrong = new System.Windows.Forms.DateTimePicker();
             this.button1 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStrip_thuhoach = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_QLCayTrong)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
@@ -258,6 +258,14 @@
             this.btn_Sua.Size = new System.Drawing.Size(66, 59);
             this.btn_Sua.Text = "Sửa";
             // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(65, 59);
+            this.toolStripButton2.Text = "Lưu";
+            // 
             // btn_Huy
             // 
             this.btn_Huy.Image = ((System.Drawing.Image)(resources.GetObject("btn_Huy.Image")));
@@ -266,6 +274,24 @@
             this.btn_Huy.Size = new System.Drawing.Size(68, 59);
             this.btn_Huy.Text = "Hủy";
             this.btn_Huy.Click += new System.EventHandler(this.btn_Huy_Click);
+            // 
+            // toolStrip_thuhoach
+            // 
+            this.toolStrip_thuhoach.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStrip_thuhoach.Name = "toolStrip_thuhoach";
+            this.toolStrip_thuhoach.Size = new System.Drawing.Size(98, 59);
+            this.toolStrip_thuhoach.Text = "Thu hoạch";
+            this.toolStrip_thuhoach.Click += new System.EventHandler(this.toolStrip_thuhoach_Click);
+            // 
+            // toolStripSeparator
+            // 
+            this.toolStripSeparator.Name = "toolStripSeparator";
+            this.toolStripSeparator.Size = new System.Drawing.Size(6, 64);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 64);
             // 
             // tableLayoutPanel1
             // 
@@ -406,32 +432,6 @@
             this.label6.TabIndex = 40;
             this.label6.Text = "Khu vực: ";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // toolStripButton2
-            // 
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(65, 59);
-            this.toolStripButton2.Text = "Lưu";
-            // 
-            // toolStripSeparator
-            // 
-            this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(6, 64);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 64);
-            // 
-            // toolStrip_thuhoach
-            // 
-            this.toolStrip_thuhoach.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStrip_thuhoach.Name = "toolStrip_thuhoach";
-            this.toolStrip_thuhoach.Size = new System.Drawing.Size(98, 59);
-            this.toolStrip_thuhoach.Text = "Thu hoạch";
-            this.toolStrip_thuhoach.Click += new System.EventHandler(this.toolStrip_thuhoach_Click);
             // 
             // QL_CayTrong
             // 

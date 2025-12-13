@@ -59,11 +59,11 @@
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStrip_XemCanhBao = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStrip3 = new System.Windows.Forms.ToolStrip();
-            this.btn_Thoat = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
             this.Thongbao_label = new System.Windows.Forms.ToolStripLabel();
+            this.toolStrip3 = new System.Windows.Forms.ToolStrip();
+            this.btn_Thoat = new System.Windows.Forms.ToolStripButton();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_QLVatNuoi)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.vatNuoiBindingSource)).BeginInit();
@@ -384,26 +384,6 @@
             this.toolStripLabel2.Size = new System.Drawing.Size(126, 50);
             this.toolStripLabel2.Text = "Xem canh bao";
             // 
-            // toolStrip3
-            // 
-            this.toolStrip3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolStrip3.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.toolStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btn_Thoat});
-            this.toolStrip3.Location = new System.Drawing.Point(1280, 498);
-            this.toolStrip3.Name = "toolStrip3";
-            this.toolStrip3.Size = new System.Drawing.Size(259, 58);
-            this.toolStrip3.TabIndex = 16;
-            this.toolStrip3.Text = "toolStrip3";
-            // 
-            // btn_Thoat
-            // 
-            this.btn_Thoat.Image = ((System.Drawing.Image)(resources.GetObject("btn_Thoat.Image")));
-            this.btn_Thoat.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_Thoat.Name = "btn_Thoat";
-            this.btn_Thoat.Size = new System.Drawing.Size(81, 53);
-            this.btn_Thoat.Text = "Thoát";
-            // 
             // toolStripButton1
             // 
             this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -426,6 +406,26 @@
             this.Thongbao_label.Name = "Thongbao_label";
             this.Thongbao_label.Size = new System.Drawing.Size(119, 50);
             this.Thongbao_label.Text = "THONG BAO ";
+            // 
+            // toolStrip3
+            // 
+            this.toolStrip3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolStrip3.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.toolStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btn_Thoat});
+            this.toolStrip3.Location = new System.Drawing.Point(1280, 498);
+            this.toolStrip3.Name = "toolStrip3";
+            this.toolStrip3.Size = new System.Drawing.Size(259, 58);
+            this.toolStrip3.TabIndex = 16;
+            this.toolStrip3.Text = "toolStrip3";
+            // 
+            // btn_Thoat
+            // 
+            this.btn_Thoat.Image = ((System.Drawing.Image)(resources.GetObject("btn_Thoat.Image")));
+            this.btn_Thoat.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_Thoat.Name = "btn_Thoat";
+            this.btn_Thoat.Size = new System.Drawing.Size(81, 53);
+            this.btn_Thoat.Text = "Thoát";
             // 
             // QL_VatNuoi
             // 

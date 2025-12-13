@@ -506,17 +506,18 @@ namespace Đồ_án
 
         private void toolStrip_thuhoach_Click(object sender, EventArgs e)
         {
-            // Lấy form cha (GiaoDien)
             GiaoDien mainForm = this.ParentForm as GiaoDien;
 
             if (mainForm != null)
             {
-                // Mở form Chi tiết thu hoạch cây trồng trong panel
-                mainForm.OpenFormInPanel(new frmChiTietThuHoachCayTrong());
+                // Truyền MaNguoiDung và MaVaiTro sang form thu hoạch
+                frmChiTietThuHoachCayTrong frmThuHoach = new frmChiTietThuHoachCayTrong(
+                    mainForm.MaNguoiDung,
+                    mainForm.MaVaiTro);  // Cần thêm property MaVaiTro vào GiaoDien
+                mainForm.OpenFormInPanel(frmThuHoach);
             }
             else
             {
-                // Nếu không tìm thấy form cha, mở form mới độc lập
                 frmChiTietThuHoachCayTrong frmThuHoach = new frmChiTietThuHoachCayTrong();
                 frmThuHoach.Show();
             }

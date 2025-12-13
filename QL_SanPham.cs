@@ -23,6 +23,8 @@ namespace Đồ_án
 
         private SqlConnection conn;
         private DataTable dtSanPham;
+        private int _maNguoiDung;
+        private int _maVaiTro;
 
         // Biến kiểm tra trạng thái
         private bool isAdding = false;
@@ -99,6 +101,14 @@ namespace Đồ_án
             cbo_TimKiem.SelectedIndex = 0;
             cbo_TimKiem.DropDownStyle = ComboBoxStyle.DropDown; // Cho phép nhập text để tìm
         }
+
+        public QL_SanPham(int maNguoiDung, int maVaiTro)
+        {
+            InitializeComponent();
+            _maNguoiDung = maNguoiDung;
+            _maVaiTro = maVaiTro;
+        }
+
 
         /// <summary>
         /// Setup ComboBox Loại SP
@@ -912,7 +922,16 @@ namespace Đồ_án
             }
 
             // Mở form bán hàng
-            frmBanHang frmBan = new frmBanHang(maSP, tenSP, giaBan, tonKho, donVi);
+            frmBanHang frmBan = new frmBanHang(
+     maSP,
+     tenSP,
+     giaBan,
+     tonKho,
+     donVi,
+     _maNguoiDung,
+     _maVaiTro
+ );
+
             DialogResult result = frmBan.ShowDialog();
 
             if (result == DialogResult.OK)

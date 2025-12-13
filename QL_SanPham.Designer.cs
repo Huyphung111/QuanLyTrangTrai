@@ -32,10 +32,17 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(QL_SanPham));
             this.txt_SoLuongTon = new System.Windows.Forms.TextBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.btn_TimKiem = new System.Windows.Forms.ToolStripButton();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.btn_Them = new System.Windows.Forms.ToolStripButton();
+            this.btn_Xoa = new System.Windows.Forms.ToolStripButton();
+            this.btn_Sua = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btn_Luu = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.btn_Huy = new System.Windows.Forms.ToolStripButton();
             this.toolBaoCaoSapHet = new System.Windows.Forms.ToolStripLabel();
+            this.toolStrip_ban = new System.Windows.Forms.ToolStripButton();
             this.toolStrip_banhang = new System.Windows.Forms.ToolStripLabel();
             this.txt_TenSP = new System.Windows.Forms.TextBox();
             this.cbo_TimKiem = new System.Windows.Forms.ComboBox();
@@ -47,6 +54,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dgv_QLSanPham = new System.Windows.Forms.DataGridView();
+            this.sanPhamBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label7 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label8 = new System.Windows.Forms.Label();
@@ -55,24 +63,16 @@
             this.txt_MaThuHoach = new System.Windows.Forms.TextBox();
             this.txt_GiaBan = new System.Windows.Forms.TextBox();
             this.toolStrip3 = new System.Windows.Forms.ToolStrip();
+            this.btn_Thoat = new System.Windows.Forms.ToolStripButton();
             this.cbo_LoaiSP = new System.Windows.Forms.ComboBox();
             this.txt_DonVi = new System.Windows.Forms.TextBox();
             this.dateTimePicker_NgayCapNhat = new System.Windows.Forms.DateTimePicker();
-            this.btn_Them = new System.Windows.Forms.ToolStripButton();
-            this.btn_Xoa = new System.Windows.Forms.ToolStripButton();
-            this.btn_Sua = new System.Windows.Forms.ToolStripButton();
-            this.btn_Luu = new System.Windows.Forms.ToolStripButton();
-            this.btn_Huy = new System.Windows.Forms.ToolStripButton();
-            this.toolStrip_ban = new System.Windows.Forms.ToolStripButton();
-            this.sanPhamBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.btn_TimKiem = new System.Windows.Forms.ToolStripButton();
-            this.btn_Thoat = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_QLSanPham)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sanPhamBindingSource)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.toolStrip3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sanPhamBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // txt_SoLuongTon
@@ -96,6 +96,15 @@
             this.toolStrip1.TabIndex = 14;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // btn_TimKiem
+            // 
+            this.btn_TimKiem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btn_TimKiem.Image = ((System.Drawing.Image)(resources.GetObject("btn_TimKiem.Image")));
+            this.btn_TimKiem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_TimKiem.Name = "btn_TimKiem";
+            this.btn_TimKiem.Size = new System.Drawing.Size(34, 46);
+            this.btn_TimKiem.Text = "Tìm kiếm";
+            // 
             // toolStrip2
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.toolStrip2, 3);
@@ -118,15 +127,55 @@
             this.toolStrip2.TabIndex = 15;
             this.toolStrip2.Text = "toolStrip2";
             // 
+            // btn_Them
+            // 
+            this.btn_Them.Image = ((System.Drawing.Image)(resources.GetObject("btn_Them.Image")));
+            this.btn_Them.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_Them.Name = "btn_Them";
+            this.btn_Them.Size = new System.Drawing.Size(80, 46);
+            this.btn_Them.Text = "Thêm";
+            // 
+            // btn_Xoa
+            // 
+            this.btn_Xoa.Image = ((System.Drawing.Image)(resources.GetObject("btn_Xoa.Image")));
+            this.btn_Xoa.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_Xoa.Name = "btn_Xoa";
+            this.btn_Xoa.Size = new System.Drawing.Size(67, 46);
+            this.btn_Xoa.Text = "Xóa";
+            // 
+            // btn_Sua
+            // 
+            this.btn_Sua.Image = ((System.Drawing.Image)(resources.GetObject("btn_Sua.Image")));
+            this.btn_Sua.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_Sua.Name = "btn_Sua";
+            this.btn_Sua.Size = new System.Drawing.Size(66, 46);
+            this.btn_Sua.Text = "Sửa";
+            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 51);
             // 
+            // btn_Luu
+            // 
+            this.btn_Luu.Image = ((System.Drawing.Image)(resources.GetObject("btn_Luu.Image")));
+            this.btn_Luu.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_Luu.Name = "btn_Luu";
+            this.btn_Luu.Size = new System.Drawing.Size(65, 46);
+            this.btn_Luu.Text = "Lưu";
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 51);
+            // 
+            // btn_Huy
+            // 
+            this.btn_Huy.Image = ((System.Drawing.Image)(resources.GetObject("btn_Huy.Image")));
+            this.btn_Huy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_Huy.Name = "btn_Huy";
+            this.btn_Huy.Size = new System.Drawing.Size(68, 46);
+            this.btn_Huy.Text = "Hủy";
             // 
             // toolBaoCaoSapHet
             // 
@@ -134,6 +183,16 @@
             this.toolBaoCaoSapHet.Size = new System.Drawing.Size(120, 46);
             this.toolBaoCaoSapHet.Text = "📊SP sắp hết";
             this.toolBaoCaoSapHet.Click += new System.EventHandler(this.toolBaoCaoSapHet_Click);
+            // 
+            // toolStrip_ban
+            // 
+            this.toolStrip_ban.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStrip_ban.Image = ((System.Drawing.Image)(resources.GetObject("toolStrip_ban.Image")));
+            this.toolStrip_ban.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStrip_ban.Name = "toolStrip_ban";
+            this.toolStrip_ban.Size = new System.Drawing.Size(34, 46);
+            this.toolStrip_ban.Text = "toolStripButton1";
+            this.toolStrip_ban.Click += new System.EventHandler(this.toolStrip_ban_Click);
             // 
             // toolStrip_banhang
             // 
@@ -249,6 +308,10 @@
             this.dgv_QLSanPham.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_QLSanPham.Size = new System.Drawing.Size(1533, 197);
             this.dgv_QLSanPham.TabIndex = 6;
+            // 
+            // sanPhamBindingSource
+            // 
+            this.sanPhamBindingSource.DataMember = "SanPham";
             // 
             // label7
             // 
@@ -367,6 +430,14 @@
             this.toolStrip3.TabIndex = 22;
             this.toolStrip3.Text = "toolStrip3";
             // 
+            // btn_Thoat
+            // 
+            this.btn_Thoat.Image = ((System.Drawing.Image)(resources.GetObject("btn_Thoat.Image")));
+            this.btn_Thoat.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_Thoat.Name = "btn_Thoat";
+            this.btn_Thoat.Size = new System.Drawing.Size(81, 49);
+            this.btn_Thoat.Text = "Thoát";
+            // 
             // cbo_LoaiSP
             // 
             this.cbo_LoaiSP.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -399,77 +470,6 @@
             this.dateTimePicker_NgayCapNhat.Size = new System.Drawing.Size(250, 26);
             this.dateTimePicker_NgayCapNhat.TabIndex = 25;
             // 
-            // btn_Them
-            // 
-            this.btn_Them.Image = ((System.Drawing.Image)(resources.GetObject("btn_Them.Image")));
-            this.btn_Them.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_Them.Name = "btn_Them";
-            this.btn_Them.Size = new System.Drawing.Size(80, 46);
-            this.btn_Them.Text = "Thêm";
-            // 
-            // btn_Xoa
-            // 
-            this.btn_Xoa.Image = ((System.Drawing.Image)(resources.GetObject("btn_Xoa.Image")));
-            this.btn_Xoa.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_Xoa.Name = "btn_Xoa";
-            this.btn_Xoa.Size = new System.Drawing.Size(67, 46);
-            this.btn_Xoa.Text = "Xóa";
-            // 
-            // btn_Sua
-            // 
-            this.btn_Sua.Image = ((System.Drawing.Image)(resources.GetObject("btn_Sua.Image")));
-            this.btn_Sua.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_Sua.Name = "btn_Sua";
-            this.btn_Sua.Size = new System.Drawing.Size(66, 46);
-            this.btn_Sua.Text = "Sửa";
-            // 
-            // btn_Luu
-            // 
-            this.btn_Luu.Image = ((System.Drawing.Image)(resources.GetObject("btn_Luu.Image")));
-            this.btn_Luu.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_Luu.Name = "btn_Luu";
-            this.btn_Luu.Size = new System.Drawing.Size(65, 46);
-            this.btn_Luu.Text = "Lưu";
-            // 
-            // btn_Huy
-            // 
-            this.btn_Huy.Image = ((System.Drawing.Image)(resources.GetObject("btn_Huy.Image")));
-            this.btn_Huy.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_Huy.Name = "btn_Huy";
-            this.btn_Huy.Size = new System.Drawing.Size(68, 46);
-            this.btn_Huy.Text = "Hủy";
-            // 
-            // toolStrip_ban
-            // 
-            this.toolStrip_ban.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStrip_ban.Image = ((System.Drawing.Image)(resources.GetObject("toolStrip_ban.Image")));
-            this.toolStrip_ban.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStrip_ban.Name = "toolStrip_ban";
-            this.toolStrip_ban.Size = new System.Drawing.Size(34, 46);
-            this.toolStrip_ban.Text = "toolStripButton1";
-            this.toolStrip_ban.Click += new System.EventHandler(this.toolStrip_ban_Click);
-            // 
-            // sanPhamBindingSource
-            // 
-            this.sanPhamBindingSource.DataMember = "SanPham";
-            // 
-            // btn_TimKiem
-            // 
-            this.btn_TimKiem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btn_TimKiem.Image = ((System.Drawing.Image)(resources.GetObject("btn_TimKiem.Image")));
-            this.btn_TimKiem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_TimKiem.Name = "btn_TimKiem";
-            this.btn_TimKiem.Size = new System.Drawing.Size(34, 46);
-            this.btn_TimKiem.Text = "Tìm kiếm";
-            // 
-            // btn_Thoat
-            // 
-            this.btn_Thoat.Image = ((System.Drawing.Image)(resources.GetObject("btn_Thoat.Image")));
-            this.btn_Thoat.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_Thoat.Name = "btn_Thoat";
-            this.btn_Thoat.Size = new System.Drawing.Size(81, 49);
-            this.btn_Thoat.Text = "Thoát";
-            // 
             // QL_SanPham
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -485,11 +485,11 @@
             this.toolStrip2.ResumeLayout(false);
             this.toolStrip2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_QLSanPham)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sanPhamBindingSource)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.toolStrip3.ResumeLayout(false);
             this.toolStrip3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sanPhamBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }

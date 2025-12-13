@@ -16,6 +16,8 @@ namespace QuanLyTrangTrai
         // Chuỗi kết nối - SỬA LẠI CHO ĐÚNG MÁY CỦA BẠN
         // Kiểm tra dòng này trong Form1.cs
         private string connectionString = @"Data Source=HUYNE;Initial Catalog=QL_TrangTraiv13;Integrated Security=True";
+        private int _maVaiTro = 0;
+        private int _maNguoiDung = 0;
 
         public Form1()
         {
@@ -72,7 +74,7 @@ namespace QuanLyTrangTrai
                 this.Hide();
 
                 // Hiển thị form Giao Diện
-                GiaoDien formGiaoDien = new GiaoDien();
+                GiaoDien formGiaoDien = new GiaoDien(_maVaiTro, _maNguoiDung);
                 formGiaoDien.ShowDialog();
 
                 // Đóng form đăng nhập khi thoát giao diện chính
@@ -99,20 +101,26 @@ namespace QuanLyTrangTrai
                 {
                     conn.Open();
 
-                    // Query kiểm tra đăng nhập đơn giản
                     string query = @"
-                        SELECT COUNT(*) 
-                        FROM DangNhap 
-                        WHERE TenDangNhap = @TenDangNhap 
-                        AND MatKhau = @MatKhau";
+                SELECT nd.MaVaiTro, nd.MaNguoiDung 
+                FROM DangNhap dn
+                INNER JOIN NguoiDung nd ON dn.MaNguoiDung = nd.MaNguoiDung
+                WHERE dn.TenDangNhap = @TenDangNhap 
+                AND dn.MatKhau = @MatKhau";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@TenDangNhap", tenDangNhap);
                         cmd.Parameters.AddWithValue("@MatKhau", matKhau);
 
-                        int count = (int)cmd.ExecuteScalar();
-                        return count > 0;
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        if (reader.Read())
+                        {
+                            _maVaiTro = Convert.ToInt32(reader["MaVaiTro"]);
+                            _maNguoiDung = Convert.ToInt32(reader["MaNguoiDung"]);
+                            return true;
+                        }
+                        return false;
                     }
                 }
             }

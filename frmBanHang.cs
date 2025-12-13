@@ -170,21 +170,29 @@ namespace QL_TrangTrai
                 conn.Open();
                 trans = conn.BeginTransaction();
 
-                // Lấy thông tin
+                // =========================
+                // LẤY THÔNG TIN CHUNG
+                // =========================
                 int maNV = Convert.ToInt32(cboNhanVien.SelectedValue);
                 string phuongThuc = cboPhuongThuc.SelectedItem.ToString();
                 DateTime ngayGD = dtpNgayGiaoDich.Value;
                 string moTa = txtMoTa.Text;
 
-                // BƯỚC 1: Lấy MaGiaoDich mới TRƯỚC
+                // =========================
+                // BƯỚC 1: LẤY MÃ GIAO DỊCH
+                // =========================
                 string sqlGetMaGD = "SELECT ISNULL(MAX(MaGiaoDich), 0) + 1 FROM TaiChinh";
                 SqlCommand cmdGetMaGD = new SqlCommand(sqlGetMaGD, conn, trans);
                 int maGiaoDich = Convert.ToInt32(cmdGetMaGD.ExecuteScalar());
 
-                // BƯỚC 2: Thêm vào TaiChinh
+                // =========================
+                // BƯỚC 2: INSERT TAI CHÍNH
+                // =========================
                 string sqlTaiChinh = @"
-            INSERT INTO TaiChinh (MaGiaoDich, LoaiGiaoDich, SoTien, NgayGiaoDich, MoTa, PhuongThucTT, MaNV)
-            VALUES (@MaGiaoDich, N'Thu', @SoTien, @NgayGD, @MoTa, @PhuongThuc, @MaNV)";
+            INSERT INTO TaiChinh
+            (MaGiaoDich, LoaiGiaoDich, SoTien, NgayGiaoDich, MoTa, PhuongThucTT, MaNV)
+            VALUES
+            (@MaGiaoDich, N'Thu', @SoTien, @NgayGD, @MoTa, @PhuongThuc, @MaNV)";
 
                 SqlCommand cmdTaiChinh = new SqlCommand(sqlTaiChinh, conn, trans);
                 cmdTaiChinh.Parameters.AddWithValue("@MaGiaoDich", maGiaoDich);
@@ -195,15 +203,21 @@ namespace QL_TrangTrai
                 cmdTaiChinh.Parameters.AddWithValue("@MaNV", maNV);
                 cmdTaiChinh.ExecuteNonQuery();
 
-                // BƯỚC 3: Lấy MaChiTiet mới
+                // =========================
+                // BƯỚC 3: LẤY MÃ CHI TIẾT
+                // =========================
                 string sqlGetMaCT = "SELECT ISNULL(MAX(MaChiTiet), 0) + 1 FROM ChiTietGiaoDich";
                 SqlCommand cmdGetMaCT = new SqlCommand(sqlGetMaCT, conn, trans);
                 int maChiTiet = Convert.ToInt32(cmdGetMaCT.ExecuteScalar());
 
-                // BƯỚC 4: Thêm vào ChiTietGiaoDich (Trigger sẽ tự động trừ tồn kho)
+                // =========================
+                // BƯỚC 4: INSERT CHI TIẾT GIAO DỊCH
+                // =========================
                 string sqlChiTiet = @"
-            INSERT INTO ChiTietGiaoDich (MaChiTiet, MaGiaoDich, MaSP, SoLuong, DonGia)
-            VALUES (@MaChiTiet, @MaGiaoDich, @MaSP, @SoLuong, @DonGia)";
+            INSERT INTO ChiTietGiaoDich
+            (MaChiTiet, MaGiaoDich, MaSP, SoLuong, DonGia)
+            VALUES
+            (@MaChiTiet, @MaGiaoDich, @MaSP, @SoLuong, @DonGia)";
 
                 SqlCommand cmdChiTiet = new SqlCommand(sqlChiTiet, conn, trans);
                 cmdChiTiet.Parameters.AddWithValue("@MaChiTiet", maChiTiet);
@@ -213,13 +227,26 @@ namespace QL_TrangTrai
                 cmdChiTiet.Parameters.AddWithValue("@DonGia", giaBan);
                 cmdChiTiet.ExecuteNonQuery();
 
-                // Commit transaction
+                // =====================================================
+                // BƯỚC 5: 🔒 GỌI STORED PROCEDURE KHÓA + TRỪ TỒN KHO
+                // (THỂ HIỆN CLO 2.3)
+                // =====================================================
+                SqlCommand cmdKhoa = new SqlCommand("sp_KhoaBanSanPham", conn, trans);
+                cmdKhoa.CommandType = CommandType.StoredProcedure;
+                cmdKhoa.Parameters.AddWithValue("@MaSP", maSP);
+                cmdKhoa.Parameters.AddWithValue("@SoLuong", soLuongBan);
+                cmdKhoa.ExecuteNonQuery();
+
+                // =========================
+                // BƯỚC 6: COMMIT TRANSACTION
+                // =========================
                 trans.Commit();
 
-                // Thông báo thành công
+                // =========================
+                // THÔNG BÁO THÀNH CÔNG
+                // =========================
                 MessageBox.Show(
                     $"✅ THÀNH CÔNG!\n\n" +
-                    $"Đã bán thành công:\n" +
                     $"• Sản phẩm: {tenSP}\n" +
                     $"• Số lượng: {soLuongBan} {donVi}\n" +
                     $"• Thành tiền: {thanhTien:N0} VNĐ\n\n" +
@@ -229,17 +256,13 @@ namespace QL_TrangTrai
                     MessageBoxIcon.Information
                 );
 
-                // Đóng form và trả kết quả thành công
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (Exception ex)
             {
-                // Rollback nếu có lỗi
                 if (trans != null)
-                {
                     trans.Rollback();
-                }
 
                 MessageBox.Show(
                     $"❌ LỖI!\n\n{ex.Message}",
@@ -251,11 +274,10 @@ namespace QL_TrangTrai
             finally
             {
                 if (conn.State == ConnectionState.Open)
-                {
                     conn.Close();
-                }
             }
         }
+
 
         private void btnHuy_Click(object sender, EventArgs e)
         {

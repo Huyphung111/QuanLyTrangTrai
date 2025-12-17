@@ -449,6 +449,9 @@ namespace Đồ_án
         /// <summary>
         /// Xóa sản phẩm
         /// </summary>
+        // <summary>
+        /// Xóa sản phẩm sử dụng Stored Procedure sp_XoaSanPhamAnToan
+        /// </summary>
         private void XoaSanPham()
         {
             try
@@ -458,41 +461,54 @@ namespace Đồ_án
 
                 conn.Open();
 
-                // Kiểm tra ràng buộc với ChiTietGiaoDich
-                string checkQuery = "SELECT COUNT(*) FROM ChiTietGiaoDich WHERE MaSP = @MaSP";
-                SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
-                checkCmd.Parameters.AddWithValue("@MaSP", int.Parse(txt_MaSP.Text));
-                int count = (int)checkCmd.ExecuteScalar();
-
-                if (count > 0)
+                // Gọi Stored Procedure sp_XoaSanPhamAnToan
+                using (SqlCommand cmd = new SqlCommand("sp_XoaSanPhamAnToan", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Thêm tham số đầu vào
+                    cmd.Parameters.AddWithValue("@MaSP", int.Parse(txt_MaSP.Text));
+
+                    // Thực thi stored procedure
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    // Đọc kết quả trả về
+                    string resultMessage = "";
+                    if (reader.Read())
+                    {
+                        resultMessage = reader["Result"].ToString();
+                    }
+                    reader.Close();
+
+                    // Hiển thị thông báo thành công
                     MessageBox.Show(
-                        "❌ Không thể xóa sản phẩm này!\nSản phẩm đã có trong chi tiết giao dịch.",
-                        "Lỗi ràng buộc",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                        "✅ " + resultMessage,
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
 
-                // Xóa sản phẩm
-                string query = "DELETE FROM SanPham WHERE MaSP = @MaSP";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@MaSP", int.Parse(txt_MaSP.Text));
-
-                int result = cmd.ExecuteNonQuery();
-
-                if (result > 0)
-                {
-                    MessageBox.Show("✅ Xóa sản phẩm thành công!", "Thông báo",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                    // Reload dữ liệu và clear form
                     LoadSanPham();
                     ClearForm();
                 }
             }
+            catch (SqlException sqlEx)
+            {
+                // Xử lý lỗi từ SQL Server (RAISERROR trong Procedure)
+                MessageBox.Show(
+                    "❌ " + sqlEx.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("❌ Lỗi khi xóa sản phẩm: " + ex.Message, "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Xử lý lỗi chung
+                MessageBox.Show(
+                    "❌ Lỗi khi xóa sản phẩm: " + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
             finally
             {
@@ -940,5 +956,12 @@ namespace Đồ_án
                 ClearForm();
             }
         }
+        private void btn_Xoa_Click_1(object sender, EventArgs e)
+        {
+            // Gọi hàm Btn_Xoa_Click thật
+            Btn_Xoa_Click(sender, e);
+        }
+
+
     }
 }

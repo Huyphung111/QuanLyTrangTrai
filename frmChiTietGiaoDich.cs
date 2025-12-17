@@ -203,5 +203,76 @@ namespace QL_TrangTrai
         {
             this.Close();
         }
+
+        private void btn_xoa_Click(object sender, EventArgs e)
+        {
+            // Kiểm tra có chọn dòng nào không
+            if (dgvChiTiet.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn chi tiết giao dịch cần xóa!",
+                                "Thông báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
+
+            // ✅ LẤY MaChiTiet thay vì MaGiaoDich
+            int maChiTiet = Convert.ToInt32(dgvChiTiet.SelectedRows[0].Cells["MaChiTiet"].Value);
+            string tenHang = dgvChiTiet.SelectedRows[0].Cells["TenHang"].Value?.ToString() ?? "";
+
+            // Xác nhận xóa
+            DialogResult result = MessageBox.Show(
+                $"Bạn có chắc chắn muốn xóa chi tiết này?\n\n" +
+                $"Mã chi tiết: {maChiTiet}\n" +
+                $"Tên hàng: {tenHang}\n\n" +
+                $"Hành động này không thể hoàn tác!",
+                "Xác nhận xóa",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        conn.Open();
+
+                        // Gọi stored procedure
+                        SqlCommand cmd = new SqlCommand("sp_XoaChiTietGiaoDich", conn);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // ✅ TRUYỀN @MaChiTiet
+                        cmd.Parameters.AddWithValue("@MaChiTiet", maChiTiet);
+
+                        cmd.ExecuteNonQuery();
+
+                        MessageBox.Show("Xóa chi tiết giao dịch thành công!",
+                                        "Thông báo",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Information);
+
+                        // Reload dữ liệu
+                        LoadChiTiet();
+                        TinhTong();
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show("Lỗi xóa chi tiết: " + ex.Message,
+                                    "Lỗi",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message,
+                                    "Lỗi",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                }
+            }
+        }
     }
 }

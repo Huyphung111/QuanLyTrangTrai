@@ -648,6 +648,179 @@ namespace Đồ_án
         /// <summary>
         /// Nút Xem cảnh báo trên ToolStrip - Hiện MessageBox với 2 nút OK và XEM
         /// </summary>
+        #region Báo cáo tình trạng vật nuôi (có Cursor trong SP)
+
+        /// <summary>
+        /// Hiển thị báo cáo tổng hợp tình trạng vật nuôi (gọi SP có cursor)
+        /// </summary>
+        private void HienThiBaoCaoTinhTrang()
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+
+                    // ⭐ GỌI STORED PROCEDURE CÓ CURSOR
+                    SqlCommand cmd = new SqlCommand("sp_KiemTraTinhTrangVatNuoi", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dtBaoCao = new DataTable();
+                    da.Fill(dtBaoCao);
+
+                    if (dtBaoCao.Rows.Count > 0)
+                    {
+                        // Tạo form báo cáo
+                        Form frmBaoCao = new Form();
+                        frmBaoCao.Text = "📊 Báo cáo tình trạng vật nuôi (Cursor)";
+                        frmBaoCao.Size = new Size(900, 600);
+                        frmBaoCao.StartPosition = FormStartPosition.CenterParent;
+
+                        // Panel header
+                        Panel pnlHeader = new Panel();
+                        pnlHeader.Dock = DockStyle.Top;
+                        pnlHeader.Height = 60;
+                        pnlHeader.BackColor = Color.FromArgb(41, 128, 185);
+
+                        Label lblTitle = new Label();
+                        lblTitle.Dock = DockStyle.Fill;
+                        lblTitle.Text = "📊 BÁO CÁO TỔNG HỢP TÌNH TRẠNG VẬT NUÔI";
+                        lblTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+                        lblTitle.ForeColor = Color.White;
+                        lblTitle.TextAlign = ContentAlignment.MiddleCenter;
+                        pnlHeader.Controls.Add(lblTitle);
+
+                        // DataGridView hiển thị báo cáo
+                        DataGridView dgvBaoCao = new DataGridView();
+                        dgvBaoCao.Dock = DockStyle.Fill;
+                        dgvBaoCao.DataSource = dtBaoCao;
+                        dgvBaoCao.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                        dgvBaoCao.ReadOnly = true;
+                        dgvBaoCao.AllowUserToAddRows = false;
+                        dgvBaoCao.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                        dgvBaoCao.RowHeadersVisible = false;
+                        dgvBaoCao.BackgroundColor = Color.White;
+                        dgvBaoCao.BorderStyle = BorderStyle.None;
+                        dgvBaoCao.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 152, 219);
+                        dgvBaoCao.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+                        dgvBaoCao.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                        dgvBaoCao.ColumnHeadersHeight = 35;
+                        dgvBaoCao.EnableHeadersVisualStyles = false;
+
+                        // Tô màu các cột
+                        dgvBaoCao.DataBindingComplete += (s, ev) =>
+                        {
+                            foreach (DataGridViewRow row in dgvBaoCao.Rows)
+                            {
+                                row.Height = 30;
+
+                                // Tô màu cột "Bệnh"
+                                if (Convert.ToInt32(row.Cells["Bệnh"].Value) > 0)
+                                {
+                                    row.Cells["Bệnh"].Style.BackColor = Color.FromArgb(231, 76, 60);
+                                    row.Cells["Bệnh"].Style.ForeColor = Color.White;
+                                    row.Cells["Bệnh"].Style.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                                }
+
+                                // Tô màu cột "Tốt"
+                                row.Cells["Tốt"].Style.BackColor = Color.FromArgb(46, 204, 113);
+                                row.Cells["Tốt"].Style.ForeColor = Color.White;
+                                row.Cells["Tốt"].Style.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+
+                                // Tô màu cột "Yếu"
+                                if (Convert.ToInt32(row.Cells["Yếu"].Value) > 0)
+                                {
+                                    row.Cells["Yếu"].Style.BackColor = Color.FromArgb(241, 196, 15);
+                                    row.Cells["Yếu"].Style.ForeColor = Color.White;
+                                }
+
+                                // Tô màu cột "Trung bình"
+                                row.Cells["Trung bình"].Style.BackColor = Color.FromArgb(52, 152, 219);
+                                row.Cells["Trung bình"].Style.ForeColor = Color.White;
+                            }
+                        };
+
+                        // Panel tổng kết
+                        Panel pnlSummary = new Panel();
+                        pnlSummary.Dock = DockStyle.Bottom;
+                        pnlSummary.Height = 100;
+                        pnlSummary.BackColor = Color.FromArgb(236, 240, 241);
+                        pnlSummary.Padding = new Padding(20);
+
+                        // Tính tổng
+                        int tongTatCa = 0, tongTot = 0, tongTB = 0, tongYeu = 0, tongBenh = 0;
+                        foreach (DataRow row in dtBaoCao.Rows)
+                        {
+                            tongTatCa += Convert.ToInt32(row["Tổng SL"]);
+                            tongTot += Convert.ToInt32(row["Tốt"]);
+                            tongTB += Convert.ToInt32(row["Trung bình"]);
+                            tongYeu += Convert.ToInt32(row["Yếu"]);
+                            tongBenh += Convert.ToInt32(row["Bệnh"]);
+                        }
+
+                        double tyLeBenh = tongTatCa > 0 ? (tongBenh * 100.0 / tongTatCa) : 0;
+
+                        Label lblSummary = new Label();
+                        lblSummary.Dock = DockStyle.Fill;
+                        lblSummary.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                        lblSummary.Text = $"📊 TỔNG KẾT: {tongTatCa} con | " +
+                                         $"✅ Tốt: {tongTot} | 🔵 TB: {tongTB} | " +
+                                         $"⚠️ Yếu: {tongYeu} | 🔴 Bệnh: {tongBenh} ({tyLeBenh:0.00}%)";
+
+                        if (tyLeBenh > 10)
+                        {
+                            lblSummary.ForeColor = Color.FromArgb(192, 57, 43);
+                            lblSummary.Text += "\n⚠️ CẢNH BÁO: Tỷ lệ bệnh cao!";
+                        }
+                        else
+                        {
+                            lblSummary.ForeColor = Color.FromArgb(44, 62, 80);
+                        }
+
+                        pnlSummary.Controls.Add(lblSummary);
+
+                        // Thêm controls
+                        frmBaoCao.Controls.Add(dgvBaoCao);
+                        frmBaoCao.Controls.Add(pnlSummary);
+                        frmBaoCao.Controls.Add(pnlHeader);
+
+                        frmBaoCao.ShowDialog();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Không có dữ liệu để hiển thị!", "Thông báo",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi tạo báo cáo: " + ex.Message, "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Nút "Báo cáo tổng hợp" trên ToolStrip
+        /// </summary>
+        private void toolStrip_BaoCao_Click(object sender, EventArgs e)
+        {
+            HienThiBaoCaoTinhTrang();
+        }
+
+        #endregion
+
+        // ═══════════════════════════════════════════════════════════
+        // PHẦN 2: XEM CHI TIẾT VẬT NUÔI BỆNH (CẢI TIẾN TỪ CODE CŨ)
+        // ═══════════════════════════════════════════════════════════
+
+        #region Xem chi tiết vật nuôi bệnh (Query thông thường)
+
+        /// <summary>
+        /// Xem chi tiết vật nuôi bệnh - PHIÊN BẢN CẢI TIẾN
+        /// Giữ logic của bạn + thêm form hiển thị đẹp hơn
+        /// </summary>
         private void toolStrip_XemCanhBao_Click(object sender, EventArgs e)
         {
             try
@@ -664,36 +837,100 @@ namespace Đồ_án
 
                     if (dtBenh.Rows.Count > 0)
                     {
-                        string danhSach = "🏥 DANH SÁCH VẬT NUÔI ĐANG BỊ BỆNH:\n";
-                        danhSach += "════════════════════════════════\n\n";
+                        // Tạo form hiển thị danh sách bệnh
+                        Form frmCanhBao = new Form();
+                        frmCanhBao.Text = "⚠️ Chi tiết vật nuôi bệnh";
+                        frmCanhBao.Size = new Size(700, 500);
+                        frmCanhBao.StartPosition = FormStartPosition.CenterParent;
 
-                        int stt = 1;
-                        foreach (DataRow row in dtBenh.Rows)
+                        // Panel header
+                        Panel pnlHeader = new Panel();
+                        pnlHeader.Dock = DockStyle.Top;
+                        pnlHeader.Height = 60;
+                        pnlHeader.BackColor = Color.FromArgb(231, 76, 60);
+
+                        Label lblTitle = new Label();
+                        lblTitle.Dock = DockStyle.Fill;
+                        lblTitle.Text = $"⚠️ CẢNH BÁO: {dtBenh.Rows.Count} VẬT NUÔI BỊ BỆNH";
+                        lblTitle.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+                        lblTitle.ForeColor = Color.White;
+                        lblTitle.TextAlign = ContentAlignment.MiddleCenter;
+                        pnlHeader.Controls.Add(lblTitle);
+
+                        // DataGridView hiển thị danh sách
+                        DataGridView dgvBenh = new DataGridView();
+                        dgvBenh.Dock = DockStyle.Fill;
+                        dgvBenh.DataSource = dtBenh;
+                        dgvBenh.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                        dgvBenh.ReadOnly = true;
+                        dgvBenh.AllowUserToAddRows = false;
+                        dgvBenh.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                        dgvBenh.RowHeadersVisible = false;
+                        dgvBenh.BackgroundColor = Color.White;
+                        dgvBenh.BorderStyle = BorderStyle.None;
+                        dgvBenh.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(192, 57, 43);
+                        dgvBenh.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+                        dgvBenh.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                        dgvBenh.ColumnHeadersHeight = 35;
+                        dgvBenh.EnableHeadersVisualStyles = false;
+
+                        // Đổi tên cột
+                        dgvBenh.DataBindingComplete += (s, ev) =>
                         {
-                            danhSach += $"{stt}. {row["TenVat"]}\n";
-                            danhSach += $"   • Mã: {row["MaVat"]}\n";
-                            danhSach += $"   • Loại: {row["LoaiVat"]}\n";
-                            danhSach += $"   • Số lượng: {row["SoLuong"]}\n\n";
-                            stt++;
-                        }
+                            dgvBenh.Columns["MaVat"].HeaderText = "Mã";
+                            dgvBenh.Columns["TenVat"].HeaderText = "Tên vật nuôi";
+                            dgvBenh.Columns["LoaiVat"].HeaderText = "Loại";
+                            dgvBenh.Columns["SoLuong"].HeaderText = "Số lượng";
 
-                        danhSach += "════════════════════════════════\n";
-                        danhSach += "⚠️ Vui lòng kiểm tra và điều trị kịp thời!\n\n";
-                        danhSach += "Bấm [Yes] để lọc danh sách vật nuôi bệnh\n";
-                        danhSach += "Bấm [No] để đóng";
+                            foreach (DataGridViewRow row in dgvBenh.Rows)
+                            {
+                                row.Height = 30;
+                                row.DefaultCellStyle.BackColor = Color.FromArgb(255, 235, 235);
+                                row.DefaultCellStyle.SelectionBackColor = Color.FromArgb(231, 76, 60);
+                            }
+                        };
 
-                        // ⭐ MESSAGEBOX VỚI 2 NÚT: YES (XEM) VÀ NO (OK)
-                        DialogResult result = MessageBox.Show(
-                            danhSach,
-                            "⚠️ Chi tiết vật nuôi bệnh",
-                            MessageBoxButtons.YesNo,
-                            MessageBoxIcon.Warning);
+                        // Panel footer với 2 nút
+                        Panel pnlFooter = new Panel();
+                        pnlFooter.Dock = DockStyle.Bottom;
+                        pnlFooter.Height = 80;
+                        pnlFooter.BackColor = Color.FromArgb(236, 240, 241);
 
-                        // Nếu bấm YES (Xem) -> Lọc DataGridView
-                        if (result == DialogResult.Yes)
+                        Button btnLocBenh = new Button();
+                        btnLocBenh.Text = "🔍 Lọc vật nuôi bệnh";
+                        btnLocBenh.Size = new Size(180, 40);
+                        btnLocBenh.Location = new Point(150, 20);
+                        btnLocBenh.BackColor = Color.FromArgb(52, 152, 219);
+                        btnLocBenh.ForeColor = Color.White;
+                        btnLocBenh.FlatStyle = FlatStyle.Flat;
+                        btnLocBenh.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                        btnLocBenh.Cursor = Cursors.Hand;
+                        btnLocBenh.Click += (s, ev) =>
                         {
+                            frmCanhBao.Close();
                             LocVatNuoiBenh();
-                        }
+                        };
+
+                        Button btnDong = new Button();
+                        btnDong.Text = "✖ Đóng";
+                        btnDong.Size = new Size(120, 40);
+                        btnDong.Location = new Point(350, 20);
+                        btnDong.BackColor = Color.FromArgb(149, 165, 166);
+                        btnDong.ForeColor = Color.White;
+                        btnDong.FlatStyle = FlatStyle.Flat;
+                        btnDong.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                        btnDong.Cursor = Cursors.Hand;
+                        btnDong.Click += (s, ev) => frmCanhBao.Close();
+
+                        pnlFooter.Controls.Add(btnLocBenh);
+                        pnlFooter.Controls.Add(btnDong);
+
+                        // Thêm controls
+                        frmCanhBao.Controls.Add(dgvBenh);
+                        frmCanhBao.Controls.Add(pnlFooter);
+                        frmCanhBao.Controls.Add(pnlHeader);
+
+                        frmCanhBao.ShowDialog();
                     }
                     else
                     {
@@ -707,6 +944,8 @@ namespace Đồ_án
                 MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        #endregion
 
         #endregion
 

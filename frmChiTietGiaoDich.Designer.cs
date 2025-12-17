@@ -45,6 +45,7 @@
             this.lblSoDongText = new System.Windows.Forms.Label();
             this.btnDong = new System.Windows.Forms.Button();
             this.btn_xoa = new System.Windows.Forms.Button();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.grpBoLoc.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvChiTiet)).BeginInit();
             this.grpTongCong.SuspendLayout();
@@ -330,5 +331,6 @@
         private System.Windows.Forms.Label lblSoDongText;
         private System.Windows.Forms.Button btnDong;
         private System.Windows.Forms.Button btn_xoa;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
     }
 }

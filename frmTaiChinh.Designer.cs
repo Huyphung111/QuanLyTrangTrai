@@ -19,6 +19,7 @@
         {
             this.lblTitle = new System.Windows.Forms.Label();
             this.grpLoc = new System.Windows.Forms.GroupBox();
+            this.btn_xembaocaohomnay = new System.Windows.Forms.Button();
             this.lblLoai = new System.Windows.Forms.Label();
             this.cboLoaiGD = new System.Windows.Forms.ComboBox();
             this.lblTuNgay = new System.Windows.Forms.Label();
@@ -40,7 +41,6 @@
             this.lblLoiNhuan = new System.Windows.Forms.Label();
             this.btnXemChiTiet = new System.Windows.Forms.Button();
             this.btnDong = new System.Windows.Forms.Button();
-            this.btn_xembaocaohomnay = new System.Windows.Forms.Button();
             this.grpLoc.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTaiChinh)).BeginInit();
             this.grpThongKe.SuspendLayout();
@@ -77,6 +77,19 @@
             this.grpLoc.TabIndex = 1;
             this.grpLoc.TabStop = false;
             this.grpLoc.Text = "Bộ lọc (Theo tháng)";
+            // 
+            // btn_xembaocaohomnay
+            // 
+            this.btn_xembaocaohomnay.BackColor = System.Drawing.Color.Gray;
+            this.btn_xembaocaohomnay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_xembaocaohomnay.ForeColor = System.Drawing.Color.White;
+            this.btn_xembaocaohomnay.Location = new System.Drawing.Point(783, 17);
+            this.btn_xembaocaohomnay.Name = "btn_xembaocaohomnay";
+            this.btn_xembaocaohomnay.Size = new System.Drawing.Size(161, 41);
+            this.btn_xembaocaohomnay.TabIndex = 8;
+            this.btn_xembaocaohomnay.Text = "Ngay hien tai";
+            this.btn_xembaocaohomnay.UseVisualStyleBackColor = false;
+            this.btn_xembaocaohomnay.Click += new System.EventHandler(this.btn_xembaocaohomnay_Click);
             // 
             // lblLoai
             // 
@@ -310,19 +323,6 @@
             this.btnDong.Text = "✖ Đóng";
             this.btnDong.UseVisualStyleBackColor = false;
             this.btnDong.Click += new System.EventHandler(this.btnDong_Click);
-            // 
-            // btn_xembaocaohomnay
-            // 
-            this.btn_xembaocaohomnay.BackColor = System.Drawing.Color.Gray;
-            this.btn_xembaocaohomnay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_xembaocaohomnay.ForeColor = System.Drawing.Color.White;
-            this.btn_xembaocaohomnay.Location = new System.Drawing.Point(783, 22);
-            this.btn_xembaocaohomnay.Name = "btn_xembaocaohomnay";
-            this.btn_xembaocaohomnay.Size = new System.Drawing.Size(161, 41);
-            this.btn_xembaocaohomnay.TabIndex = 8;
-            this.btn_xembaocaohomnay.Text = "Ngay hien tai";
-            this.btn_xembaocaohomnay.UseVisualStyleBackColor = false;
-            this.btn_xembaocaohomnay.Click += new System.EventHandler(this.btn_xembaocaohomnay_Click);
             // 
             // frmTaiChinh
             // 

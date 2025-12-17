@@ -34,8 +34,11 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblTitle = new System.Windows.Forms.Label();
+            this.lblUserInfo = new System.Windows.Forms.Label();
             this.pnlMain = new System.Windows.Forms.Panel();
             this.grpThongTin = new System.Windows.Forms.GroupBox();
+            this.label_NhanVien = new System.Windows.Forms.Label();
+            this.cboNhanVien = new System.Windows.Forms.ComboBox();
             this.lblMaChiTiet = new System.Windows.Forms.Label();
             this.txtMaChiTiet = new System.Windows.Forms.TextBox();
             this.lblMaVat = new System.Windows.Forms.Label();
@@ -69,8 +72,6 @@
             this.pnlFooter = new System.Windows.Forms.Panel();
             this.btnDong = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.cboNhanVien = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.pnlHeader.SuspendLayout();
             this.pnlMain.SuspendLayout();
             this.grpThongTin.SuspendLayout();
@@ -88,6 +89,7 @@
             // 
             this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(84)))), ((int)(((byte)(0)))));
             this.pnlHeader.Controls.Add(this.lblTitle);
+            this.pnlHeader.Controls.Add(this.lblUserInfo);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlHeader.Name = "pnlHeader";
@@ -104,6 +106,19 @@
             this.lblTitle.Size = new System.Drawing.Size(1054, 48);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "                                QUẢN LÝ CHI TIẾT THU HOẠCH VẬT NUÔI";
+            // 
+            // lblUserInfo
+            // 
+            this.lblUserInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblUserInfo.AutoSize = false;
+            this.lblUserInfo.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular);
+            this.lblUserInfo.ForeColor = System.Drawing.Color.White;
+            this.lblUserInfo.Location = new System.Drawing.Point(1000, 28);
+            this.lblUserInfo.Name = "lblUserInfo";
+            this.lblUserInfo.Size = new System.Drawing.Size(460, 30);
+            this.lblUserInfo.TabIndex = 1;
+            this.lblUserInfo.Text = "";
+            this.lblUserInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // pnlMain
             // 
@@ -124,7 +139,7 @@
             // grpThongTin
             // 
             this.grpThongTin.BackColor = System.Drawing.Color.White;
-            this.grpThongTin.Controls.Add(this.label1);
+            this.grpThongTin.Controls.Add(this.label_NhanVien);
             this.grpThongTin.Controls.Add(this.cboNhanVien);
             this.grpThongTin.Controls.Add(this.lblMaChiTiet);
             this.grpThongTin.Controls.Add(this.txtMaChiTiet);
@@ -149,6 +164,25 @@
             this.grpThongTin.TabIndex = 0;
             this.grpThongTin.TabStop = false;
             this.grpThongTin.Text = "📋 THÔNG TIN CHI TIẾT THU HOẠCH";
+            // 
+            // label_NhanVien
+            // 
+            this.label_NhanVien.AutoSize = true;
+            this.label_NhanVien.Location = new System.Drawing.Point(5, 182);
+            this.label_NhanVien.Name = "label_NhanVien";
+            this.label_NhanVien.Size = new System.Drawing.Size(110, 28);
+            this.label_NhanVien.TabIndex = 16;
+            this.label_NhanVien.Text = "Nhân viên:";
+            this.label_NhanVien.Click += new System.EventHandler(this.label_NhanVien_Click);
+            // 
+            // cboNhanVien
+            // 
+            this.cboNhanVien.FormattingEnabled = true;
+            this.cboNhanVien.Location = new System.Drawing.Point(121, 179);
+            this.cboNhanVien.Name = "cboNhanVien";
+            this.cboNhanVien.Size = new System.Drawing.Size(178, 36);
+            this.cboNhanVien.TabIndex = 15;
+            this.cboNhanVien.SelectedIndexChanged += new System.EventHandler(this.cboNhanVien_SelectedIndexChanged);
             // 
             // lblMaChiTiet
             // 
@@ -609,23 +643,6 @@
             this.btnDong.Text = "❌ ĐÓNG";
             this.btnDong.UseVisualStyleBackColor = false;
             // 
-            // cboNhanVien
-            // 
-            this.cboNhanVien.FormattingEnabled = true;
-            this.cboNhanVien.Location = new System.Drawing.Point(121, 179);
-            this.cboNhanVien.Name = "cboNhanVien";
-            this.cboNhanVien.Size = new System.Drawing.Size(178, 36);
-            this.cboNhanVien.TabIndex = 15;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 182);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(110, 28);
-            this.label1.TabIndex = 16;
-            this.label1.Text = "Nhân viên:";
-            // 
             // frmChiTietThuHoachVatNuoi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
@@ -664,6 +681,7 @@
         // Header
         private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label lblUserInfo;
 
         // Main Panel
         private System.Windows.Forms.Panel pnlMain;
@@ -716,6 +734,6 @@
         // ToolTip
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ComboBox cboNhanVien;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label_NhanVien;
     }
 }

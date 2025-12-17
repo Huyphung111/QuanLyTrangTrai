@@ -19,6 +19,18 @@ namespace Đồ_án
         private bool isEditing = false;
         private bool isFiltered = false; // Đang lọc vật nuôi bệnh hay không
 
+        // Trong QL_VatNuoi.cs - thêm fields
+        private int _maNguoiDung = 0;
+        private int _maVaiTro = 1;
+
+        // Thêm constructor mới
+        public QL_VatNuoi(int maNguoiDung, int maVaiTro)
+        {
+            InitializeComponent();
+            _maNguoiDung = maNguoiDung;
+            _maVaiTro = maVaiTro;
+        }
+
         public QL_VatNuoi()
         {
             InitializeComponent();
@@ -700,20 +712,36 @@ namespace Đồ_án
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            // Lấy form cha (GiaoDien)
-            GiaoDien mainForm = this.ParentForm as GiaoDien;
+            // Tìm form cha (GiaoDien) thông qua Parent
+            Form parentForm = this.ParentForm;
+
+            // Nếu form được nhúng trong panel, cần tìm khác
+            if (parentForm == null)
+            {
+                Control parent = this.Parent;
+                while (parent != null)
+                {
+                    if (parent is Form)
+                    {
+                        parentForm = parent as Form;
+                        break;
+                    }
+                    parent = parent.Parent;
+                }
+            }
+
+            GiaoDien mainForm = parentForm as GiaoDien;
 
             if (mainForm != null)
             {
-                // Mở form Chi tiết thu hoạch vật nuôi trong panel
-                mainForm.OpenFormInPanel(new frmChiTietThuHoachVatNuoi());
+                mainForm.OpenFormInPanel(new frmChiTietThuHoachVatNuoi(mainForm.MaNguoiDung, mainForm.MaVaiTro));
             }
             else
             {
-                // Nếu không tìm thấy form cha, mở form mới độc lập
-                frmChiTietThuHoachVatNuoi frmThuHoach = new frmChiTietThuHoachVatNuoi();
-                frmThuHoach.Show();
+                MessageBox.Show("Không thể xác định thông tin đăng nhập!", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
     }
 }

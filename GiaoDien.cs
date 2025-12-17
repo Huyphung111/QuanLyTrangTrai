@@ -178,7 +178,8 @@ namespace QuanLyTrangTrai
         // 🐄 CHI TIẾT THU HOẠCH VẬT NUÔI
         private void btnCTVatNuoi_Click(object sender, EventArgs e)
         {
-            OpenFormInPanel(new frmChiTietThuHoachVatNuoi());
+            OpenFormInPanel(new frmChiTietThuHoachVatNuoi(MaNguoiDung, MaVaiTro));
+
         }
 
         // 👤 QUẢN LÝ TÀI KHOẢN (btnAccounts)

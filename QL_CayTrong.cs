@@ -11,7 +11,6 @@ namespace Đồ_án
     {
         // Connection string
         private string connectionString = @"Data Source=HUYNE;Initial Catalog=QL_TrangTraiv13;Integrated Security=True";
-        private SqlConnection conn;
         private bool isAddNew = false; // Trạng thái đang thêm mới
 
         public QL_CayTrong()
@@ -23,7 +22,6 @@ namespace Đồ_án
 
         private void QL_CayTrong_Load(object sender, EventArgs e)
         {
-            conn = new SqlConnection(connectionString);
             LoadCayTrong();
             LoadComboBoxTimKiem();
             SetControlState(false);
@@ -35,34 +33,33 @@ namespace Đồ_án
         // Load danh sách cây trồng
         private void LoadCayTrong()
         {
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                conn.Open();
-                string query = "SELECT MaCay, TenCay, LoaiCay, NgayGieoTrong, KhuVuc, SanLuongDuKien FROM CayTrong ORDER BY MaCay";
-                SqlDataAdapter da = new SqlDataAdapter(query, conn);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-
-                dgv_QLCayTrong.DataSource = dt;
-
-                // Đặt tên cột hiển thị
-                if (dgv_QLCayTrong.Columns.Count > 0)
+                try
                 {
-                    dgv_QLCayTrong.Columns["MaCay"].HeaderText = "Mã Cây";
-                    dgv_QLCayTrong.Columns["TenCay"].HeaderText = "Tên Cây";
-                    dgv_QLCayTrong.Columns["LoaiCay"].HeaderText = "Loại Cây";
-                    dgv_QLCayTrong.Columns["NgayGieoTrong"].HeaderText = "Ngày Gieo Trồng";
-                    dgv_QLCayTrong.Columns["KhuVuc"].HeaderText = "Khu Vực";
-                    dgv_QLCayTrong.Columns["SanLuongDuKien"].HeaderText = "Sản Lượng Dự Kiến";
+                    conn.Open();
+                    string query = "SELECT MaCay, TenCay, LoaiCay, NgayGieoTrong, KhuVuc, SanLuongDuKien FROM CayTrong ORDER BY MaCay";
+                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    dgv_QLCayTrong.DataSource = dt;
+
+                    // Đặt tên cột hiển thị
+                    if (dgv_QLCayTrong.Columns.Count > 0)
+                    {
+                        dgv_QLCayTrong.Columns["MaCay"].HeaderText = "Mã Cây";
+                        dgv_QLCayTrong.Columns["TenCay"].HeaderText = "Tên Cây";
+                        dgv_QLCayTrong.Columns["LoaiCay"].HeaderText = "Loại Cây";
+                        dgv_QLCayTrong.Columns["NgayGieoTrong"].HeaderText = "Ngày Gieo Trồng";
+                        dgv_QLCayTrong.Columns["KhuVuc"].HeaderText = "Khu Vực";
+                        dgv_QLCayTrong.Columns["SanLuongDuKien"].HeaderText = "Sản Lượng Dự Kiến";
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi load dữ liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                conn.Close();
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi load dữ liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -90,7 +87,7 @@ namespace Đồ_án
             txt_KhuVuc.Enabled = isEditing;
             txt_SanLuongDuKien.Enabled = isEditing;
 
-           // btn_thuhoachcaytrong.Enabled = isEditing;
+            toolStripButton2.Enabled = isEditing;  // ĐỔI TÊN NÀY
             btn_Huy.Enabled = isEditing;
 
             btn_Them.Enabled = !isEditing;
@@ -119,17 +116,19 @@ namespace Đồ_án
         private int GetNextMaCay()
         {
             int nextId = 1;
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                conn.Open();
-                string query = "SELECT ISNULL(MAX(MaCay), 0) + 1 FROM CayTrong";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                nextId = Convert.ToInt32(cmd.ExecuteScalar());
-            }
-            catch { }
-            finally
-            {
-                conn.Close();
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT ISNULL(MAX(MaCay), 0) + 1 FROM CayTrong";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    nextId = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi lấy mã cây: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             return nextId;
         }
@@ -210,42 +209,41 @@ namespace Đồ_án
 
             if (result == DialogResult.Yes)
             {
-                try
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    conn.Open();
-
-                    // Kiểm tra ràng buộc với bảng ChiTietThuHoachCayTrong
-                    string checkQuery = "SELECT COUNT(*) FROM ChiTietThuHoachCayTrong WHERE MaCay = @MaCay";
-                    SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
-                    checkCmd.Parameters.AddWithValue("@MaCay", int.Parse(txt_MaCay.Text));
-                    int count = Convert.ToInt32(checkCmd.ExecuteScalar());
-
-                    if (count > 0)
+                    try
                     {
-                        MessageBox.Show("Không thể xóa! Cây trồng này đã có chi tiết thu hoạch.", "Thông báo",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
+                        conn.Open();
+
+                        // Kiểm tra ràng buộc với bảng ChiTietThuHoachCayTrong
+                        string checkQuery = "SELECT COUNT(*) FROM ChiTietThuHoachCayTrong WHERE MaCay = @MaCay";
+                        SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
+                        checkCmd.Parameters.AddWithValue("@MaCay", int.Parse(txt_MaCay.Text));
+                        int count = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+                        if (count > 0)
+                        {
+                            MessageBox.Show("Không thể xóa! Cây trồng này đã có chi tiết thu hoạch.", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        string query = "DELETE FROM CayTrong WHERE MaCay = @MaCay";
+                        SqlCommand cmd = new SqlCommand(query, conn);
+                        cmd.Parameters.AddWithValue("@MaCay", int.Parse(txt_MaCay.Text));
+
+                        int deleteResult = cmd.ExecuteNonQuery();
+                        if (deleteResult > 0)
+                        {
+                            MessageBox.Show("Xóa cây trồng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            LoadCayTrong();
+                            ClearInputs();
+                        }
                     }
-
-                    string query = "DELETE FROM CayTrong WHERE MaCay = @MaCay";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@MaCay", int.Parse(txt_MaCay.Text));
-
-                    int deleteResult = cmd.ExecuteNonQuery();
-                    if (deleteResult > 0)
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("Xóa cây trồng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        LoadCayTrong();
-                        ClearInputs();
+                        MessageBox.Show("Lỗi xóa cây trồng: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi xóa cây trồng: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                finally
-                {
-                    conn.Close();
                 }
             }
         }
@@ -255,67 +253,75 @@ namespace Đồ_án
         {
             if (!ValidateInput()) return;
 
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                conn.Open();
-
-                if (isAddNew)
+                try
                 {
-                    // Thêm mới
-                    string query = @"INSERT INTO CayTrong (MaCay, TenCay, LoaiCay, NgayGieoTrong, KhuVuc, SanLuongDuKien)
-                                    VALUES (@MaCay, @TenCay, @LoaiCay, @NgayGieoTrong, @KhuVuc, @SanLuongDuKien)";
+                    conn.Open();
 
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@MaCay", int.Parse(txt_MaCay.Text));
-                    cmd.Parameters.AddWithValue("@TenCay", txt_TenCay.Text.Trim());
-                    cmd.Parameters.AddWithValue("@LoaiCay", txt_LoaiCay.Text.Trim());
-                    cmd.Parameters.AddWithValue("@NgayGieoTrong", txt_NgayGieoTrong.Value.Date);
-                    cmd.Parameters.AddWithValue("@KhuVuc", string.IsNullOrWhiteSpace(txt_KhuVuc.Text) ? DBNull.Value : (object)txt_KhuVuc.Text.Trim());
-                    cmd.Parameters.AddWithValue("@SanLuongDuKien", string.IsNullOrWhiteSpace(txt_SanLuongDuKien.Text) ? DBNull.Value : (object)decimal.Parse(txt_SanLuongDuKien.Text));
-
-                    int result = cmd.ExecuteNonQuery();
-                    if (result > 0)
+                    if (isAddNew)
                     {
-                        MessageBox.Show("Thêm cây trồng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // Thêm mới
+                        string query = @"INSERT INTO CayTrong (MaCay, TenCay, LoaiCay, NgayGieoTrong, KhuVuc, SanLuongDuKien)
+                                        VALUES (@MaCay, @TenCay, @LoaiCay, @NgayGieoTrong, @KhuVuc, @SanLuongDuKien)";
+
+                        SqlCommand cmd = new SqlCommand(query, conn);
+                        cmd.Parameters.AddWithValue("@MaCay", int.Parse(txt_MaCay.Text));
+                        cmd.Parameters.AddWithValue("@TenCay", txt_TenCay.Text.Trim());
+                        cmd.Parameters.AddWithValue("@LoaiCay", txt_LoaiCay.Text.Trim());
+                        cmd.Parameters.AddWithValue("@NgayGieoTrong", txt_NgayGieoTrong.Value.Date);
+                        cmd.Parameters.AddWithValue("@KhuVuc", string.IsNullOrWhiteSpace(txt_KhuVuc.Text) ? (object)DBNull.Value : txt_KhuVuc.Text.Trim());
+                        cmd.Parameters.AddWithValue("@SanLuongDuKien", string.IsNullOrWhiteSpace(txt_SanLuongDuKien.Text) ? (object)DBNull.Value : decimal.Parse(txt_SanLuongDuKien.Text));
+
+                        int result = cmd.ExecuteNonQuery();
+                        if (result > 0)
+                        {
+                            MessageBox.Show("Thêm cây trồng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Thêm cây trồng thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
+                    else
+                    {
+                        // Cập nhật
+                        string query = @"UPDATE CayTrong 
+                                        SET TenCay = @TenCay, 
+                                            LoaiCay = @LoaiCay, 
+                                            NgayGieoTrong = @NgayGieoTrong, 
+                                            KhuVuc = @KhuVuc, 
+                                            SanLuongDuKien = @SanLuongDuKien
+                                        WHERE MaCay = @MaCay";
+
+                        SqlCommand cmd = new SqlCommand(query, conn);
+                        cmd.Parameters.AddWithValue("@MaCay", int.Parse(txt_MaCay.Text));
+                        cmd.Parameters.AddWithValue("@TenCay", txt_TenCay.Text.Trim());
+                        cmd.Parameters.AddWithValue("@LoaiCay", txt_LoaiCay.Text.Trim());
+                        cmd.Parameters.AddWithValue("@NgayGieoTrong", txt_NgayGieoTrong.Value.Date);
+                        cmd.Parameters.AddWithValue("@KhuVuc", string.IsNullOrWhiteSpace(txt_KhuVuc.Text) ? (object)DBNull.Value : txt_KhuVuc.Text.Trim());
+                        cmd.Parameters.AddWithValue("@SanLuongDuKien", string.IsNullOrWhiteSpace(txt_SanLuongDuKien.Text) ? (object)DBNull.Value : decimal.Parse(txt_SanLuongDuKien.Text));
+
+                        int result = cmd.ExecuteNonQuery();
+                        if (result > 0)
+                        {
+                            MessageBox.Show("Cập nhật cây trồng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Cập nhật cây trồng thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+
+                    LoadCayTrong();
+                    SetControlState(false);
+                    ClearInputs();
+                    isAddNew = false;
                 }
-                else
+                catch (Exception ex)
                 {
-                    // Cập nhật
-                    string query = @"UPDATE CayTrong 
-                                    SET TenCay = @TenCay, 
-                                        LoaiCay = @LoaiCay, 
-                                        NgayGieoTrong = @NgayGieoTrong, 
-                                        KhuVuc = @KhuVuc, 
-                                        SanLuongDuKien = @SanLuongDuKien
-                                    WHERE MaCay = @MaCay";
-
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@MaCay", int.Parse(txt_MaCay.Text));
-                    cmd.Parameters.AddWithValue("@TenCay", txt_TenCay.Text.Trim());
-                    cmd.Parameters.AddWithValue("@LoaiCay", txt_LoaiCay.Text.Trim());
-                    cmd.Parameters.AddWithValue("@NgayGieoTrong", txt_NgayGieoTrong.Value.Date);
-                    cmd.Parameters.AddWithValue("@KhuVuc", string.IsNullOrWhiteSpace(txt_KhuVuc.Text) ? DBNull.Value : (object)txt_KhuVuc.Text.Trim());
-                    cmd.Parameters.AddWithValue("@SanLuongDuKien", string.IsNullOrWhiteSpace(txt_SanLuongDuKien.Text) ? DBNull.Value : (object)decimal.Parse(txt_SanLuongDuKien.Text));
-
-                    int result = cmd.ExecuteNonQuery();
-                    if (result > 0)
-                    {
-                        MessageBox.Show("Cập nhật cây trồng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
+                    MessageBox.Show("Lỗi lưu dữ liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
-                LoadCayTrong();
-                SetControlState(false);
-                ClearInputs();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi lưu dữ liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                conn.Close();
             }
         }
 
@@ -340,8 +346,6 @@ namespace Đồ_án
         // Nút Tìm kiếm
         private void btn_TimKiem_Click(object sender, EventArgs e)
         {
-            // Lấy text tìm kiếm - sửa lại nếu bạn có TextBox riêng
-            // Ví dụ: string searchText = txt_TimKiem.Text;
             string searchText = cbo_TimKiem.Text;
 
             // Kiểm tra nếu text là một trong các item của combobox thì không tìm
@@ -354,7 +358,7 @@ namespace Đồ_án
             TimKiem(searchText);
         }
 
-        // Tìm kiếm với TextBox riêng (nếu có)
+        // Tìm kiếm
         private void TimKiem(string searchText)
         {
             if (string.IsNullOrWhiteSpace(searchText))
@@ -363,43 +367,42 @@ namespace Đồ_án
                 return;
             }
 
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                conn.Open();
-                string searchField = "";
-                switch (cbo_TimKiem.SelectedIndex)
+                try
                 {
-                    case 0: searchField = "MaCay"; break;
-                    case 1: searchField = "TenCay"; break;
-                    case 2: searchField = "LoaiCay"; break;
-                    case 3: searchField = "KhuVuc"; break;
-                    default: searchField = "TenCay"; break;
+                    conn.Open();
+                    string searchField = "";
+                    switch (cbo_TimKiem.SelectedIndex)
+                    {
+                        case 0: searchField = "MaCay"; break;
+                        case 1: searchField = "TenCay"; break;
+                        case 2: searchField = "LoaiCay"; break;
+                        case 3: searchField = "KhuVuc"; break;
+                        default: searchField = "TenCay"; break;
+                    }
+
+                    string query = $@"SELECT MaCay, TenCay, LoaiCay, NgayGieoTrong, KhuVuc, SanLuongDuKien 
+                                    FROM CayTrong 
+                                    WHERE CAST({searchField} AS NVARCHAR(MAX)) LIKE @SearchText
+                                    ORDER BY MaCay";
+
+                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                    da.SelectCommand.Parameters.AddWithValue("@SearchText", "%" + searchText + "%");
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    dgv_QLCayTrong.DataSource = dt;
+
+                    if (dt.Rows.Count == 0)
+                    {
+                        MessageBox.Show("Không tìm thấy kết quả!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
-
-                string query = $@"SELECT MaCay, TenCay, LoaiCay, NgayGieoTrong, KhuVuc, SanLuongDuKien 
-                                FROM CayTrong 
-                                WHERE CAST({searchField} AS NVARCHAR(MAX)) LIKE @SearchText
-                                ORDER BY MaCay";
-
-                SqlDataAdapter da = new SqlDataAdapter(query, conn);
-                da.SelectCommand.Parameters.AddWithValue("@SearchText", "%" + searchText + "%");
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-
-                dgv_QLCayTrong.DataSource = dt;
-
-                if (dt.Rows.Count == 0)
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Không tìm thấy kết quả!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Lỗi tìm kiếm: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi tìm kiếm: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                conn.Close();
             }
         }
 
@@ -419,13 +422,17 @@ namespace Đồ_án
             {
                 DataGridViewRow row = dgv_QLCayTrong.Rows[e.RowIndex];
 
-                txt_MaCay.Text = row.Cells["MaCay"].Value.ToString();
+                txt_MaCay.Text = row.Cells["MaCay"].Value?.ToString() ?? "";
                 txt_TenCay.Text = row.Cells["TenCay"].Value?.ToString() ?? "";
                 txt_LoaiCay.Text = row.Cells["LoaiCay"].Value?.ToString() ?? "";
 
-                if (row.Cells["NgayGieoTrong"].Value != DBNull.Value)
+                if (row.Cells["NgayGieoTrong"].Value != DBNull.Value && row.Cells["NgayGieoTrong"].Value != null)
                 {
                     txt_NgayGieoTrong.Value = Convert.ToDateTime(row.Cells["NgayGieoTrong"].Value);
+                }
+                else
+                {
+                    txt_NgayGieoTrong.Value = DateTime.Now;
                 }
 
                 txt_KhuVuc.Text = row.Cells["KhuVuc"].Value?.ToString() ?? "";
@@ -433,10 +440,10 @@ namespace Đồ_án
             }
         }
 
-        // Event CellContentClick (đã có trong Designer)
+        // Event CellContentClick
         private void dgv_QLCayTrong_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Có thể để trống hoặc gọi CellClick
+            // Có thể để trống
         }
 
         #endregion
@@ -449,60 +456,24 @@ namespace Đồ_án
             this.Close();
         }
 
-        // Các event TextChanged (có thể để trống hoặc thêm validation)
-        private void txt_MaCay_TextChanged(object sender, EventArgs e)
-        {
-            // Mã cây không cho sửa
-        }
-
-        private void txt_NgayGieoTrong_ValueChanged(object sender, EventArgs e)
-        {
-            // Có thể thêm validation
-        }
-
-        private void txt_TenCay_TextChanged(object sender, EventArgs e)
-        {
-            // Có thể thêm validation
-        }
-
-        private void txt_KhuVuc_TextChanged(object sender, EventArgs e)
-        {
-            // Có thể thêm validation
-        }
-
-        private void txt_LoaiCay_TextChanged(object sender, EventArgs e)
-        {
-            // Có thể thêm validation
-        }
-
-        private void txt_SanLuongDuKien_TextChanged(object sender, EventArgs e)
-        {
-            // Có thể thêm validation chỉ cho nhập số
-        }
+        private void txt_MaCay_TextChanged(object sender, EventArgs e) { }
+        private void txt_NgayGieoTrong_ValueChanged(object sender, EventArgs e) { }
+        private void txt_TenCay_TextChanged(object sender, EventArgs e) { }
+        private void txt_KhuVuc_TextChanged(object sender, EventArgs e) { }
+        private void txt_LoaiCay_TextChanged(object sender, EventArgs e) { }
+        private void txt_SanLuongDuKien_TextChanged(object sender, EventArgs e) { }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            // Nếu đây là nút refresh
             LoadCayTrong();
             ClearInputs();
+            SetControlState(false);
+            isAddNew = false;
         }
 
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-            // Để trống
-        }
-
-        #endregion
-
-        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
-        private void cayTrongBindingSource_CurrentChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e) { }
+        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e) { }
+        private void cayTrongBindingSource_CurrentChanged(object sender, EventArgs e) { }
 
         private void toolStrip_thuhoach_Click(object sender, EventArgs e)
         {
@@ -510,10 +481,9 @@ namespace Đồ_án
 
             if (mainForm != null)
             {
-                // Truyền MaNguoiDung và MaVaiTro sang form thu hoạch
                 frmChiTietThuHoachCayTrong frmThuHoach = new frmChiTietThuHoachCayTrong(
                     mainForm.MaNguoiDung,
-                    mainForm.MaVaiTro);  // Cần thêm property MaVaiTro vào GiaoDien
+                    mainForm.MaVaiTro);
                 mainForm.OpenFormInPanel(frmThuHoach);
             }
             else
@@ -523,5 +493,11 @@ namespace Đồ_án
             }
         }
 
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            btn_Luu_Click(sender, e);
+        }
+
+        #endregion
     }
 }

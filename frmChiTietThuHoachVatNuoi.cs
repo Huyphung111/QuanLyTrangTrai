@@ -17,6 +17,10 @@ namespace QL_TrangTrai
         private DataTable dtChiTiet;
         private DataTable dtVatNuoi;
         private DataTable dtNhanVien;
+        private int _maNguoiDung = 0;
+        private int _maVaiTro = 1;
+
+
 
         // Biến lưu trạng thái đang thêm mới hay sửa
         private bool isAddNew = false;
@@ -25,11 +29,15 @@ namespace QL_TrangTrai
 
         #region Constructor
 
-        public frmChiTietThuHoachVatNuoi()
+        public frmChiTietThuHoachVatNuoi(int maNguoiDung, int maVaiTro)
         {
             InitializeComponent();
+            _maNguoiDung = maNguoiDung;
+            _maVaiTro = maVaiTro;
             this.Load += FrmChiTietThuHoachVatNuoi_Load;
         }
+
+
 
         #endregion
 
@@ -123,39 +131,74 @@ namespace QL_TrangTrai
         /// </summary>
         private void LoadNhanVien()
         {
+            MessageBox.Show($"DEBUG - MaVaiTro: {_maVaiTro}, MaNguoiDung: {_maNguoiDung}");
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT MaNV, HoTen FROM NhanVien ORDER BY HoTen";
-                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
+
+                    string query;
+                    SqlDataAdapter da;
+
+                    if (_maVaiTro == 2 && _maNguoiDung > 0)
+                    {
+                        // NHÂN VIÊN: chỉ load đúng người đang đăng nhập
+                        // Lấy nhân viên có MaNguoiDung trùng với người đăng nhập
+                        query = "SELECT MaNV, HoTen FROM NhanVien WHERE MaNguoiDung = @MaNguoiDung";
+                        da = new SqlDataAdapter(query, conn);
+                        da.SelectCommand.Parameters.AddWithValue("@MaNguoiDung", _maNguoiDung);
+                    }
+                    else
+                    {
+                        // ADMIN (MaVaiTro = 1): load tất cả nhân viên
+                        query = "SELECT MaNV, HoTen FROM NhanVien ORDER BY HoTen";
+                        da = new SqlDataAdapter(query, conn);
+                    }
+
                     dtNhanVien = new DataTable();
                     da.Fill(dtNhanVien);
 
-                    // Thêm dòng trống đầu tiên
-                    DataRow emptyRow = dtNhanVien.NewRow();
-                    emptyRow["MaNV"] = DBNull.Value;
-                    emptyRow["HoTen"] = "-- Chọn nhân viên --";
-                    dtNhanVien.Rows.InsertAt(emptyRow, 0);
-
-                    // Kiểm tra xem có ComboBox nhân viên không (nếu có trong form)
-                    if (this.Controls.Find("cboNhanVien", true).Length > 0)
+                    // Nếu ADMIN thì thêm dòng "-- Chọn nhân viên --"
+                    if (_maVaiTro == 1)
                     {
-                        ComboBox cboNV = (ComboBox)this.Controls.Find("cboNhanVien", true)[0];
-                        cboNV.DataSource = dtNhanVien;
-                        cboNV.DisplayMember = "HoTen";
-                        cboNV.ValueMember = "MaNV";
-                        cboNV.SelectedIndex = 0;
+                        DataRow emptyRow = dtNhanVien.NewRow();
+                        emptyRow["MaNV"] = 0;
+                        emptyRow["HoTen"] = "-- Chọn nhân viên --";
+                        dtNhanVien.Rows.InsertAt(emptyRow, 0);
+                    }
+
+                    cboNhanVien.DisplayMember = "HoTen";
+                    cboNhanVien.ValueMember = "MaNV";
+                    cboNhanVien.DataSource = dtNhanVien;
+                    cboNhanVien.ForeColor = Color.Black;
+
+                    if (_maVaiTro == 2 && _maNguoiDung > 0)
+                    {
+                        // NHÂN VIÊN: combo chỉ có 1 dòng, tự chọn và KHÓA
+                        if (dtNhanVien.Rows.Count > 0)
+                        {
+                            cboNhanVien.SelectedIndex = 0;
+                        }
+                        cboNhanVien.Enabled = false; // KHÓA không cho chọn
+                    }
+                    else
+                    {
+                        // ADMIN: cho phép chọn
+                        cboNhanVien.SelectedIndex = 0;
+                        cboNhanVien.Enabled = true;
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Không hiển thị lỗi nếu không có ComboBox nhân viên
-                System.Diagnostics.Debug.WriteLine($"LoadNhanVien: {ex.Message}");
+                MessageBox.Show($"Lỗi khi tải danh sách nhân viên:\n{ex.Message}",
+                    "❌ Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
+
 
         /// <summary>
         /// Load dữ liệu chi tiết thu hoạch vật nuôi
@@ -313,7 +356,14 @@ namespace QL_TrangTrai
                     conn.Open();
 
                     // Lấy MaNV (mặc định là 3 nếu không có ComboBox nhân viên)
-                    int maNV = 3; // Mặc định
+                    int maNV;
+                    if (cboNhanVien.SelectedValue == null || cboNhanVien.SelectedValue == DBNull.Value)
+                    {
+                        MessageBox.Show("⚠️ Vui lòng chọn nhân viên!", "Thiếu thông tin",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    maNV = Convert.ToInt32(cboNhanVien.SelectedValue); // Mặc định
                     if (this.Controls.Find("cboNhanVien", true).Length > 0)
                     {
                         ComboBox cboNV = (ComboBox)this.Controls.Find("cboNhanVien", true)[0];
@@ -899,6 +949,16 @@ namespace QL_TrangTrai
         }
 
         private void dgvChiTiet_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void cboNhanVien_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label_NhanVien_Click(object sender, EventArgs e)
         {
 
         }

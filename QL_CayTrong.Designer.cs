@@ -265,6 +265,7 @@
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(65, 59);
             this.toolStripButton2.Text = "Lưu";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
             // btn_Huy
             // 

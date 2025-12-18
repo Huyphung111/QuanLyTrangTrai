@@ -39,16 +39,6 @@
             this.grpLog.SuspendLayout();
             this.SuspendLayout();
             // 
-            // lblTitle
-            // 
-            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.Green;
-            this.lblTitle.Location = new System.Drawing.Point(12, 9);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(760, 30);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "QUẢN TRỊ HỆ THỐNG  AN TOÀN DỮ LIỆU";
-            // 
             // grpBackup
             // 
             this.grpBackup.Controls.Add(this.btnLogBackup);
@@ -56,64 +46,71 @@
             this.grpBackup.Controls.Add(this.btnFullBackup);
             this.grpBackup.Controls.Add(this.txtBackupPath);
             this.grpBackup.Controls.Add(this.lblBackupPath);
-            this.grpBackup.Location = new System.Drawing.Point(12, 45);
+            this.grpBackup.Location = new System.Drawing.Point(18, 69);
+            this.grpBackup.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpBackup.Name = "grpBackup";
-            this.grpBackup.Size = new System.Drawing.Size(370, 180);
+            this.grpBackup.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpBackup.Size = new System.Drawing.Size(555, 277);
             this.grpBackup.TabIndex = 1;
             this.grpBackup.TabStop = false;
             this.grpBackup.Text = "1. Sao lưu Dữ liệu (Backup)";
-            // 
-            // lblBackupPath
-            // 
-            this.lblBackupPath.Location = new System.Drawing.Point(10, 25);
-            this.lblBackupPath.Name = "lblBackupPath";
-            this.lblBackupPath.Size = new System.Drawing.Size(50, 20);
-            this.lblBackupPath.TabIndex = 0;
-            this.lblBackupPath.Text = "Lưu tại:";
-            // 
-            // txtBackupPath
-            // 
-            this.txtBackupPath.Location = new System.Drawing.Point(65, 22);
-            this.txtBackupPath.Name = "txtBackupPath";
-            this.txtBackupPath.Size = new System.Drawing.Size(290, 20);
-            this.txtBackupPath.TabIndex = 1;
-            this.txtBackupPath.Text = "D:\\Backup\\";
-            // 
-            // btnFullBackup
-            // 
-            this.btnFullBackup.BackColor = System.Drawing.Color.RoyalBlue;
-            this.btnFullBackup.ForeColor = System.Drawing.Color.White;
-            this.btnFullBackup.Location = new System.Drawing.Point(15, 55);
-            this.btnFullBackup.Name = "btnFullBackup";
-            this.btnFullBackup.Size = new System.Drawing.Size(340, 35);
-            this.btnFullBackup.TabIndex = 2;
-            this.btnFullBackup.Text = "FULL BACKUP (Sao lưu Đầy đủ)";
-            this.btnFullBackup.UseVisualStyleBackColor = false;
-            this.btnFullBackup.Click += new System.EventHandler(this.btnFullBackup_Click);
-            // 
-            // btnDiffBackup
-            // 
-            this.btnDiffBackup.BackColor = System.Drawing.Color.Purple;
-            this.btnDiffBackup.ForeColor = System.Drawing.Color.White;
-            this.btnDiffBackup.Location = new System.Drawing.Point(15, 95);
-            this.btnDiffBackup.Name = "btnDiffBackup";
-            this.btnDiffBackup.Size = new System.Drawing.Size(340, 35);
-            this.btnDiffBackup.TabIndex = 3;
-            this.btnDiffBackup.Text = "DIFFERENTIAL BACKUP (Sao lưu Khác biệt)";
-            this.btnDiffBackup.UseVisualStyleBackColor = false;
-            this.btnDiffBackup.Click += new System.EventHandler(this.btnDiffBackup_Click);
             // 
             // btnLogBackup
             // 
             this.btnLogBackup.BackColor = System.Drawing.Color.Orange;
             this.btnLogBackup.ForeColor = System.Drawing.Color.Black;
-            this.btnLogBackup.Location = new System.Drawing.Point(15, 135);
+            this.btnLogBackup.Location = new System.Drawing.Point(22, 208);
+            this.btnLogBackup.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnLogBackup.Name = "btnLogBackup";
-            this.btnLogBackup.Size = new System.Drawing.Size(340, 35);
+            this.btnLogBackup.Size = new System.Drawing.Size(510, 54);
             this.btnLogBackup.TabIndex = 4;
             this.btnLogBackup.Text = "LOG BACKUP (Sao lưu Nhật ký)";
             this.btnLogBackup.UseVisualStyleBackColor = false;
             this.btnLogBackup.Click += new System.EventHandler(this.btnLogBackup_Click);
+            // 
+            // btnDiffBackup
+            // 
+            this.btnDiffBackup.BackColor = System.Drawing.Color.Purple;
+            this.btnDiffBackup.ForeColor = System.Drawing.Color.White;
+            this.btnDiffBackup.Location = new System.Drawing.Point(22, 146);
+            this.btnDiffBackup.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnDiffBackup.Name = "btnDiffBackup";
+            this.btnDiffBackup.Size = new System.Drawing.Size(510, 54);
+            this.btnDiffBackup.TabIndex = 3;
+            this.btnDiffBackup.Text = "DIFFERENTIAL BACKUP (Sao lưu Khác biệt)";
+            this.btnDiffBackup.UseVisualStyleBackColor = false;
+            this.btnDiffBackup.Click += new System.EventHandler(this.btnDiffBackup_Click);
+            // 
+            // btnFullBackup
+            // 
+            this.btnFullBackup.BackColor = System.Drawing.Color.RoyalBlue;
+            this.btnFullBackup.ForeColor = System.Drawing.Color.White;
+            this.btnFullBackup.Location = new System.Drawing.Point(22, 85);
+            this.btnFullBackup.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnFullBackup.Name = "btnFullBackup";
+            this.btnFullBackup.Size = new System.Drawing.Size(510, 54);
+            this.btnFullBackup.TabIndex = 2;
+            this.btnFullBackup.Text = "FULL BACKUP (Sao lưu Đầy đủ)";
+            this.btnFullBackup.UseVisualStyleBackColor = false;
+            this.btnFullBackup.Click += new System.EventHandler(this.btnFullBackup_Click);
+            // 
+            // txtBackupPath
+            // 
+            this.txtBackupPath.Location = new System.Drawing.Point(98, 34);
+            this.txtBackupPath.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtBackupPath.Name = "txtBackupPath";
+            this.txtBackupPath.Size = new System.Drawing.Size(433, 26);
+            this.txtBackupPath.TabIndex = 1;
+            this.txtBackupPath.Text = "D:\\Backup\\";
+            // 
+            // lblBackupPath
+            // 
+            this.lblBackupPath.Location = new System.Drawing.Point(15, 38);
+            this.lblBackupPath.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblBackupPath.Name = "lblBackupPath";
+            this.lblBackupPath.Size = new System.Drawing.Size(75, 31);
+            this.lblBackupPath.TabIndex = 0;
+            this.lblBackupPath.Text = "Lưu tại:";
             // 
             // grpRestore
             // 
@@ -122,66 +119,75 @@
             this.grpRestore.Controls.Add(this.btnBrowseFile);
             this.grpRestore.Controls.Add(this.txtRestoreFile);
             this.grpRestore.Controls.Add(this.lblRestoreFile);
-            this.grpRestore.Location = new System.Drawing.Point(400, 45);
+            this.grpRestore.Location = new System.Drawing.Point(600, 69);
+            this.grpRestore.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpRestore.Name = "grpRestore";
-            this.grpRestore.Size = new System.Drawing.Size(370, 180);
+            this.grpRestore.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpRestore.Size = new System.Drawing.Size(555, 277);
             this.grpRestore.TabIndex = 2;
             this.grpRestore.TabStop = false;
             this.grpRestore.Text = "2. Phục hồi Dữ liệu (Restore)";
             // 
-            // lblRestoreFile
+            // lblWarning
             // 
-            this.lblRestoreFile.Location = new System.Drawing.Point(10, 25);
-            this.lblRestoreFile.Name = "lblRestoreFile";
-            this.lblRestoreFile.Size = new System.Drawing.Size(150, 20);
-            this.lblRestoreFile.TabIndex = 0;
-            this.lblRestoreFile.Text = "Chọn file bản sao (.bak / .trn):";
-            // 
-            // txtRestoreFile
-            // 
-            this.txtRestoreFile.Location = new System.Drawing.Point(15, 50);
-            this.txtRestoreFile.Name = "txtRestoreFile";
-            this.txtRestoreFile.Size = new System.Drawing.Size(300, 20);
-            this.txtRestoreFile.TabIndex = 1;
-            // 
-            // btnBrowseFile
-            // 
-            this.btnBrowseFile.BackColor = System.Drawing.Color.Gold;
-            this.btnBrowseFile.Location = new System.Drawing.Point(320, 48);
-            this.btnBrowseFile.Name = "btnBrowseFile";
-            this.btnBrowseFile.Size = new System.Drawing.Size(35, 24);
-            this.btnBrowseFile.TabIndex = 2;
-            this.btnBrowseFile.Text = "...";
-            this.btnBrowseFile.UseVisualStyleBackColor = false;
-            this.btnBrowseFile.Click += new System.EventHandler(this.btnBrowseFile_Click);
+            this.lblWarning.ForeColor = System.Drawing.Color.Red;
+            this.lblWarning.Location = new System.Drawing.Point(22, 208);
+            this.lblWarning.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblWarning.Name = "lblWarning";
+            this.lblWarning.Size = new System.Drawing.Size(510, 54);
+            this.lblWarning.TabIndex = 4;
+            this.lblWarning.Text = "Cảnh báo: Hệ thống sẽ ngắt kết nối để phục hồi.";
             // 
             // btnRestore
             // 
             this.btnRestore.BackColor = System.Drawing.Color.LimeGreen;
             this.btnRestore.ForeColor = System.Drawing.Color.White;
-            this.btnRestore.Location = new System.Drawing.Point(15, 85);
+            this.btnRestore.Location = new System.Drawing.Point(22, 131);
+            this.btnRestore.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnRestore.Name = "btnRestore";
-            this.btnRestore.Size = new System.Drawing.Size(340, 40);
+            this.btnRestore.Size = new System.Drawing.Size(510, 62);
             this.btnRestore.TabIndex = 3;
             this.btnRestore.Text = "TIẾN HÀNH PHỤC HỒI";
             this.btnRestore.UseVisualStyleBackColor = false;
             this.btnRestore.Click += new System.EventHandler(this.btnRestore_Click);
             // 
-            // lblWarning
+            // btnBrowseFile
             // 
-            this.lblWarning.ForeColor = System.Drawing.Color.Red;
-            this.lblWarning.Location = new System.Drawing.Point(15, 135);
-            this.lblWarning.Name = "lblWarning";
-            this.lblWarning.Size = new System.Drawing.Size(340, 35);
-            this.lblWarning.TabIndex = 4;
-            this.lblWarning.Text = "Cảnh báo: Hệ thống sẽ ngắt kết nối để phục hồi.";
+            this.btnBrowseFile.BackColor = System.Drawing.Color.Gold;
+            this.btnBrowseFile.Location = new System.Drawing.Point(480, 74);
+            this.btnBrowseFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnBrowseFile.Name = "btnBrowseFile";
+            this.btnBrowseFile.Size = new System.Drawing.Size(52, 37);
+            this.btnBrowseFile.TabIndex = 2;
+            this.btnBrowseFile.Text = "...";
+            this.btnBrowseFile.UseVisualStyleBackColor = false;
+            this.btnBrowseFile.Click += new System.EventHandler(this.btnBrowseFile_Click);
+            // 
+            // txtRestoreFile
+            // 
+            this.txtRestoreFile.Location = new System.Drawing.Point(22, 77);
+            this.txtRestoreFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtRestoreFile.Name = "txtRestoreFile";
+            this.txtRestoreFile.Size = new System.Drawing.Size(448, 26);
+            this.txtRestoreFile.TabIndex = 1;
+            // 
+            // lblRestoreFile
+            // 
+            this.lblRestoreFile.Location = new System.Drawing.Point(15, 38);
+            this.lblRestoreFile.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblRestoreFile.Name = "lblRestoreFile";
+            this.lblRestoreFile.Size = new System.Drawing.Size(225, 31);
+            this.lblRestoreFile.TabIndex = 0;
+            this.lblRestoreFile.Text = "Chọn file bản sao (.bak / .trn):";
             // 
             // grpLog
             // 
             this.grpLog.Controls.Add(this.rtbLog);
-            this.grpLog.Location = new System.Drawing.Point(12, 235);
+            this.grpLog.Location = new System.Drawing.Point(18, 362);
+            this.grpLog.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpLog.Name = "grpLog";
-            this.grpLog.Size = new System.Drawing.Size(758, 200);
+            this.grpLog.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpLog.Size = new System.Drawing.Size(1137, 308);
             this.grpLog.TabIndex = 3;
             this.grpLog.TabStop = false;
             this.grpLog.Text = "Nhật ký hệ thống";
@@ -190,28 +196,42 @@
             // 
             this.rtbLog.BackColor = System.Drawing.Color.Black;
             this.rtbLog.ForeColor = System.Drawing.Color.Lime;
-            this.rtbLog.Location = new System.Drawing.Point(10, 20);
+            this.rtbLog.Location = new System.Drawing.Point(15, 31);
+            this.rtbLog.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rtbLog.Name = "rtbLog";
             this.rtbLog.ReadOnly = true;
-            this.rtbLog.Size = new System.Drawing.Size(738, 170);
+            this.rtbLog.Size = new System.Drawing.Size(1105, 259);
             this.rtbLog.TabIndex = 0;
             this.rtbLog.Text = "";
             // 
             // openFileDialog1
             // 
-            this.openFileDialog1.Filter = "All Backup Files (*.bak;*.trn)|*.bak;*.trn|Full/Diff Backup (*.bak)|*.bak|Log Backup (*.trn)|*.trn|All Files (*.*)|*.*";
+            this.openFileDialog1.Filter = "All Backup Files (*.bak;*.trn)|*.bak;*.trn|Full/Diff Backup (*.bak)|*.bak|Log Bac" +
+    "kup (*.trn)|*.trn|All Files (*.*)|*.*";
             this.openFileDialog1.Title = "Chọn file backup";
             // 
-            // frmQuanTriHeThong
+            // lblTitle
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.Black;
+            this.lblTitle.Location = new System.Drawing.Point(18, 14);
+            this.lblTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(1140, 46);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "QUẢN TRỊ HỆ THỐNG  AN TOÀN DỮ LIỆU";
+            // 
+            // frmBackupDatabase
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 450);
+            this.ClientSize = new System.Drawing.Size(1176, 692);
             this.Controls.Add(this.grpLog);
             this.Controls.Add(this.grpRestore);
             this.Controls.Add(this.grpBackup);
             this.Controls.Add(this.lblTitle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.Name = "frmBackupDatabase";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -223,6 +243,7 @@
             this.grpRestore.PerformLayout();
             this.grpLog.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         #endregion

@@ -68,16 +68,17 @@
             this.pnlHeader.Controls.Add(this.lblTitle);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeader.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlHeader.Margin = new System.Windows.Forms.Padding(4);
             this.pnlHeader.Name = "pnlHeader";
             this.pnlHeader.Size = new System.Drawing.Size(1265, 80);
             this.pnlHeader.TabIndex = 0;
             // 
             // lblTitle
             // 
+            this.lblTitle.BackColor = System.Drawing.Color.Black;
             this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.White;
+            this.lblTitle.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTitle.Name = "lblTitle";
@@ -106,11 +107,11 @@
             this.gbThongTin.Controls.Add(this.lblGhiChu);
             this.gbThongTin.Controls.Add(this.txtGhiChu);
             this.gbThongTin.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.gbThongTin.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
+            this.gbThongTin.ForeColor = System.Drawing.Color.Black;
             this.gbThongTin.Location = new System.Drawing.Point(15, 93);
-            this.gbThongTin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbThongTin.Margin = new System.Windows.Forms.Padding(4);
             this.gbThongTin.Name = "gbThongTin";
-            this.gbThongTin.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbThongTin.Padding = new System.Windows.Forms.Padding(4);
             this.gbThongTin.Size = new System.Drawing.Size(1234, 240);
             this.gbThongTin.TabIndex = 1;
             this.gbThongTin.TabStop = false;
@@ -131,7 +132,7 @@
             // 
             this.txtMaTH.ForeColor = System.Drawing.Color.Black;
             this.txtMaTH.Location = new System.Drawing.Point(154, 43);
-            this.txtMaTH.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMaTH.Margin = new System.Windows.Forms.Padding(4);
             this.txtMaTH.Name = "txtMaTH";
             this.txtMaTH.Size = new System.Drawing.Size(153, 34);
             this.txtMaTH.TabIndex = 1;
@@ -152,7 +153,7 @@
             this.dtpNgayTH.CustomFormat = "dd/MM/yyyy";
             this.dtpNgayTH.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpNgayTH.Location = new System.Drawing.Point(495, 43);
-            this.dtpNgayTH.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpNgayTH.Margin = new System.Windows.Forms.Padding(4);
             this.dtpNgayTH.Name = "dtpNgayTH";
             this.dtpNgayTH.Size = new System.Drawing.Size(192, 34);
             this.dtpNgayTH.TabIndex = 3;
@@ -174,7 +175,7 @@
             this.cboNhanVien.ForeColor = System.Drawing.Color.Black;
             this.cboNhanVien.FormattingEnabled = true;
             this.cboNhanVien.Location = new System.Drawing.Point(836, 43);
-            this.cboNhanVien.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboNhanVien.Margin = new System.Windows.Forms.Padding(4);
             this.cboNhanVien.Name = "cboNhanVien";
             this.cboNhanVien.Size = new System.Drawing.Size(359, 36);
             this.cboNhanVien.TabIndex = 5;
@@ -196,7 +197,7 @@
             this.rbCayTrong.Checked = true;
             this.rbCayTrong.ForeColor = System.Drawing.Color.Black;
             this.rbCayTrong.Location = new System.Drawing.Point(180, 97);
-            this.rbCayTrong.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rbCayTrong.Margin = new System.Windows.Forms.Padding(4);
             this.rbCayTrong.Name = "rbCayTrong";
             this.rbCayTrong.Size = new System.Drawing.Size(123, 32);
             this.rbCayTrong.TabIndex = 7;
@@ -210,7 +211,7 @@
             this.rbVatNuoi.AutoSize = true;
             this.rbVatNuoi.ForeColor = System.Drawing.Color.Black;
             this.rbVatNuoi.Location = new System.Drawing.Point(321, 97);
-            this.rbVatNuoi.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rbVatNuoi.Margin = new System.Windows.Forms.Padding(4);
             this.rbVatNuoi.Name = "rbVatNuoi";
             this.rbVatNuoi.Size = new System.Drawing.Size(110, 32);
             this.rbVatNuoi.TabIndex = 8;
@@ -235,7 +236,7 @@
             this.cboChiTietCT.ForeColor = System.Drawing.Color.Black;
             this.cboChiTietCT.FormattingEnabled = true;
             this.cboChiTietCT.Location = new System.Drawing.Point(643, 96);
-            this.cboChiTietCT.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboChiTietCT.Margin = new System.Windows.Forms.Padding(4);
             this.cboChiTietCT.Name = "cboChiTietCT";
             this.cboChiTietCT.Size = new System.Drawing.Size(552, 36);
             this.cboChiTietCT.TabIndex = 10;
@@ -259,7 +260,7 @@
             this.cboChiTietVN.ForeColor = System.Drawing.Color.Black;
             this.cboChiTietVN.FormattingEnabled = true;
             this.cboChiTietVN.Location = new System.Drawing.Point(643, 96);
-            this.cboChiTietVN.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboChiTietVN.Margin = new System.Windows.Forms.Padding(4);
             this.cboChiTietVN.Name = "cboChiTietVN";
             this.cboChiTietVN.Size = new System.Drawing.Size(552, 36);
             this.cboChiTietVN.TabIndex = 12;
@@ -282,7 +283,7 @@
             this.nudTongSL.DecimalPlaces = 2;
             this.nudTongSL.ForeColor = System.Drawing.Color.Black;
             this.nudTongSL.Location = new System.Drawing.Point(166, 150);
-            this.nudTongSL.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.nudTongSL.Margin = new System.Windows.Forms.Padding(4);
             this.nudTongSL.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -317,7 +318,7 @@
             // 
             this.txtGhiChu.ForeColor = System.Drawing.Color.Black;
             this.txtGhiChu.Location = new System.Drawing.Point(476, 149);
-            this.txtGhiChu.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtGhiChu.Margin = new System.Windows.Forms.Padding(4);
             this.txtGhiChu.Name = "txtGhiChu";
             this.txtGhiChu.Size = new System.Drawing.Size(719, 34);
             this.txtGhiChu.TabIndex = 16;
@@ -329,7 +330,7 @@
             this.pnlButtons.Controls.Add(this.btnXoa);
             this.pnlButtons.Controls.Add(this.btnLamMoi);
             this.pnlButtons.Location = new System.Drawing.Point(15, 341);
-            this.pnlButtons.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlButtons.Margin = new System.Windows.Forms.Padding(4);
             this.pnlButtons.Name = "pnlButtons";
             this.pnlButtons.Size = new System.Drawing.Size(1234, 60);
             this.pnlButtons.TabIndex = 2;
@@ -342,7 +343,7 @@
             this.btnThem.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnThem.ForeColor = System.Drawing.Color.White;
             this.btnThem.Location = new System.Drawing.Point(257, 7);
-            this.btnThem.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnThem.Margin = new System.Windows.Forms.Padding(4);
             this.btnThem.Name = "btnThem";
             this.btnThem.Size = new System.Drawing.Size(141, 47);
             this.btnThem.TabIndex = 0;
@@ -358,7 +359,7 @@
             this.btnSua.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnSua.ForeColor = System.Drawing.Color.White;
             this.btnSua.Location = new System.Drawing.Point(424, 7);
-            this.btnSua.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSua.Margin = new System.Windows.Forms.Padding(4);
             this.btnSua.Name = "btnSua";
             this.btnSua.Size = new System.Drawing.Size(141, 47);
             this.btnSua.TabIndex = 1;
@@ -374,7 +375,7 @@
             this.btnXoa.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnXoa.ForeColor = System.Drawing.Color.White;
             this.btnXoa.Location = new System.Drawing.Point(591, 7);
-            this.btnXoa.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnXoa.Margin = new System.Windows.Forms.Padding(4);
             this.btnXoa.Name = "btnXoa";
             this.btnXoa.Size = new System.Drawing.Size(141, 47);
             this.btnXoa.TabIndex = 2;
@@ -390,7 +391,7 @@
             this.btnLamMoi.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnLamMoi.ForeColor = System.Drawing.Color.White;
             this.btnLamMoi.Location = new System.Drawing.Point(759, 7);
-            this.btnLamMoi.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnLamMoi.Margin = new System.Windows.Forms.Padding(4);
             this.btnLamMoi.Name = "btnLamMoi";
             this.btnLamMoi.Size = new System.Drawing.Size(154, 47);
             this.btnLamMoi.TabIndex = 3;
@@ -407,9 +408,9 @@
             this.gbTimKiem.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.gbTimKiem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.gbTimKiem.Location = new System.Drawing.Point(15, 407);
-            this.gbTimKiem.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbTimKiem.Margin = new System.Windows.Forms.Padding(4);
             this.gbTimKiem.Name = "gbTimKiem";
-            this.gbTimKiem.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbTimKiem.Padding = new System.Windows.Forms.Padding(4);
             this.gbTimKiem.Size = new System.Drawing.Size(1234, 73);
             this.gbTimKiem.TabIndex = 3;
             this.gbTimKiem.TabStop = false;
@@ -437,7 +438,7 @@
             "Loại thu hoạch",
             "Ghi chú"});
             this.cboTimTheo.Location = new System.Drawing.Point(129, 25);
-            this.cboTimTheo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboTimTheo.Margin = new System.Windows.Forms.Padding(4);
             this.cboTimTheo.Name = "cboTimTheo";
             this.cboTimTheo.Size = new System.Drawing.Size(230, 36);
             this.cboTimTheo.TabIndex = 1;
@@ -446,7 +447,7 @@
             // 
             this.txtTimKiem.ForeColor = System.Drawing.Color.Black;
             this.txtTimKiem.Location = new System.Drawing.Point(386, 25);
-            this.txtTimKiem.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtTimKiem.Margin = new System.Windows.Forms.Padding(4);
             this.txtTimKiem.Name = "txtTimKiem";
             this.txtTimKiem.Size = new System.Drawing.Size(513, 34);
             this.txtTimKiem.TabIndex = 2;
@@ -459,7 +460,7 @@
             this.btnTim.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnTim.ForeColor = System.Drawing.Color.White;
             this.btnTim.Location = new System.Drawing.Point(926, 20);
-            this.btnTim.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnTim.Margin = new System.Windows.Forms.Padding(4);
             this.btnTim.Name = "btnTim";
             this.btnTim.Size = new System.Drawing.Size(129, 40);
             this.btnTim.TabIndex = 3;
@@ -471,11 +472,11 @@
             // 
             this.gbDanhSach.Controls.Add(this.dgvThuHoach);
             this.gbDanhSach.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.gbDanhSach.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
+            this.gbDanhSach.ForeColor = System.Drawing.Color.Black;
             this.gbDanhSach.Location = new System.Drawing.Point(15, 487);
-            this.gbDanhSach.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbDanhSach.Margin = new System.Windows.Forms.Padding(4);
             this.gbDanhSach.Name = "gbDanhSach";
-            this.gbDanhSach.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gbDanhSach.Padding = new System.Windows.Forms.Padding(4);
             this.gbDanhSach.Size = new System.Drawing.Size(1234, 307);
             this.gbDanhSach.TabIndex = 4;
             this.gbDanhSach.TabStop = false;
@@ -490,7 +491,7 @@
             this.dgvThuHoach.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvThuHoach.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvThuHoach.Location = new System.Drawing.Point(13, 33);
-            this.dgvThuHoach.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dgvThuHoach.Margin = new System.Windows.Forms.Padding(4);
             this.dgvThuHoach.MultiSelect = false;
             this.dgvThuHoach.Name = "dgvThuHoach";
             this.dgvThuHoach.ReadOnly = true;
@@ -506,7 +507,7 @@
             this.pnlThongKe.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
             this.pnlThongKe.Controls.Add(this.lblThongKe);
             this.pnlThongKe.Location = new System.Drawing.Point(15, 800);
-            this.pnlThongKe.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlThongKe.Margin = new System.Windows.Forms.Padding(4);
             this.pnlThongKe.Name = "pnlThongKe";
             this.pnlThongKe.Size = new System.Drawing.Size(1234, 47);
             this.pnlThongKe.TabIndex = 5;
@@ -532,7 +533,7 @@
             this.btnDong.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnDong.ForeColor = System.Drawing.Color.White;
             this.btnDong.Location = new System.Drawing.Point(1108, 860);
-            this.btnDong.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnDong.Margin = new System.Windows.Forms.Padding(4);
             this.btnDong.Name = "btnDong";
             this.btnDong.Size = new System.Drawing.Size(141, 47);
             this.btnDong.TabIndex = 6;
@@ -554,7 +555,7 @@
             this.Controls.Add(this.gbThongTin);
             this.Controls.Add(this.pnlHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "frmThuHoach";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

@@ -42,6 +42,8 @@
             this.txtMaKho = new System.Windows.Forms.TextBox();
             this.lblMaKho = new System.Windows.Forms.Label();
             this.grpThemThietBi = new System.Windows.Forms.GroupBox();
+            this.label_tennhanvien = new System.Windows.Forms.Label();
+            this.cboNhanVien_QLKho = new System.Windows.Forms.ComboBox();
             this.lblPhuongThucTT = new System.Windows.Forms.Label();
             this.lblDonGia = new System.Windows.Forms.Label();
             this.cboPhuongThucTT = new System.Windows.Forms.ComboBox();
@@ -65,8 +67,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.label_tennhanvien = new System.Windows.Forms.Label();
-            this.cboNhanVien_QLKho = new System.Windows.Forms.ComboBox();
             this.grpThongTinKho.SuspendLayout();
             this.grpThemThietBi.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudDonGia)).BeginInit();
@@ -93,7 +93,7 @@
             this.grpThongTinKho.Controls.Add(this.txtMaKho);
             this.grpThongTinKho.Controls.Add(this.lblMaKho);
             this.grpThongTinKho.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            this.grpThongTinKho.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(102)))), ((int)(((byte)(204)))));
+            this.grpThongTinKho.ForeColor = System.Drawing.Color.Black;
             this.grpThongTinKho.Location = new System.Drawing.Point(12, 50);
             this.grpThongTinKho.Name = "grpThongTinKho";
             this.grpThongTinKho.Size = new System.Drawing.Size(1078, 100);
@@ -232,7 +232,7 @@
             // 
             // grpThemThietBi
             // 
-            this.grpThemThietBi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(248)))), ((int)(((byte)(225)))));
+            this.grpThemThietBi.BackColor = System.Drawing.Color.White;
             this.grpThemThietBi.Controls.Add(this.label_tennhanvien);
             this.grpThemThietBi.Controls.Add(this.cboNhanVien_QLKho);
             this.grpThemThietBi.Controls.Add(this.lblPhuongThucTT);
@@ -256,6 +256,24 @@
             this.grpThemThietBi.TabIndex = 1;
             this.grpThemThietBi.TabStop = false;
             this.grpThemThietBi.Text = "🔧 THÊM THIẾT BỊ MỚI";
+            // 
+            // label_tennhanvien
+            // 
+            this.label_tennhanvien.AutoSize = true;
+            this.label_tennhanvien.Location = new System.Drawing.Point(20, 108);
+            this.label_tennhanvien.Name = "label_tennhanvien";
+            this.label_tennhanvien.Size = new System.Drawing.Size(114, 28);
+            this.label_tennhanvien.TabIndex = 17;
+            this.label_tennhanvien.Text = "Nhân viên:";
+            // 
+            // cboNhanVien_QLKho
+            // 
+            this.cboNhanVien_QLKho.FormattingEnabled = true;
+            this.cboNhanVien_QLKho.Location = new System.Drawing.Point(156, 105);
+            this.cboNhanVien_QLKho.Name = "cboNhanVien_QLKho";
+            this.cboNhanVien_QLKho.Size = new System.Drawing.Size(178, 36);
+            this.cboNhanVien_QLKho.TabIndex = 16;
+            this.cboNhanVien_QLKho.SelectedIndexChanged += new System.EventHandler(this.cboNhanVien_QLKho_SelectedIndexChanged);
             // 
             // lblPhuongThucTT
             // 
@@ -557,7 +575,7 @@
             // 
             // lblTitle
             // 
-            this.lblTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(81)))), ((int)(((byte)(181)))));
+            this.lblTitle.BackColor = System.Drawing.Color.Black;
             this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
@@ -565,26 +583,8 @@
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(1100, 45);
             this.lblTitle.TabIndex = 5;
-            this.lblTitle.Text = "📦 QUẢN LÝ KHO & THIẾT BỊ";
+            this.lblTitle.Text = "QUẢN LÝ KHO & THIẾT BỊ";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label_tennhanvien
-            // 
-            this.label_tennhanvien.AutoSize = true;
-            this.label_tennhanvien.Location = new System.Drawing.Point(20, 108);
-            this.label_tennhanvien.Name = "label_tennhanvien";
-            this.label_tennhanvien.Size = new System.Drawing.Size(114, 28);
-            this.label_tennhanvien.TabIndex = 17;
-            this.label_tennhanvien.Text = "Nhân viên:";
-            // 
-            // cboNhanVien_QLKho
-            // 
-            this.cboNhanVien_QLKho.FormattingEnabled = true;
-            this.cboNhanVien_QLKho.Location = new System.Drawing.Point(156, 105);
-            this.cboNhanVien_QLKho.Name = "cboNhanVien_QLKho";
-            this.cboNhanVien_QLKho.Size = new System.Drawing.Size(178, 36);
-            this.cboNhanVien_QLKho.TabIndex = 16;
-            this.cboNhanVien_QLKho.SelectedIndexChanged += new System.EventHandler(this.cboNhanVien_QLKho_SelectedIndexChanged);
             // 
             // frmQuanLyKho
             // 

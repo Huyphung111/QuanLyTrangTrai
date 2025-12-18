@@ -44,6 +44,8 @@
             this.toolBaoCaoSapHet = new System.Windows.Forms.ToolStripLabel();
             this.toolStrip_ban = new System.Windows.Forms.ToolStripButton();
             this.toolStrip_banhang = new System.Windows.Forms.ToolStripLabel();
+            this.btn_xemspthongke = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.txt_TenSP = new System.Windows.Forms.TextBox();
             this.cbo_TimKiem = new System.Windows.Forms.ComboBox();
             this.txt_MaSP = new System.Windows.Forms.TextBox();
@@ -67,8 +69,6 @@
             this.cbo_LoaiSP = new System.Windows.Forms.ComboBox();
             this.txt_DonVi = new System.Windows.Forms.TextBox();
             this.dateTimePicker_NgayCapNhat = new System.Windows.Forms.DateTimePicker();
-            this.btn_xemspthongke = new System.Windows.Forms.ToolStripButton();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStrip1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_QLSanPham)).BeginInit();
@@ -204,6 +204,22 @@
             this.toolStrip_banhang.Name = "toolStrip_banhang";
             this.toolStrip_banhang.Size = new System.Drawing.Size(41, 46);
             this.toolStrip_banhang.Text = "Bán";
+            // 
+            // btn_xemspthongke
+            // 
+            this.btn_xemspthongke.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btn_xemspthongke.Image = ((System.Drawing.Image)(resources.GetObject("btn_xemspthongke.Image")));
+            this.btn_xemspthongke.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_xemspthongke.Name = "btn_xemspthongke";
+            this.btn_xemspthongke.Size = new System.Drawing.Size(34, 46);
+            this.btn_xemspthongke.Text = "toolStripButton1";
+            this.btn_xemspthongke.Click += new System.EventHandler(this.btn_xemspthongke_Click);
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(91, 46);
+            this.toolStripLabel1.Text = "Xem tổng";
             // 
             // txt_TenSP
             // 
@@ -474,22 +490,6 @@
             this.dateTimePicker_NgayCapNhat.Name = "dateTimePicker_NgayCapNhat";
             this.dateTimePicker_NgayCapNhat.Size = new System.Drawing.Size(250, 26);
             this.dateTimePicker_NgayCapNhat.TabIndex = 25;
-            // 
-            // btn_xemspthongke
-            // 
-            this.btn_xemspthongke.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btn_xemspthongke.Image = ((System.Drawing.Image)(resources.GetObject("btn_xemspthongke.Image")));
-            this.btn_xemspthongke.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_xemspthongke.Name = "btn_xemspthongke";
-            this.btn_xemspthongke.Size = new System.Drawing.Size(34, 46);
-            this.btn_xemspthongke.Text = "toolStripButton1";
-            this.btn_xemspthongke.Click += new System.EventHandler(this.btn_xemspthongke_Click);
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(131, 46);
-            this.toolStripLabel1.Text = "toolStripLabel1";
             // 
             // QL_SanPham
             // 

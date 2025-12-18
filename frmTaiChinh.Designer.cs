@@ -53,7 +53,7 @@
             // 
             this.lblTitle.AutoSize = true;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.DarkGreen;
+            this.lblTitle.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.lblTitle.Location = new System.Drawing.Point(380, 15);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(366, 48);

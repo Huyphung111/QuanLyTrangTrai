@@ -87,7 +87,7 @@
             // 
             // pnlHeader
             // 
-            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(84)))), ((int)(((byte)(0)))));
+            this.pnlHeader.BackColor = System.Drawing.Color.Black;
             this.pnlHeader.Controls.Add(this.lblTitle);
             this.pnlHeader.Controls.Add(this.lblUserInfo);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
@@ -99,6 +99,7 @@
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
+            this.lblTitle.BackColor = System.Drawing.Color.Black;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
             this.lblTitle.Location = new System.Drawing.Point(20, 15);
@@ -110,14 +111,12 @@
             // lblUserInfo
             // 
             this.lblUserInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblUserInfo.AutoSize = false;
-            this.lblUserInfo.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular);
+            this.lblUserInfo.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.lblUserInfo.ForeColor = System.Drawing.Color.White;
             this.lblUserInfo.Location = new System.Drawing.Point(1000, 28);
             this.lblUserInfo.Name = "lblUserInfo";
             this.lblUserInfo.Size = new System.Drawing.Size(460, 30);
             this.lblUserInfo.TabIndex = 1;
-            this.lblUserInfo.Text = "";
             this.lblUserInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // pnlMain
@@ -157,7 +156,7 @@
             this.grpThongTin.Controls.Add(this.lblGhiChu);
             this.grpThongTin.Controls.Add(this.txtGhiChu);
             this.grpThongTin.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.grpThongTin.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(84)))), ((int)(((byte)(0)))));
+            this.grpThongTin.ForeColor = System.Drawing.Color.Black;
             this.grpThongTin.Location = new System.Drawing.Point(215, 23);
             this.grpThongTin.Name = "grpThongTin";
             this.grpThongTin.Size = new System.Drawing.Size(1135, 246);
@@ -397,7 +396,7 @@
             // 
             // btnThem
             // 
-            this.btnThem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(84)))), ((int)(((byte)(0)))));
+            this.btnThem.BackColor = System.Drawing.Color.Green;
             this.btnThem.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnThem.FlatAppearance.BorderSize = 0;
             this.btnThem.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
@@ -413,7 +412,7 @@
             // 
             // btnSua
             // 
-            this.btnSua.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnSua.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.btnSua.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSua.FlatAppearance.BorderSize = 0;
             this.btnSua.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
@@ -534,7 +533,7 @@
             this.grpDanhSach.BackColor = System.Drawing.Color.White;
             this.grpDanhSach.Controls.Add(this.dgvChiTiet);
             this.grpDanhSach.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.grpDanhSach.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(84)))), ((int)(((byte)(0)))));
+            this.grpDanhSach.ForeColor = System.Drawing.Color.Black;
             this.grpDanhSach.Location = new System.Drawing.Point(215, 390);
             this.grpDanhSach.Name = "grpDanhSach";
             this.grpDanhSach.Size = new System.Drawing.Size(1135, 230);
@@ -566,7 +565,7 @@
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
             dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(84)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(227)))), ((int)(((byte)(212)))));
             dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;

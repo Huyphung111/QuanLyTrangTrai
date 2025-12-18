@@ -61,6 +61,7 @@
             // 
             // lblTitle
             // 
+            this.lblTitle.BackColor = System.Drawing.SystemColors.ControlText;
             this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
@@ -68,12 +69,12 @@
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(879, 50);
             this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "🏢 QUẢN LÝ NHÀ CUNG CẤP";
+            this.lblTitle.Text = " QUẢN LÝ NHÀ CUNG CẤP";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pnlInputBorder
             // 
-            this.pnlInputBorder.BackColor = System.Drawing.Color.ForestGreen;
+            this.pnlInputBorder.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.pnlInputBorder.Controls.Add(this.pnlInputInner);
             this.pnlInputBorder.Controls.Add(this.lblThongTin);
             this.pnlInputBorder.Location = new System.Drawing.Point(15, 60);
@@ -114,7 +115,7 @@
             // 
             // txtMaNCC
             // 
-            this.txtMaNCC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(100)))));
+            this.txtMaNCC.BackColor = System.Drawing.Color.Silver;
             this.txtMaNCC.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.txtMaNCC.ForeColor = System.Drawing.Color.White;
             this.txtMaNCC.Location = new System.Drawing.Point(85, 10);
@@ -206,10 +207,10 @@
             // 
             // lblThongTin
             // 
-            this.lblThongTin.BackColor = System.Drawing.Color.ForestGreen;
+            this.lblThongTin.BackColor = System.Drawing.Color.MintCream;
             this.lblThongTin.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblThongTin.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblThongTin.ForeColor = System.Drawing.Color.White;
+            this.lblThongTin.ForeColor = System.Drawing.Color.Black;
             this.lblThongTin.Location = new System.Drawing.Point(3, 0);
             this.lblThongTin.Name = "lblThongTin";
             this.lblThongTin.Size = new System.Drawing.Size(830, 28);
@@ -249,12 +250,12 @@
             // 
             // btnSua
             // 
-            this.btnSua.BackColor = System.Drawing.Color.White;
+            this.btnSua.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.btnSua.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSua.FlatAppearance.BorderColor = System.Drawing.Color.ForestGreen;
             this.btnSua.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSua.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnSua.ForeColor = System.Drawing.Color.ForestGreen;
+            this.btnSua.ForeColor = System.Drawing.Color.White;
             this.btnSua.Location = new System.Drawing.Point(80, 8);
             this.btnSua.Name = "btnSua";
             this.btnSua.Size = new System.Drawing.Size(75, 30);
@@ -309,7 +310,7 @@
             // 
             // btnTimKiem
             // 
-            this.btnTimKiem.BackColor = System.Drawing.Color.ForestGreen;
+            this.btnTimKiem.BackColor = System.Drawing.Color.CornflowerBlue;
             this.btnTimKiem.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnTimKiem.FlatAppearance.BorderSize = 0;
             this.btnTimKiem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -325,7 +326,7 @@
             // 
             // pnlGridBorder
             // 
-            this.pnlGridBorder.BackColor = System.Drawing.Color.ForestGreen;
+            this.pnlGridBorder.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.pnlGridBorder.Controls.Add(this.dgvNhaCungCap);
             this.pnlGridBorder.Location = new System.Drawing.Point(15, 265);
             this.pnlGridBorder.Name = "pnlGridBorder";
@@ -343,7 +344,7 @@
             this.dgvNhaCungCap.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dgvNhaCungCap.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvNhaCungCap.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvNhaCungCap.GridColor = System.Drawing.Color.ForestGreen;
+            this.dgvNhaCungCap.GridColor = System.Drawing.Color.SlateGray;
             this.dgvNhaCungCap.Location = new System.Drawing.Point(3, 3);
             this.dgvNhaCungCap.MultiSelect = false;
             this.dgvNhaCungCap.Name = "dgvNhaCungCap";

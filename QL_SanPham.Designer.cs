@@ -67,6 +67,8 @@
             this.cbo_LoaiSP = new System.Windows.Forms.ComboBox();
             this.txt_DonVi = new System.Windows.Forms.TextBox();
             this.dateTimePicker_NgayCapNhat = new System.Windows.Forms.DateTimePicker();
+            this.btn_xemspthongke = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStrip1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_QLSanPham)).BeginInit();
@@ -120,7 +122,9 @@
             this.btn_Huy,
             this.toolBaoCaoSapHet,
             this.toolStrip_ban,
-            this.toolStrip_banhang});
+            this.toolStrip_banhang,
+            this.btn_xemspthongke,
+            this.toolStripLabel1});
             this.toolStrip2.Location = new System.Drawing.Point(0, 307);
             this.toolStrip2.Name = "toolStrip2";
             this.toolStrip2.Size = new System.Drawing.Size(768, 51);
@@ -471,6 +475,22 @@
             this.dateTimePicker_NgayCapNhat.Size = new System.Drawing.Size(250, 26);
             this.dateTimePicker_NgayCapNhat.TabIndex = 25;
             // 
+            // btn_xemspthongke
+            // 
+            this.btn_xemspthongke.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btn_xemspthongke.Image = ((System.Drawing.Image)(resources.GetObject("btn_xemspthongke.Image")));
+            this.btn_xemspthongke.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_xemspthongke.Name = "btn_xemspthongke";
+            this.btn_xemspthongke.Size = new System.Drawing.Size(34, 46);
+            this.btn_xemspthongke.Text = "toolStripButton1";
+            this.btn_xemspthongke.Click += new System.EventHandler(this.btn_xemspthongke_Click);
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(131, 46);
+            this.toolStripLabel1.Text = "toolStripLabel1";
+            // 
             // QL_SanPham
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -542,5 +562,7 @@
         private System.Windows.Forms.ToolStripLabel toolBaoCaoSapHet;
         private System.Windows.Forms.ToolStripButton toolStrip_ban;
         private System.Windows.Forms.ToolStripLabel toolStrip_banhang;
+        private System.Windows.Forms.ToolStripButton btn_xemspthongke;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
     }
 }

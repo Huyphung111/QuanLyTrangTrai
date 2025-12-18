@@ -962,6 +962,80 @@ namespace Đồ_án
             Btn_Xoa_Click(sender, e);
         }
 
+        private void btn_xemspthongke_Click(object sender, EventArgs e)
+        {
+            // Kiểm tra đã chọn sản phẩm chưa
+            if (dgv_QLSanPham.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("⚠️ Vui lòng chọn sản phẩm cần xem thống kê!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
 
+            // Lấy thông tin sản phẩm đã chọn
+            int maSP = Convert.ToInt32(dgv_QLSanPham.SelectedRows[0].Cells["MaSP"].Value);
+            string tenSP = dgv_QLSanPham.SelectedRows[0].Cells["TenSP"].Value.ToString();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    // Tính doanh thu 3 tháng gần nhất
+                    DateTime tuNgay = DateTime.Now.AddMonths(-3);
+                    DateTime denNgay = DateTime.Now;
+
+                    string query = "SELECT dbo.fn_TinhDoanhThuSanPham(@MaSP, @TuNgay, @DenNgay)";
+
+                    SqlCommand cmd = new SqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@MaSP", maSP);
+                    cmd.Parameters.AddWithValue("@TuNgay", tuNgay);
+                    cmd.Parameters.AddWithValue("@DenNgay", denNgay);
+
+                    decimal doanhThu = Convert.ToDecimal(cmd.ExecuteScalar());
+
+                    // Tính số lượng đã bán
+                    string queryBan = @"
+                SELECT ISNULL(SUM(CTGD.SoLuong), 0) 
+                FROM ChiTietGiaoDich CTGD
+                JOIN TaiChinh TC ON CTGD.MaGiaoDich = TC.MaGiaoDich
+                WHERE CTGD.MaSP = @MaSP 
+                  AND TC.LoaiGiaoDich = N'Thu'
+                  AND TC.NgayGiaoDich BETWEEN @TuNgay AND @DenNgay";
+
+                    SqlCommand cmdBan = new SqlCommand(queryBan, connection);
+                    cmdBan.Parameters.AddWithValue("@MaSP", maSP);
+                    cmdBan.Parameters.AddWithValue("@TuNgay", tuNgay);
+                    cmdBan.Parameters.AddWithValue("@DenNgay", denNgay);
+
+                    int soLuongBan = Convert.ToInt32(cmdBan.ExecuteScalar());
+
+                    // Hiển thị thông báo
+                    string thongBao = $"📊 THỐNG KÊ SẢN PHẨM\n" +
+                                    $"━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n" +
+                                    $"🏷️ Tên: {tenSP}\n" +
+                                    $"🔢 Mã SP: {maSP}\n\n" +
+                                    $"📅 Thời gian: {tuNgay:dd/MM/yyyy} - {denNgay:dd/MM/yyyy}\n" +
+                                    $"   (3 tháng gần nhất)\n\n" +
+                                    $"📦 Số lượng đã bán: {soLuongBan:N0}\n" +
+                                    $"💰 Doanh thu: {doanhThu:N0} đ";
+
+                    MessageBox.Show(thongBao,
+                        "Thống kê sản phẩm",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("❌ Lỗi: " + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
     }
 }

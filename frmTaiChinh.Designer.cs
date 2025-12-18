@@ -131,6 +131,7 @@
             this.dtpTuNgay.ShowUpDown = true;
             this.dtpTuNgay.Size = new System.Drawing.Size(140, 31);
             this.dtpTuNgay.TabIndex = 3;
+            this.dtpTuNgay.ValueChanged += new System.EventHandler(this.dtpTuNgay_ValueChanged);
             // 
             // lblDenNgay
             // 

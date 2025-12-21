@@ -46,6 +46,8 @@
             this.toolStrip_banhang = new System.Windows.Forms.ToolStripLabel();
             this.btn_xemspthongke = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.btn_Chatbot = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.txt_TenSP = new System.Windows.Forms.TextBox();
             this.cbo_TimKiem = new System.Windows.Forms.ComboBox();
             this.txt_MaSP = new System.Windows.Forms.TextBox();
@@ -124,7 +126,9 @@
             this.toolStrip_ban,
             this.toolStrip_banhang,
             this.btn_xemspthongke,
-            this.toolStripLabel1});
+            this.toolStripLabel1,
+            this.btn_Chatbot,
+            this.toolStripLabel2});
             this.toolStrip2.Location = new System.Drawing.Point(0, 307);
             this.toolStrip2.Name = "toolStrip2";
             this.toolStrip2.Size = new System.Drawing.Size(768, 51);
@@ -216,11 +220,27 @@
             this.btn_xemspthongke.Click += new System.EventHandler(this.btn_xemspthongke_Click);
             // 
             // toolStripLabel1
-            // 
+            //
             this.toolStripLabel1.Name = "toolStripLabel1";
             this.toolStripLabel1.Size = new System.Drawing.Size(91, 46);
             this.toolStripLabel1.Text = "Xem tổng";
-            // 
+            //
+            // btn_Chatbot
+            //
+            this.btn_Chatbot.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btn_Chatbot.Image = ((System.Drawing.Image)(resources.GetObject("btn_TimKiem.Image")));
+            this.btn_Chatbot.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_Chatbot.Name = "btn_Chatbot";
+            this.btn_Chatbot.Size = new System.Drawing.Size(34, 46);
+            this.btn_Chatbot.Text = "Chatbot";
+            this.btn_Chatbot.Click += new System.EventHandler(this.btn_Chatbot_Click);
+            //
+            // toolStripLabel2
+            //
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(75, 46);
+            this.toolStripLabel2.Text = "🤖 Chat";
+            //
             // txt_TenSP
             // 
             this.txt_TenSP.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -564,5 +584,7 @@
         private System.Windows.Forms.ToolStripLabel toolStrip_banhang;
         private System.Windows.Forms.ToolStripButton btn_xemspthongke;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripButton btn_Chatbot;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
     }
 }

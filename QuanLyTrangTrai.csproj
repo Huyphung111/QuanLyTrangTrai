@@ -168,6 +168,12 @@
     <Compile Include="TaoTaiKhoang.Designer.cs">
       <DependentUpon>TaoTaiKhoang.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmChatbotSanPham.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChatbotSanPham.Designer.cs">
+      <DependentUpon>frmChatbotSanPham.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="DoiMatKhau.resx">
       <DependentUpon>DoiMatKhau.cs</DependentUpon>
     </EmbeddedResource>
@@ -231,6 +237,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TaoTaiKhoang.resx">
       <DependentUpon>TaoTaiKhoang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChatbotSanPham.resx">
+      <DependentUpon>frmChatbotSanPham.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -1037,5 +1037,15 @@ namespace Đồ_án
                     MessageBoxIcon.Error);
             }
         }
+
+        /// <summary>
+        /// Mở Chatbot Sản Phẩm
+        /// </summary>
+        private void btn_Chatbot_Click(object sender, EventArgs e)
+        {
+            // Mở form chatbot
+            frmChatbotSanPham chatbot = new frmChatbotSanPham();
+            chatbot.ShowDialog();
+        }
     }
 }
